@@ -13,7 +13,7 @@ const monitoringRoutes = require("./routes/monitoring");
 const { authenticateToken } = require('./middleware/authMiddleware');
 // const sellerActionsRoutes = require('./routes/sellerActions');
 // const comiccompRoutes = require('./routes/comiccomp');
-// const profileRoutes = require('./routes/profile');
+const profileRoutes = require('./routes/profile');
 require('dotenv').config(); // Load environment variables
 
 const app = express();

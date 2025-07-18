@@ -10,6 +10,7 @@ import AuthManager from './components/Auth/AuthManager';
 import UserProfile from './components/UserProfile/UserProfile';
 import EnhancedSearch from './components/Search/EnhancedSearch';
 import ComicDetails from './components/ComicDetails/ComicDetails';
+import UserStore from './components/UserProfile/UserStore';
 import './App.css';
 
 function App() {
@@ -217,6 +218,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <UserProfile />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/user/:userId/store" 
+              element={
+                <ProtectedRoute>
+                  <UserStore />
                 </ProtectedRoute>
               } 
             />
