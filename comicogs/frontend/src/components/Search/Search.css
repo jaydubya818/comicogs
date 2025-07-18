@@ -1,0 +1,50 @@
+
+.search-container {
+    padding: 20px;
+}
+
+.search-form {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+}
+
+.search-button {
+    padding: 10px 20px;
+    border: 1px solid #007bff;
+    background-color: #007bff;
+    color: white;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.search-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.comic-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.comic-card img {
+    width: 100%;
+    height: auto;
+}
+
+.comic-card .comic-info {
+    padding: 10px;
+}
+
+.comic-card h3 {
+    margin-top: 0;
+}

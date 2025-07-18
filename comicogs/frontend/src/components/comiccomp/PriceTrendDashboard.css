@@ -1,0 +1,373 @@
+/**
+ * Task 5: Price Trend Dashboard CSS
+ * Mobile-responsive design styles - Acceptance Criteria 6
+ */
+
+/* Main Dashboard Responsive Layout */
+.price-dashboard {
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+.dashboard-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Mobile-first responsive breakpoints */
+@media (max-width: 640px) {
+  .dashboard-container {
+    padding: 1rem 0.5rem;
+  }
+
+  /* Adjust header on mobile */
+  .dashboard-header h1 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+
+  /* Search input mobile optimization */
+  .search-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .search-input {
+    width: 100%;
+    font-size: 16px; /* Prevent iOS zoom */
+  }
+
+  /* Card spacing on mobile */
+  .dashboard-grid {
+    gap: 1rem;
+  }
+
+  /* Chart height adjustment for mobile */
+  .chart-container {
+    height: 250px !important;
+  }
+
+  /* Time range selector mobile layout */
+  .time-range-selector {
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .time-range-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  /* Statistics grid mobile layout */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .stats-card {
+    padding: 0.75rem;
+  }
+
+  .stats-value {
+    font-size: 1.25rem;
+  }
+
+  /* Current value card mobile adjustments */
+  .current-value-main {
+    font-size: 2.5rem !important;
+  }
+
+  .price-range-text {
+    font-size: 1rem;
+  }
+
+  /* Trend indicators mobile layout */
+  .trend-main-indicator {
+    padding: 1rem;
+  }
+
+  .trend-icon {
+    font-size: 1.5rem;
+  }
+
+  /* Price suggestions mobile layout */
+  .suggestion-price {
+    font-size: 2rem;
+  }
+
+  .suggestion-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  /* Modal and popup mobile adjustments */
+  .modal-content {
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+}
+
+/* Tablet responsive adjustments */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .dashboard-container {
+    padding: 1.5rem;
+  }
+
+  .dashboard-grid {
+    gap: 1.5rem;
+  }
+
+  .chart-container {
+    height: 320px !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Desktop enhancements */
+@media (min-width: 1025px) {
+  .chart-container {
+    height: 400px !important;
+  }
+
+  .dashboard-grid {
+    gap: 2rem;
+  }
+
+  /* Hover effects for desktop */
+  .interactive-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+  }
+
+  .trend-indicator:hover {
+    background-color: rgba(59, 130, 246, 0.05);
+    transition: background-color 0.2s ease;
+  }
+}
+
+/* Loading states */
+.loading-card {
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error states */
+.error-card {
+  border: 2px solid #fecaca;
+  background-color: #fef2f2;
+}
+
+.error-icon {
+  color: #dc2626;
+}
+
+/* Real-time update indicators */
+.realtime-indicator {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Chart tooltip customization */
+.chartjs-tooltip {
+  background: rgba(0, 0, 0, 0.8) !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(59, 130, 246, 0.5) !important;
+}
+
+/* Confidence interval visualization */
+.confidence-bar {
+  position: relative;
+  height: 8px;
+  background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.confidence-indicator {
+  position: absolute;
+  top: -2px;
+  width: 12px;
+  height: 12px;
+  background: #3b82f6;
+  border: 2px solid white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Price suggestion confidence levels */
+.confidence-high {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  border-left: 4px solid #10b981;
+}
+
+.confidence-medium {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-left: 4px solid #f59e0b;
+}
+
+.confidence-low {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border-left: 4px solid #ef4444;
+}
+
+/* Market sentiment indicators */
+.sentiment-bullish {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  color: #065f46;
+}
+
+.sentiment-bearish {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  color: #991b1b;
+}
+
+.sentiment-neutral {
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  color: #374151;
+}
+
+/* Trend direction indicators */
+.trend-upward {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  border: 2px solid #10b981;
+}
+
+.trend-downward {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border: 2px solid #ef4444;
+}
+
+.trend-stable {
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  border: 2px solid #6b7280;
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .loading-spinner {
+    animation: none;
+  }
+
+  .realtime-indicator {
+    animation: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .dashboard-card {
+    border: 2px solid #000;
+  }
+
+  .text-muted {
+    color: #000 !important;
+  }
+
+  .bg-subtle {
+    background-color: #fff !important;
+    border: 1px solid #000;
+  }
+}
+
+/* Dark mode support (future enhancement) */
+@media (prefers-color-scheme: dark) {
+  .price-dashboard {
+    background-color: #111827;
+    color: #f9fafb;
+  }
+
+  .dashboard-card {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+
+  .text-muted {
+    color: #9ca3af;
+  }
+
+  .chart-container {
+    filter: invert(1) hue-rotate(180deg);
+  }
+}
+
+/* Print styles */
+@media print {
+  .price-dashboard {
+    background: white !important;
+    color: black !important;
+  }
+
+  .interactive-elements {
+    display: none !important;
+  }
+
+  .dashboard-card {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+
+  .chart-container {
+    height: 300px !important;
+  }
+}
+
+/* Focus styles for keyboard navigation */
+.focus-visible:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Custom scrollbar for webkit browsers */
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+} 

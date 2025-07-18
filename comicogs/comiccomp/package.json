@@ -1,0 +1,72 @@
+{
+  "name": "comiccomp-market-collection",
+  "version": "1.0.0",
+  "description": "ComicComp Live Pricing Intelligence Agent - Market Data Collection Infrastructure",
+  "main": "services/DataCollectionService.js",
+  "scripts": {
+    "demo": "node demo-market-collection.js",
+    "test": "jest test/",
+    "test:integration": "jest test/integration/",
+    "test:unit": "jest test/unit/",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint services/ test/",
+    "lint:fix": "eslint services/ test/ --fix",
+    "start": "node demo-comprehensive.js"
+  },
+  "keywords": [
+    "comic",
+    "pricing",
+    "marketplace",
+    "scraping",
+    "data-collection",
+    "ebay",
+    "whatnot",
+    "comicconnect",
+    "heritage",
+    "mycomicshop"
+  ],
+  "author": "ComicComp Team",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "ebay-api": "^4.3.0",
+    "node-fetch": "^3.3.0",
+    "pg": "^8.11.0",
+    "redis": "^4.6.0"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "jest": "^29.7.0",
+    "eslint": "^8.50.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-jest": "^27.4.0",
+    "nodemon": "^3.0.0",
+    "supertest": "^6.3.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "services/**/*.js",
+      "models/**/*.js",
+      "!**/node_modules/**",
+      "!**/test/**"
+    ],
+    "testMatch": [
+      "**/test/**/*.test.js"
+    ],
+    "testTimeout": 30000
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/comicogs/comiccomp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/comicogs/comiccomp/issues"
+  },
+  "homepage": "https://github.com/comicogs/comiccomp#readme"
+} 

@@ -1,0 +1,152 @@
+# 🧠 Comicogs PRD – Live Pricing Intelligence Agent (ComicComp)
+
+## Product Name
+ComicComp – Live Pricing Intelligence Agent
+
+## Owner
+Product: Jarrett West  
+Engineering: TBD  
+Design: TBD
+
+---
+
+## ✨ Summary
+ComicComp is an AI-powered agent that provides live, accurate pricing insights for comic books by scanning and aggregating data from major online marketplaces. It helps Comicogs users set competitive prices, monitor market movements, and decide when to list, hold, or grade their comics.
+
+---
+
+## 🎯 Goals
+- Provide real-time pricing insights based on market activity
+- Recommend listing prices using intelligent normalization and AI forecasting
+- Alert users when key comics in their collection spike in value
+- Visualize price history and value trends in a dashboard interface
+
+---
+
+## 🧑‍💻 Users & Personas
+
+### Sellers
+- Want to price accurately and maximize sale profits
+- May be unaware of pricing trends or undervalued issues
+
+### Collectors
+- Track portfolio value over time
+- Want to be alerted when it's time to sell or grade
+
+### Store Owners / Power Sellers
+- Require batch analytics
+- Need price intelligence across large inventories
+
+---
+
+## 🔍 Key Features
+
+### 1. Live Market Scan Agent
+- Pulls data from:
+  - eBay (sold listings, active auctions)
+  - Whatnot
+  - ComicConnect
+  - Heritage Auctions
+  - MyComicShop
+  - Amazon Marketplace
+- Refresh interval: Daily (MVP), Real-time (v2)
+
+### 2. Price Normalization Engine
+- Filters out:
+  - Listings with no cover photos
+  - Shill bids or low-feedback sellers
+  - Non-comics or lot bundles
+- Normalizes by:
+  - Grading tier (Raw, CGC 9.8, etc.)
+  - Variant type
+  - Sale type (fixed price vs auction)
+
+### 3. Variant & Condition Classification Agent
+- Uses metadata + optional AI cover scanning (v2)
+- Identifies:
+  - Direct vs Newsstand
+  - Cover A/B/C
+  - 1st print vs reprint
+  - CGC/PGX/Other graded slabs
+
+### 4. Price Trend Dashboard
+- Displays:
+  - Current Value
+  - 6M / 1Y historical chart
+  - Market movement trendline
+  - Suggested List Price
+  - Value change % vs last year
+
+### 5. Recommendation Engine
+- Action labels: `List Now`, `Hold`, `Grade`, `Monitor`
+- Triggers: major price swings, new movie/TV announcement, spike in comparable sales
+- User notification options (push/email)
+
+### 6. Seller Action Integration
+- "List Now" button pre-populates Comicogs listing form
+- Supports "add to watchlist" or "track this title"
+
+---
+
+## 🖥️ Wireframe Snapshot
+
+![Dashboard UI](link-to-dashboard-screenshot-or-image)
+
+---
+
+## 🚀 MVP Scope (Phase 1)
+- eBay and Whatnot data integration
+- Price normalization and display
+- Dashboard UI with "List Now" CTA
+- Manual input (Comic title, issue, condition)
+
+---
+
+## 🧱 Future Enhancements
+- CGC integration (live census + grading suggestions)
+- AI cover scanning + condition estimation
+- Portfolio view for entire collection
+- Batch upload CSV for store owners
+- Predictive analytics (AI trend forecasting)
+
+---
+
+## 📈 Success Metrics (KPIs)
+- % of listings using ComicComp pricing
+- Increase in listings sold at market price
+- Average user session time in pricing dashboard
+- # of "List Now" CTA activations
+- # of email/push alerts configured by users
+
+---
+
+## 🔒 Security & Compliance
+- No user PII transmitted to external APIs
+- Rate-limiting for third-party scraping
+- Compliance with eBay and marketplace TOS
+
+---
+
+## 🗓️ Timeline
+| Phase          | Milestone                         | Target Date   |
+|----------------|-----------------------------------|---------------|
+| Discovery      | Requirements finalized             | Week 1        |
+| Build Start    | Live query & normalization engine  | Week 2        |
+| UI Integration | Dashboard MVP                     | Week 4        |
+| Alpha Release  | Internal pricing agent demo        | Week 5        |
+| Public Launch  | Limited rollout on Comicogs site   | Week 7        |
+
+---
+
+## 🧩 Dependencies
+- API/Scraper access to marketplaces
+- Comicogs user session data
+- UI dashboard component
+- ElasticSearch or vector DB for data caching (optional)
+
+---
+
+## 📣 Notes
+- MVP will focus on physical comics only
+- Will exclude bundles/lots in early versions
+- CGC 9.8 is most reliable value indicator for MVP calibration 

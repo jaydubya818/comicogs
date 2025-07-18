@@ -1,0 +1,141 @@
+# Comicogs Product Requirements Document (PRD)
+> **Version:** 1.1  
+> **Authors:** Jarrett West (Product Lead), Sofie (AI Partner)  
+> **Last Updated:** 2025-07-12  
+
+## 1 | Vision & Value Proposition
+Comicogs will be the crowd-curated database + peer-to-peer marketplace + collector toolset for physical comic books, modeled on Discogs' three-part flywheel:
+- **Open Database** – users add/verify issues, variants, printings
+- **Marketplace** – every catalogued item can be bought or sold
+- **Collection/Wantlist** – collectors track holdings & grails, driving repeat visits
+
+Comicogs' differentiators vs. Discogs:
+- AI cover-scan to auto-match & grade issues
+- Full price graph (not 30-sale cap) plus external data (eBay, Heritage)
+- Escrow + shipping-damage insurance (trust layer eBay lacks)
+- Mobile, camera-first UX with barcode/cover scanning baked in
+
+## 2 | User Segments
+| Segment | Core Jobs | Current Pain |
+|---------|-----------|-------------|
+| Casual Reader | Identify & value attic box | No single app, valuation confusing |
+| Hardcore Collector | Complete runs, monitor prices | Tracking variants & sales across sites |
+| Comic Shop / Dealer | List 1k+ comics, bulk ship | Manual listing, inconsistent grading |
+| Flipper/Speculator | Scan, list, sell fast | High eBay fees, low metadata quality |
+
+## 3 | Functional Requirements
+
+### 3.1 Catalog (Discography analogue)
+- Master-Issue model (Series → Issue → Variant) mirrors Discogs' "Master Release" folder
+- Required submission fields adapted to comics (title/issue#/publisher/format/cover date/UPC/credits)
+- Community contribution flow with voting and edit history
+- Image rules: ≥150 px, ≤4 MB, JPG/PNG, honor IP
+
+### 3.2 Search & Discovery
+- Global search bar with tabs (Issue, Series, Publisher, Creator) mirroring Discogs
+- Advanced search filters: era, grade, publisher, character, variant artist, price
+- Semantic search backed by vector DB for "first Venom appearance"
+
+### 3.3 Collection Manager
+- Add comic from issue page or bulk CSV
+- Custom folders & fields, CSV export, estimated collection value using last-sale data
+- Privacy controls and shareable public shelf
+
+### 3.4 Wantlist
+- "Add to Wantlist" button mirrors Discogs; notifications when listed
+- Daily digest in inbox; email with rare finds
+- CSV export and public sharing
+
+### 3.5 Marketplace
+- Free listing; 6% success fee (Discogs is 9%)
+- Shipping policies wizard; auto rates by country like Discogs
+- Escrow release after delivery scan; optional insurance
+- Seller tiers: Hobby, Power, Pro (storefront/API)
+- Auto-NPB cancellation after X days
+
+### 3.6 Sales History & Price Guide
+- Display lowest / median / highest plus full historical curve, not 30-sale cap
+- Data sources: Comicogs sales + eBay + Heritage
+- Price alerts & market spikes (movie announcements)
+
+### 3.7 Mobile Apps
+- iOS / Android shell around PWA
+- Global search & barcode / cover scanner placed in header
+- Offline vault & "shake-to-suggest" random read
+
+### 3.8 AI Agent Layer
+| Agent | Trigger | Output |
+|-------|---------|--------|
+| CatalogAgent | Cover scan | Best-match issue, variant, credits |
+| GradingAgent | 4-photo set | Condition bucket (FN/VF/NM) ± confidence |
+| PricingAgent | New listing | Price suggestions and under/over price flag |
+| RecommendationAgent | User browse | Story-arc gaps & upsell bundles |
+
+## 4 | Non-Functional Requirements
+| Category | Spec |
+|----------|------|
+| Performance | p95 < 1.5 s page load; scan match < 2 s |
+| Scalability | 50 M catalog rows, 5 k tx/min |
+| Security | PCI-DSS, MFA option |
+| Compliance | DMCA takedown flow; publisher DM deals |
+| Accessibility | WCAG 2.2 AA |
+
+## 5 | MVP Roadmap (T = Kick-off)
+| Phase | Duration | Milestones |
+|-------|----------|------------|
+| T + 4 wks | Prototype | Figma flows, ERD, data seed (ComicVine) |
+| T + 12 wks | MVP Web | Catalog CRUD, manual listing, buy flow, Collection, Wantlist |
+| T + 20 wks | AI Listing | Cover scan, GradingAgent β, price guide |
+| T + 26 wks | Mobile | Mobile apps, push alerts, barcode scan |
+| T + 32 wks | Pro | Pro Seller tools, escrow, insurance |
+| 2026 | Advanced | CGC API integration, live-stream sales |
+
+## 6 | Success Metrics
+- 5k comics in catalog by week 4
+- 1k daily active users by week 12
+- ≥85% scan match accuracy by week 20
+- GMV ≥ $200k in first 6 months
+
+## 7 | Risks & Mitigations
+| Risk | Mitigation |
+|------|------------|
+| Metadata quality | Community voting + image proof rules like Discogs |
+| Grading disputes | Standard photo checklist; escrow until buyer confirms |
+| Supply boot-strap | Invite LCS beta sellers; waive fees for first 3 months |
+| IP on cover images | Thumbnails under fair-use; opt-in publisher program |
+
+## 8 | Personas & Jobs-to-Be-Done
+1. **Completionist** – complete runs; verify value
+2. **Flipper** – scan, list, flip quickly
+3. **Shop Owner** – bulk manage inventory, orders, analytics
+4. **Nostalgic** – grade and value attic finds
+5. **Lore Fan** – research key appearances and arcs
+
+## 9 | Competitive Gap Analysis
+| Platform | Strengths | Gaps | Comicogs Advantage |
+|----------|-----------|------|--------------------|
+| Discogs | Database flywheel | 9% fee; no AI or comics | 6% fee; AI scan; comics-specific metadata |
+| eBay | Massive reach | Weak grading trust; poor filters | Escrow + grade photos; deep filters |
+| Whatnot | Live auctions | No collection tools | Phase 5 live sales + vault |
+| GoCollect | Price guide | No marketplace | Unified price + P2P sales |
+
+## 10 | Technical Architecture
+- **Frontend**: React with Tailwind CSS, mobile-first design
+- **Backend**: Node.js/Express with PostgreSQL
+- **AI Layer**: Cover scan matching, grading assistance, price suggestions
+- **Search**: Hybrid search stack with advanced filtering
+- **Mobile**: React Native apps for iOS/Android
+- **Security**: PCI-DSS compliance, MFA, escrow system
+
+## 11 | Monetization
+- 6% transaction fee
+- Plus subscription: $6/mo
+- Pro subscription: $29/mo
+- Sponsored banners
+- Commercial price-guide API
+
+## 12 | Open Items
+- Digital comics/NFT roadmap (post-2026)
+- Auction partner revenue-share
+- International shipping integration
+- CGC/CBCS API integration timeline 

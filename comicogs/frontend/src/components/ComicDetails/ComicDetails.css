@@ -1,0 +1,39 @@
+
+.comic-details-page {
+    padding: 20px;
+}
+
+.details-header {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.details-cover img {
+    width: 250px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.details-info {
+    margin-left: 20px;
+}
+
+.details-body {
+    margin-top: 20px;
+}
+
+.details-price-history table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.details-price-history th, .details-price-history td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.details-price-history th {
+    background-color: #f2f2f2;
+}
