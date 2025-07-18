@@ -8,7 +8,7 @@ import EnhancedComicCompDashboard from './components/EnhancedComicCompDashboard'
 import EnhancedMarketplace from './components/Marketplace/EnhancedMarketplace';
 import AuthManager from './components/Auth/AuthManager';
 import UserProfile from './components/UserProfile/UserProfile';
-import Search from './components/Search/Search';
+import EnhancedSearch from './components/Search/EnhancedSearch';
 import ComicDetails from './components/ComicDetails/ComicDetails';
 import './App.css';
 
@@ -224,7 +224,7 @@ function App() {
               path="/search" 
               element={
                 <ProtectedRoute>
-                  <Search />
+                  <EnhancedSearch />
                 </ProtectedRoute>
               } 
             />

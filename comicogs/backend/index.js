@@ -50,11 +50,10 @@ app.get('/api/monitoring', authenticateToken, (req, res) => {
 // Initialize new monitoring system
 const healthMonitor = monitoringRoutes.healthMonitor;
 const analytics = monitoringRoutes.analytics;
-monitoringService.start().catch(console.error);
 
 // Stop monitoring when the app closes
 process.on('SIGINT', async () => {
-  await monitoringService.stop();
+  if (healthMonitor) healthMonitor.stop();
   process.exit();
 });
 app.get('/', (req, res) => {
