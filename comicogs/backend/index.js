@@ -9,7 +9,7 @@ const wantlistsRoutes = require('./routes/wantlists');
 const aiRoutes = require('./routes/ai');
 const marketplaceRoutes = require('./routes/marketplace');
 const pricingRoutes = require('./routes/pricing-simple');
-const MonitoringService = require('./services/MonitoringService');
+const monitoringRoutes = require("./routes/monitoring");
 const { authenticateToken } = require('./middleware/authMiddleware');
 // const sellerActionsRoutes = require('./routes/sellerActions');
 // const comiccompRoutes = require('./routes/comiccomp');
@@ -47,7 +47,9 @@ app.get('/api/monitoring', authenticateToken, (req, res) => {
   res.json(monitoringService.getMetrics());
 });
 
-// Start monitoring when the app starts
+// Initialize new monitoring system
+const healthMonitor = monitoringRoutes.healthMonitor;
+const analytics = monitoringRoutes.analytics;
 monitoringService.start().catch(console.error);
 
 // Stop monitoring when the app closes
@@ -80,7 +82,7 @@ app.use('/api/wantlists', wantlistsRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/marketplace', marketplaceRoutes);
 app.use('/api/pricing', pricingRoutes);
-// app.use('/api/seller-actions', sellerActionsRoutes);
+app.use("/api/monitoring", monitoringRoutes);// app.use('/api/seller-actions', sellerActionsRoutes);
 // app.use('/api/comiccomp', comiccompRoutes);
 // app.use('/api/profile', profileRoutes);
 

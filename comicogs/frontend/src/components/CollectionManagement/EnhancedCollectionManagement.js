@@ -7,25 +7,27 @@ const mockCollection = [
     { id: 1, title: 'Amazing Spider-Man', issue: '300', grade: 'CGC 9.8', value: 1250.00, purchasePrice: 800.00, dateAdded: '2023-05-10', imageUrl: '/placeholder-comic.jpg' },
     { id: 2, title: 'X-Men', issue: '1', grade: 'CGC 8.0', value: 8500.00, purchasePrice: 5000.00, dateAdded: '2022-11-21', imageUrl: '/placeholder-comic.jpg' },
     { id: 3, title: 'Batman', issue: '181', grade: 'CGC 7.5', value: 2300.00, purchasePrice: 1500.00, dateAdded: '2023-08-01', imageUrl: '/placeholder-comic.jpg' },
+    { id: 4, title: 'Spawn', issue: '1', grade: 'NM', value: 150.00, purchasePrice: 50.00, dateAdded: '2023-01-15', imageUrl: '/placeholder-comic.jpg' },
+    { id: 5, title: 'Sandman', issue: '1', grade: 'VF', value: 200.00, purchasePrice: 100.00, dateAdded: '2022-09-01', imageUrl: '/placeholder-comic.jpg' },
 ];
 
 const StatCard = ({ title, value, change }) => (
-    <div className="bg-white p-6 rounded-xl shadow-sm">
+    <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
         <h3 className="text-sm font-medium text-gray-500">{title}</h3>
         <p className="text-3xl font-bold text-gray-900 mt-1">{value}</p>
-        {change && <p className={`text-sm mt-1 ${change.startsWith('+') ? 'text-green-500' : 'text-red-500'}`}>{change}</p>}
+        {change && <p className={`text-sm mt-1 ${change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>{change}</p>}
     </div>
 );
 
 const CollectionControls = ({ onAdd, onFilter }) => (
-    <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">My Collection</h2>
-        <div className="flex items-center gap-4">
-            <button onClick={onFilter} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 bg-white border rounded-lg shadow-sm hover:bg-gray-50">
+    <div className="flex justify-between items-center mb-6 p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+        <h2 className="text-xl font-bold text-gray-800">Your Comics</h2>
+        <div className="flex items-center gap-3">
+            <button onClick={onFilter} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 transition-colors">
                 <Filter size={16} />
                 <span>Filter</span>
             </button>
-            <button onClick={onAdd} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-sm hover:bg-blue-700">
+            <button onClick={onAdd} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors">
                 <PlusCircle size={16} />
                 <span>Add Comic</span>
             </button>
@@ -38,28 +40,30 @@ const ComicRow = ({ comic, onEdit, onDelete }) => {
     const valueChangePercent = (valueChange / comic.purchasePrice) * 100;
 
     return (
-        <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="hover:bg-gray-50">
+        <motion.tr initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-white border-b border-gray-100 hover:bg-gray-50 transition-colors">
             <td className="p-4 whitespace-nowrap">
                 <div className="flex items-center">
-                    <img className="h-16 w-12 object-cover rounded-md mr-4" src={comic.imageUrl} alt="" />
+                    <img className="h-16 w-12 object-cover rounded-sm mr-4 border border-gray-200" src={comic.imageUrl} alt={comic.title} />
                     <div>
-                        <div className="text-sm font-semibold text-gray-900">{comic.title} #{comic.issue}</div>
+                        <div className="text-base font-semibold text-gray-900">{comic.title} #{comic.issue}</div>
                         <div className="text-sm text-gray-500">Added: {new Date(comic.dateAdded).toLocaleDateString()}</div>
                     </div>
                 </div>
             </td>
-            <td className="p-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{comic.grade}</span>
+            <td className="p-4 whitespace-nowrap text-sm text-gray-700 text-center">
+                <span className="px-2 py-1 inline-flex text-xs leading-5 font-medium rounded-full bg-blue-100 text-blue-800">{comic.grade}</span>
             </td>
-            <td className="p-4 whitespace-nowrap text-sm text-gray-800 font-medium text-center">${comic.value.toFixed(2)}</td>
+            <td className="p-4 whitespace-nowrap text-base text-gray-800 font-medium text-center">${comic.value.toFixed(2)}</td>
             <td className="p-4 whitespace-nowrap text-sm text-center">
-                <span className={`${valueChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                <span className={`${valueChange >= 0 ? 'text-green-600' : 'text-red-600'} font-medium`}>
                     {valueChange >= 0 ? '+' : ''}${valueChange.toFixed(2)} ({valueChangePercent.toFixed(1)}%)
                 </span>
             </td>
             <td className="p-4 whitespace-nowrap text-right text-sm font-medium">
-                <button onClick={() => onEdit(comic.id)} className="text-indigo-600 hover:text-indigo-900 mr-4"><Edit size={18} /></button>
-                <button onClick={() => onDelete(comic.id)} className="text-red-600 hover:text-red-900"><Trash2 size={18} /></button>
+                <div className="flex justify-end space-x-2">
+                    <button onClick={() => onEdit(comic.id)} className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full transition-colors"><Edit size={18} /></button>
+                    <button onClick={() => onDelete(comic.id)} className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full transition-colors"><Trash2 size={18} /></button>
+                </div>
             </td>
         </motion.tr>
     );
@@ -72,7 +76,7 @@ const EnhancedCollectionManagement = () => {
         const totalValue = collection.reduce((sum, item) => sum + item.value, 0);
         const totalInvestment = collection.reduce((sum, item) => sum + item.purchasePrice, 0);
         const totalGainLoss = totalValue - totalInvestment;
-        const gainLossPercent = (totalGainLoss / totalInvestment) * 100;
+        const gainLossPercent = totalInvestment > 0 ? (totalGainLoss / totalInvestment) * 100 : 0;
         return {
             totalComics: collection.length,
             totalValue: `$${totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
@@ -100,7 +104,7 @@ const EnhancedCollectionManagement = () => {
                     </div>
                 </header>
 
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
                     <CollectionControls onAdd={handleAddComic} onFilter={handleFilter} />
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
@@ -115,9 +119,17 @@ const EnhancedCollectionManagement = () => {
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 <AnimatePresence>
-                                    {collection.map(comic => (
-                                        <ComicRow key={comic.id} comic={comic} onEdit={handleEdit} onDelete={handleDelete} />
-                                    ))}
+                                    {collection.length > 0 ? (
+                                        collection.map(comic => (
+                                            <ComicRow key={comic.id} comic={comic} onEdit={handleEdit} onDelete={handleDelete} />
+                                        ))
+                                    ) : (
+                                        <tr className="bg-white">
+                                            <td colSpan="5" className="p-4 text-center text-gray-500">
+                                                No comics in your collection. Add some to get started!
+                                            </td>
+                                        </tr>
+                                    )}
                                 </AnimatePresence>
                             </tbody>
                         </table>

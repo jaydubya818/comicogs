@@ -1,15 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
+
 const db = require('./db');
-const authRoutes = require('./routes/auth');
+const authRoutes = require('./routes/enhancedAuth');
 const comicsRoutes = require('./routes/comics');
 const collectionsRoutes = require('./routes/collections');
 const wantlistsRoutes = require('./routes/wantlists');
 const aiRoutes = require('./routes/ai');
 const marketplaceRoutes = require('./routes/marketplace');
-const pricingRoutes = require('./routes/pricing');
-const sellerActionsRoutes = require('./routes/sellerActions');
+const pricingRoutes = require('./routes/pricing-simple');
+const MonitoringService = require('./services/MonitoringService');
+const { authenticateToken } = require('./middleware/authMiddleware');
+// const sellerActionsRoutes = require('./routes/sellerActions');
 // const comiccompRoutes = require('./routes/comiccomp');
 // const profileRoutes = require('./routes/profile');
 require('dotenv').config(); // Load environment variables
@@ -37,20 +39,22 @@ app.use((req, res, next) => {
 });
 
 // Authentication Middleware
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (token == null) return res.sendStatus(401); // No token
-
-  jwt.verify(token, process.env.JWT_SECRET || 'supersecretjwtkey', (err, user) => {
-    if (err) return res.sendStatus(403); // Invalid token
-    req.user = user;
-    next();
-  });
-};
 
 // Routes
+const monitoringService = new MonitoringService();
+
+app.get('/api/monitoring', authenticateToken, (req, res) => {
+  res.json(monitoringService.getMetrics());
+});
+
+// Start monitoring when the app starts
+monitoringService.start().catch(console.error);
+
+// Stop monitoring when the app closes
+process.on('SIGINT', async () => {
+  await monitoringService.stop();
+  process.exit();
+});
 app.get('/', (req, res) => {
   res.json({ 
     message: 'Welcome to Comicogs API', 
@@ -76,7 +80,7 @@ app.use('/api/wantlists', wantlistsRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/marketplace', marketplaceRoutes);
 app.use('/api/pricing', pricingRoutes);
-app.use('/api/seller-actions', sellerActionsRoutes);
+// app.use('/api/seller-actions', sellerActionsRoutes);
 // app.use('/api/comiccomp', comiccompRoutes);
 // app.use('/api/profile', profileRoutes);
 
@@ -171,4 +175,5 @@ app.listen(port, () => {
   console.log(`💰 Pricing API: http://localhost:${port}/api/pricing`);
   console.log(`🔒 Auth API: http://localhost:${port}/api/auth`);
   console.log(`📊 Status: http://localhost:${port}/api/status`);
+  console.log(`📈 Monitoring: http://localhost:${port}/api/monitoring`);
 });

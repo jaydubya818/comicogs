@@ -8,69 +8,76 @@ const mockListings = [
     { id: 2, title: 'X-Men', issue: '1', price: 8500.00, condition: 'CGC 8.0', seller: 'CollectorX', rating: 4.8, imageUrl: '/placeholder-comic.jpg' },
     { id: 3, title: 'Batman', issue: '181', price: 2300.00, condition: 'CGC 7.5', seller: 'Gothamite', rating: 5.0, imageUrl: '/placeholder-comic.jpg' },
     { id: 4, title: 'Incredible Hulk', issue: '181', price: 4500.00, condition: 'CGC 9.2', seller: 'StrongestThereIs', rating: 4.7, imageUrl: '/placeholder-comic.jpg' },
-    // ... add more mock listings
+    { id: 5, title: 'Action Comics', issue: '1', price: 100000.00, condition: 'CGC 0.5', seller: 'SupermanFan', rating: 4.5, imageUrl: '/placeholder-comic.jpg' },
+    { id: 6, title: 'Detective Comics', issue: '27', price: 50000.00, condition: 'CGC 1.8', seller: 'BatCollector', rating: 4.9, imageUrl: '/placeholder-comic.jpg' },
+    { id: 7, title: 'Fantastic Four', issue: '1', price: 15000.00, condition: 'CGC 6.0', seller: 'Marvelite', rating: 4.7, imageUrl: '/placeholder-comic.jpg' },
+    { id: 8, title: 'Giant-Size X-Men', issue: '1', price: 800.00, condition: 'VF/NM', seller: 'XMenLover', rating: 4.6, imageUrl: '/placeholder-comic.jpg' },
 ];
 
 const FilterSortControls = ({ onFilter, onSort, onLayoutChange, layout }) => (
-    <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-        <div className="relative min-w-[300px]">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+    <div className="flex flex-wrap items-center justify-between gap-4 mb-8 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+        <div className="relative flex-grow max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
                 type="text"
                 placeholder="Search listings..."
                 onChange={(e) => onFilter(e.target.value)}
-                className="w-full pl-12 pr-4 py-2 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700"
             />
         </div>
-        <div className="flex items-center gap-4">
-            <select onChange={(e) => onSort(e.target.value)} className="py-2 px-4 bg-white border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <div className="flex items-center gap-3">
+            <select onChange={(e) => onSort(e.target.value)} className="py-2 px-3 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="price_desc">Price: High to Low</option>
                 <option value="price_asc">Price: Low to High</option>
                 <option value="condition_desc">Condition: Best First</option>
                 <option value="rating_desc">Seller Rating</option>
             </select>
-            <div className="flex items-center gap-2">
-                <button onClick={() => onLayoutChange('grid')} className={`p-2 rounded-full ${layout === 'grid' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'}`}><LayoutGrid /></button>
-                <button onClick={() => onLayoutChange('list')} className={`p-2 rounded-full ${layout === 'list' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'}`}><List /></button>
+            <div className="flex items-center border border-gray-300 rounded-md overflow-hidden">
+                <button onClick={() => onLayoutChange('grid')} className={`p-2 ${layout === 'grid' ? 'bg-blue-500 text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}><LayoutGrid size={20} /></button>
+                <button onClick={() => onLayoutChange('list')} className={`p-2 ${layout === 'list' ? 'bg-blue-500 text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}><List size={20} /></button>
             </div>
         </div>
     </div>
 );
 
 const ListingCard = ({ listing }) => (
-    <motion.div layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-white rounded-2xl shadow-md overflow-hidden group transition-transform transform hover:-translate-y-1">
-        <div className="h-48 bg-gray-200 overflow-hidden">
-            <img src={listing.imageUrl} alt={`${listing.title} #${listing.issue}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+    <motion.div layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200 transition-all duration-200 hover:shadow-md hover:border-blue-300">
+        <div className="h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
+            <img src={listing.imageUrl} alt={`${listing.title} #${listing.issue}`} className="w-full h-full object-cover" />
         </div>
         <div className="p-4">
-            <h3 className="font-bold text-lg truncate">{listing.title} #{listing.issue}</h3>
-            <div className="flex items-center justify-between mt-2">
-                <p className="font-semibold text-xl text-blue-600">${listing.price.toFixed(2)}</p>
-                <div className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">{listing.condition}</div>
-            </div>
-            <div className="flex items-center text-sm text-gray-500 mt-3 pt-3 border-t border-gray-100">
-                <span>{listing.seller}</span>
-                <Star className="ml-auto mr-1 h-4 w-4 text-yellow-400" />
-                <span>{listing.rating}</span>
+            <h3 className="font-semibold text-gray-800 text-lg truncate mb-1">{listing.title} #{listing.issue}</h3>
+            <p className="text-blue-600 font-bold text-xl mb-2">${listing.price.toFixed(2)}</p>
+            <div className="flex items-center justify-between text-sm text-gray-600">
+                <span className="px-2 py-1 bg-gray-100 rounded-full text-xs font-medium">{listing.condition}</span>
+                <div className="flex items-center">
+                    <span className="mr-1">{listing.seller}</span>
+                    <Star size={14} className="text-yellow-500" />
+                    <span className="ml-1">{listing.rating}</span>
+                </div>
             </div>
         </div>
     </motion.div>
 );
 
 const ListingRow = ({ listing }) => (
-    <motion.div layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-white rounded-lg shadow-sm p-4 flex items-center space-x-4 transition-shadow hover:shadow-md">
-        <img src={listing.imageUrl} alt={`${listing.title} #${listing.issue}`} className="w-12 h-16 object-cover rounded-md" />
-        <div className="flex-grow grid grid-cols-4 gap-4 items-center">
-            <h3 className="font-semibold col-span-2">{listing.title} #{listing.issue}</h3>
-            <div className="text-center">
-                <div className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium inline-block">{listing.condition}</div>
+    <motion.div layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-white rounded-lg shadow-sm p-4 flex items-center space-x-4 border border-gray-200 transition-all duration-200 hover:shadow-md hover:border-blue-300">
+        <img src={listing.imageUrl} alt={`${listing.title} #${listing.issue}`} className="w-16 h-24 object-cover rounded-md flex-shrink-0" />
+        <div className="flex-grow grid grid-cols-3 items-center gap-4">
+            <div>
+                <h3 className="font-semibold text-gray-800 text-lg">{listing.title} #{listing.issue}</h3>
+                <p className="text-gray-600 text-sm">Seller: {listing.seller}</p>
             </div>
-            <p className="font-semibold text-lg text-blue-600 text-right">${listing.price.toFixed(2)}</p>
-        </div>
-        <div className="flex items-center text-sm text-gray-500">
-            <span>{listing.seller}</span>
-            <Star className="ml-2 mr-1 h-4 w-4 text-yellow-400" />
-            <span>{listing.rating}</span>
+            <div className="text-center">
+                <span className="px-3 py-1 bg-gray-100 rounded-full text-sm font-medium text-gray-700">{listing.condition}</span>
+            </div>
+            <div className="text-right">
+                <p className="text-blue-600 font-bold text-xl">${listing.price.toFixed(2)}</p>
+                <div className="flex items-center justify-end text-sm text-gray-600 mt-1">
+                    <Star size={14} className="text-yellow-500 mr-1" />
+                    <span>{listing.rating}</span>
+                </div>
+            </div>
         </div>
     </motion.div>
 );
@@ -92,7 +99,7 @@ const EnhancedMarketplace = () => {
 
     const filteredAndSortedListings = useMemo(() => {
         return listings
-            .filter(l => l.title.toLowerCase().includes(filter.toLowerCase()))
+            .filter(l => l.title.toLowerCase().includes(filter.toLowerCase()) || l.issue.includes(filter))
             .sort((a, b) => {
                 switch (sort) {
                     case 'price_asc': return a.price - b.price;
@@ -105,14 +112,14 @@ const EnhancedMarketplace = () => {
     }, [listings, filter, sort]);
 
     if (loading) {
-        return <div className="text-center p-10">Loading...</div>;
+        return <div className="text-center p-10 text-gray-600">Loading marketplace...</div>;
     }
 
     return (
         <div className="bg-gray-50 min-h-screen p-8">
             <header className="text-center mb-10">
-                <h1 className="text-4xl font-extrabold text-gray-900">Marketplace</h1>
-                <p className="text-gray-600 mt-2">Discover and acquire your next grail comic.</p>
+                <h1 className="text-4xl font-extrabold text-gray-900 mb-2">Comicogs Marketplace</h1>
+                <p className="text-gray-600">Discover and acquire your next grail comic from a vibrant community of collectors.</p>
             </header>
 
             <FilterSortControls onFilter={setFilter} onSort={setSort} onLayoutChange={setLayout} layout={layout} />
@@ -120,10 +127,20 @@ const EnhancedMarketplace = () => {
             <AnimatePresence>
                 <motion.div
                     layout
-                    className={layout === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" : "space-y-4"}>
-                    {filteredAndSortedListings.map(listing => (
-                        layout === 'grid' ? <ListingCard key={listing.id} listing={listing} /> : <ListingRow key={listing.id} listing={listing} />
-                    ))}
+                    className={layout === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" : "space-y-4"}>
+                    {filteredAndSortedListings.length > 0 ? (
+                        filteredAndSortedListings.map(listing => (
+                            layout === 'grid' ? <ListingCard key={listing.id} listing={listing} /> : <ListingRow key={listing.id} listing={listing} />
+                        ))
+                    ) : (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="col-span-full text-center p-10 bg-white rounded-lg shadow-sm border border-gray-200 text-gray-600"
+                        >
+                            <p className="text-lg">No listings found matching your criteria.</p>
+                        </motion.div>
+                    )}
                 </motion.div>
             </AnimatePresence>
         </div>

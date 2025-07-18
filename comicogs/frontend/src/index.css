@@ -1,13 +1,62 @@
+/* index.css */
+
+:root {
+  --color-primary: #337ab7; /* Discogs-like blue */
+  --color-secondary: #5cb85c; /* Green for success/positive */
+  --color-danger: #d9534f; /* Red for errors/negative */
+  --color-warning: #f0ad4e; /* Orange for warnings */
+  --color-info: #5bc0de; /* Light blue for info */
+
+  --color-text-dark: #333; /* Dark text */
+  --color-text-medium: #666; /* Medium gray text */
+  --color-text-light: #999; /* Light gray text */
+
+  --color-bg-light: #f8f8f8; /* Light background */
+  --color-bg-medium: #eee; /* Medium background */
+  --color-bg-dark: #ddd; /* Darker background */
+  --color-white: #fff;
+
+  --border-color: #ddd;
+  --border-radius: 4px;
+  --box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Modern sans-serif */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg-light);
+  color: var(--color-text-dark);
+  line-height: 1.6;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: 'Fira Code', 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Basic resets and common styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
