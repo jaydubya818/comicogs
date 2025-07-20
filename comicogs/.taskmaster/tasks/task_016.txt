@@ -1,0 +1,11 @@
+# Task ID: 16
+# Title: User Wantlist & Wishlist System
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: Create wantlist system for users to track desired comics with price alerts, notifications, and marketplace integration
+# Details:
+
+
+# Test Strategy:
+

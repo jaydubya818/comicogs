@@ -1,0 +1,52 @@
+# Comicogs Multi-Agent Development Rules
+
+## Context
+This is a multi-agent development project. Always check `.comicogs/tasks/comicogs-mvp/channel.md` before starting work.
+
+## Agent Behavior
+
+### When prompted to act as a specific agent:
+1. **Read that agent's .md file first** (e.g., `agent_1.md`)
+2. **Check channel.md** for latest status and dependencies
+3. **Update channel.md** when starting and completing tasks
+4. **Follow the communication protocol exactly**
+5. **Only work on tasks assigned to your agent role**
+6. **Signal handoffs clearly** in channel.md
+
+### Communication Protocol
+Use this exact format in channel.md:
+```
+[Agent X] - YYYY-MM-DD HH:MM - Brief action summary
+Details: What you're working on or what you completed
+Blockers: Any issues preventing progress
+→ next: What should happen next / which agent should act
+```
+
+### File Structure
+- All agent coordination happens in `.comicogs/tasks/comicogs-mvp/`
+- Follow the checklist in `plan.md`
+- Use `channel.md` for all inter-agent communication
+- Individual agent files contain specific mission details
+
+### Agent Responsibilities
+- **Agent 1**: Infrastructure & API (Next.js, Prisma, NextAuth)
+- **Agent 2**: Frontend & UI/UX (shadcn/ui, Tailwind, components)
+- **Agent 3**: Marketplace & Business Logic (Stripe, e-commerce)
+- **Agent 4**: Search & Data (search algorithms, data processing)
+- **Agent 5**: DevOps & Quality (CI/CD, testing, deployment)
+
+### Dependencies & Handoffs
+- **Agent 1** must complete project setup before Agent 2 can start
+- **Agent 1** must complete database schema before Agent 3 can implement business logic
+- **Agent 2** must provide UI components before Agent 3 can build marketplace interfaces
+- **Agent 5** can work in parallel on CI/CD setup
+
+### Quality Standards
+- Always write TypeScript with proper types
+- Follow Next.js 14 App Router patterns
+- Implement proper error handling
+- Write tests for new functionality
+- Update documentation as you work
+
+### Current Phase: Phase 1 - Infrastructure Setup
+Focus on foundational setup and basic functionality before moving to advanced features.

@@ -1,0 +1,83 @@
+{
+  "name": "comiccomp-test-suite",
+  "version": "1.0.0",
+  "description": "Comprehensive test suite for ComicComp MVP",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
+    "test:unit": "mocha '../*.test.js' --timeout 10000 --reporter spec",
+    "test:integration": "mocha 'integration/**/*.test.js' --timeout 15000 --reporter spec",
+    "test:e2e": "mocha 'e2e/**/*.test.js' --timeout 30000 --reporter spec",
+    "test:performance": "node performance/load-test.js",
+    "test:all": "npm run test && npm run test:performance",
+    "test:ci": "npm run test:all --reporter json > test-results.json",
+    "test:coverage": "nyc npm run test",
+    "test:watch": "mocha '../*.test.js' 'integration/**/*.test.js' --watch --timeout 10000",
+    "install-deps": "npm install"
+  },
+  "keywords": [
+    "testing",
+    "e2e",
+    "performance",
+    "comics",
+    "marketplace"
+  ],
+  "author": "ComicComp Team",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^10.7.3",
+    "chai": "^4.5.0",
+    "supertest": "^7.0.0",
+    "autocannon": "^7.15.0",
+    "nyc": "^17.1.0",
+    "sinon": "^19.0.2",
+    "@types/mocha": "^10.0.8",
+    "@types/chai": "^4.3.20",
+    "@types/supertest": "^6.0.2"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "lodash": "^4.17.21"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/comiccomp/comiccomp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/comiccomp/comiccomp/issues"
+  },
+  "homepage": "https://github.com/comiccomp/comiccomp#readme",
+  "mocha": {
+    "recursive": true,
+    "timeout": 30000,
+    "colors": true,
+    "reporter": "spec",
+    "exit": true
+  },
+  "nyc": {
+    "include": [
+      "../**/*.js"
+    ],
+    "exclude": [
+      "node_modules/",
+      "test/",
+      "coverage/",
+      "**/*.test.js"
+    ],
+    "reporter": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "all": true,
+    "check-coverage": true,
+    "lines": 80,
+    "functions": 80,
+    "branches": 80,
+    "statements": 80
+  }
+} 

@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(git clone:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(rm:*)",
+      "Bash(npx create-next-app:*)",
+      "Bash(mv:*)",
+      "Bash(true)",
+      "Bash(find:*)",
+      "Bash(chmod:*)",
+      "Bash(bash ../setup-multi-agent.sh)",
+      "Bash(ls:*)",
+      "Bash(./verify-setup.sh:*)",
+      "Bash(/Users/jaywest/comicogs/verify-setup.sh)",
+      "Bash(bash:*)",
+      "Bash(./test-multi-agent.sh:*)",
+      "Bash(/Users/jaywest/comicogs/test-multi-agent.sh:*)",
+      "Bash(./test.sh:*)",
+      "Bash(node:*)",
+      "Bash(git clean:*)",
+      "Bash(git reset:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": []
+  }
+}

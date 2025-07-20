@@ -1,0 +1,11 @@
+# Task ID: 21
+# Title: Custom User Lists & Curation System
+# Status: pending
+# Dependencies: None
+# Priority: low
+# Description: Create system for users to build, share, and discover custom comic lists with collaboration and curation features
+# Details:
+
+
+# Test Strategy:
+
