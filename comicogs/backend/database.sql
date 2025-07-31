@@ -13,7 +13,12 @@ CREATE TABLE IF NOT EXISTS users (
     profile_image_url VARCHAR(255),
     bio TEXT,
     location VARCHAR(255),
-    privacy_settings JSONB DEFAULT '{"collection_public": true, "wantlist_public": true}'::jsonb
+    privacy_settings JSONB DEFAULT '{"collection_public": true, "wantlist_public": true}'::jsonb,
+    role VARCHAR(50) DEFAULT 'user' NOT NULL,
+    login_count INT DEFAULT 0,
+    developer_enabled BOOLEAN DEFAULT FALSE,
+    last_login_at TIMESTAMP WITH TIME ZONE,
+    refresh_token TEXT
 );
 
 -- Publishers Table
