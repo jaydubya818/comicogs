@@ -1,5 +1,5 @@
 const tf = require('@tensorflow/tfjs-node');
-const { Pool } = require('pg');
+const db = require('../db');
 
 class MarketIntelligenceService {
   constructor() {
@@ -66,8 +66,6 @@ class MarketIntelligenceService {
   }
 
   async loadMarketData() {
-    const db = new Pool();
-
     try {
       // Load recent market transactions
       const marketQuery = await db.query(`
@@ -91,8 +89,8 @@ class MarketIntelligenceService {
       this.processMarketTransactions(marketQuery.rows);
 
       console.log(`Loaded ${marketQuery.rows.length} market transactions`);
-    } finally {
-      db.end();
+    } catch (error) {
+      console.error('Error loading market data:', error);
     }
   }
 
@@ -177,7 +175,7 @@ class MarketIntelligenceService {
   }
 
   async getMarketOverview(timeframe) {
-    const db = new Pool();
+    // Using shared database connection
 
     try {
       const overviewQuery = await db.query(`
@@ -213,8 +211,9 @@ class MarketIntelligenceService {
         sell_through_rate: parseFloat(stats.avg_sell_through_rate) || 0,
         market_health: this.calculateMarketHealth(stats)
       };
-    } finally {
-      db.end();
+    } catch (error) {
+      console.error('Database query error:', error);
+      throw error;
     }
   }
 
@@ -248,7 +247,7 @@ class MarketIntelligenceService {
   }
 
   async getTrendingComics(timeframe) {
-    const db = new Pool();
+    // Using shared database connection
 
     try {
       const trendingQuery = await db.query(`
@@ -307,13 +306,14 @@ class MarketIntelligenceService {
         },
         sell_through_rate: parseFloat(comic.sell_through_percentage) || 0
       }));
-    } finally {
-      db.end();
+    } catch (error) {
+      console.error('Database query error:', error);
+      throw error;
     }
   }
 
   async getPriceMovements(timeframe) {
-    const db = new Pool();
+    // Using shared database connection
 
     try {
       const movementQuery = await db.query(`
@@ -364,13 +364,14 @@ class MarketIntelligenceService {
             movement.price_change_percentage < -5 ? 'decreasing' : 'stable'
         }
       }));
-    } finally {
-      db.end();
+    } catch (error) {
+      console.error('Database query error:', error);
+      throw error;
     }
   }
 
   async getVolumeAnalysis(timeframe) {
-    const db = new Pool();
+    // Using shared database connection
 
     try {
       const volumeQuery = await db.query(`
@@ -401,8 +402,9 @@ class MarketIntelligenceService {
         })),
         volume_trend: this.calculateVolumeTrend(dailyData)
       };
-    } finally {
-      db.end();
+    } catch (error) {
+      console.error('Database query error:', error);
+      throw error;
     }
   }
 
@@ -424,7 +426,7 @@ class MarketIntelligenceService {
 
   async getMarketSentiment(timeframe) {
     // Analyze market sentiment based on various factors
-    const db = new Pool();
+    // Using shared database connection
 
     try {
       const sentimentQuery = await db.query(`
@@ -456,8 +458,9 @@ class MarketIntelligenceService {
           collector_interest: (factors.wishlist_activity + factors.collection_activity) > 100 ? 'high' : 'moderate'
         }
       };
-    } finally {
-      db.end();
+    } catch (error) {
+      console.error('Database query error:', error);
+      throw error;
     }
   }
 
@@ -549,7 +552,7 @@ class MarketIntelligenceService {
   }
 
   async getHistoricalPriceData(comicId) {
-    const db = new Pool();
+    // Using shared database connection
 
     try {
       const historyQuery = await db.query(`
@@ -572,8 +575,9 @@ class MarketIntelligenceService {
         min_price: parseFloat(row.min_price),
         max_price: parseFloat(row.max_price)
       }));
-    } finally {
-      db.end();
+    } catch (error) {
+      console.error('Database query error:', error);
+      throw error;
     }
   }
 
@@ -677,7 +681,7 @@ class MarketIntelligenceService {
   }
 
   async detectAnomalies(timeframe) {
-    const db = new Pool();
+    // Using shared database connection
 
     try {
       // Get recent transactions for anomaly detection
@@ -730,13 +734,14 @@ class MarketIntelligenceService {
       });
 
       return anomalies.sort((a, b) => b.percentage_difference - a.percentage_difference);
-    } finally {
-      db.end();
+    } catch (error) {
+      console.error('Database query error:', error);
+      throw error;
     }
   }
 
   async getComicSpecificIntelligence(comicId) {
-    const db = new Pool();
+    // Using shared database connection
 
     try {
       const comicQuery = await db.query(`
@@ -787,8 +792,9 @@ class MarketIntelligenceService {
         investment_grade: this.calculateInvestmentGrade(comic),
         liquidity_score: this.calculateLiquidityScore(comic)
       };
-    } finally {
-      db.end();
+    } catch (error) {
+      console.error('Database query error:', error);
+      throw error;
     }
   }
 
@@ -863,7 +869,7 @@ class MarketIntelligenceService {
   }
 
   async getPublisherAnalysis(publisher) {
-    const db = new Pool();
+    // Using shared database connection
 
     try {
       const publisherQuery = await db.query(`
@@ -903,13 +909,14 @@ class MarketIntelligenceService {
         market_share: await this.calculatePublisherMarketShare(data.name),
         performance_grade: this.calculatePublisherGrade(data)
       };
-    } finally {
-      db.end();
+    } catch (error) {
+      console.error('Database query error:', error);
+      throw error;
     }
   }
 
   async calculatePublisherMarketShare(publisherName) {
-    const db = new Pool();
+    // Using shared database connection
 
     try {
       const shareQuery = await db.query(`
@@ -933,8 +940,9 @@ class MarketIntelligenceService {
       `, [publisherName]);
 
       return parseFloat(shareQuery.rows[0]?.market_share) || 0;
-    } finally {
-      db.end();
+    } catch (error) {
+      console.error('Database query error:', error);
+      throw error;
     }
   }
 
