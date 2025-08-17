@@ -1,0 +1,46 @@
+{
+  "name": "agent-management-system",
+  "version": "1.0.0",
+  "description": "B2B SaaS platform for enterprise AI agent fleet management and observability",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && uvicorn main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && python -m build",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "cd backend && pytest",
+    "test:frontend": "cd frontend && npm test",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "setup": "npm install && cd frontend && npm install && cd ../backend && pip install -r requirements.txt"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "saas",
+    "observability",
+    "agent-management",
+    "devops",
+    "enterprise"
+  ],
+  "author": "Agent Management System Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jaydubya818/Agent_Management_System.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jaydubya818/Agent_Management_System/issues"
+  },
+  "homepage": "https://github.com/jaydubya818/Agent_Management_System#readme"
+}
