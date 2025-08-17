@@ -1,0 +1,43 @@
+# Task ID: 1
+# Title: Project Foundation Setup
+# Status: in-progress
+# Dependencies: None
+# Priority: high
+# Description: Establish stable, automated, and scalable foundation with monorepo structure, dependencies, and development infrastructure
+# Details:
+Create monorepo structure with backend (FastAPI), frontend (React/TypeScript), and infrastructure directories. Set up Docker Compose for local development environment with PostgreSQL and Redis. Initialize CI/CD pipeline basics.
+
+# Test Strategy:
+Verify Docker Compose brings up all services successfully. Test basic API endpoint returns expected response. Confirm frontend builds and serves correctly.
+
+# Subtasks:
+## 1. Create Monorepo Directory Structure [pending]
+### Dependencies: None
+### Description: Set up the basic directory structure for a monorepo with backend, frontend, and infrastructure components
+### Details:
+Create directories: /backend (FastAPI), /frontend (React TypeScript), /infra (Docker/deployment), /docs, and root-level configuration files
+
+## 2. Initialize Backend FastAPI Application [pending]
+### Dependencies: 1.1
+### Description: Set up the FastAPI backend with basic structure, dependencies, and configuration
+### Details:
+Create requirements.txt, main.py with FastAPI app, basic health endpoint, database connection setup, and environment configuration
+
+## 3. Initialize Frontend React Application [pending]
+### Dependencies: 1.1
+### Description: Set up React TypeScript frontend with Vite, Tailwind CSS, and basic project structure
+### Details:
+Use Vite to create React TS project, configure Tailwind CSS, set up basic routing with React Router, create layout components
+
+## 4. Set up Docker Compose Development Environment [pending]
+### Dependencies: 1.2, 1.3
+### Description: Create Docker Compose configuration for local development with all services
+### Details:
+Create docker-compose.yml with services: backend (FastAPI), frontend (React dev server), PostgreSQL database, Redis cache, and proper networking
+
+## 5. Initialize Basic CI/CD Pipeline [pending]
+### Dependencies: 1.2, 1.3
+### Description: Set up GitHub Actions workflow for automated testing and linting
+### Details:
+Create .github/workflows/ci.yml with jobs for backend testing, frontend testing, linting, and basic deployment checks
+

@@ -1,0 +1,49 @@
+# Task ID: 14
+# Title: Meta-Agent FinOps Optimization
+# Status: pending
+# Dependencies: 13
+# Priority: low
+# Description: AI-powered system for autonomous cost optimization and performance recommendations
+# Details:
+Implement Meta-Agent that analyzes agent performance and costs. Create recommendation engine for model selection and configuration optimization. Add self-healing capabilities for common errors. Implement automated A/B testing for cost optimization.
+
+# Test Strategy:
+Test recommendation accuracy with historical data. Verify self-healing effectiveness for known error patterns. Test automated optimization impact on costs and performance.
+
+# Subtasks:
+## 1. Design and Implement User Database Schema [pending]
+### Dependencies: None
+### Description: Create the necessary database table(s) to store user information, including username, hashed password, email, and timestamps.
+### Details:
+Use a database migration tool to create a `users` table. The table should include columns like `id` (primary key), `username` (unique), `email` (unique), `hashed_password` (string), `created_at`, and `updated_at`. Ensure proper indexing on `username` and `email` for fast lookups.
+
+## 2. Create User Registration API Endpoint [pending]
+### Dependencies: 14.1
+### Description: Develop a public API endpoint (e.g., `POST /api/auth/register`) that allows new users to create an account.
+### Details:
+The endpoint should accept a username, email, and password. It must validate the input (e.g., password strength, valid email format), check if the username or email already exists, hash the password using bcrypt, and then save the new user to the database. Return a success message or the created user object (without the password).
+
+## 3. Create User Login API Endpoint [pending]
+### Dependencies: 14.1
+### Description: Develop a public API endpoint (e.g., `POST /api/auth/login`) for authenticating users and issuing JSON Web Tokens (JWT).
+### Details:
+The endpoint should accept a username/email and a password. It will find the user in the database, compare the provided password with the stored hash, and if they match, generate a JWT. The JWT should contain user identifiers (like user ID) and an expiration time. Return the JWT to the client.
+
+## 4. Implement JWT Authentication Middleware [pending]
+### Dependencies: 14.3
+### Description: Create a middleware that intercepts requests to protected routes, validates the JWT from the `Authorization` header, and attaches the authenticated user's information to the request object.
+### Details:
+The middleware should extract the token from the `Authorization: Bearer <token>` header. It must verify the token's signature and check for expiration. If valid, decode the payload to identify the user and attach their data to the request context. If invalid or missing, it should return a 401 Unauthorized error.
+
+## 5. Create Protected 'Get User Profile' Endpoint [pending]
+### Dependencies: 14.4
+### Description: Develop a protected API endpoint (e.g., `GET /api/users/me`) that returns the profile information of the currently authenticated user.
+### Details:
+This endpoint must be protected by the JWT middleware from the previous task. It will use the user information attached to the request by the middleware to fetch and return the user's data (e.g., ID, username, email) from the database. Ensure sensitive information like the hashed password is not returned.
+
+## 6. Implement Token-based Logout Functionality [pending]
+### Dependencies: 14.4
+### Description: Implement a mechanism for users to log out, effectively invalidating their current access token by adding it to a blocklist.
+### Details:
+Create a `POST /api/auth/logout` endpoint. This endpoint will add the JWT's unique identifier (JTI claim) to a cache-based blocklist (e.g., Redis) with an expiration equal to the token's remaining validity. Update the JWT Authentication Middleware to check this blocklist before validating the token.
+

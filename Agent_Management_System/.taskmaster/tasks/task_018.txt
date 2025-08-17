@@ -1,0 +1,49 @@
+# Task ID: 18
+# Title: Production Deployment & Monitoring
+# Status: pending
+# Dependencies: 16
+# Priority: medium
+# Description: Production infrastructure setup with monitoring, logging, and scaling capabilities
+# Details:
+Set up production infrastructure on AWS/GCP with auto-scaling. Implement comprehensive logging and monitoring with Prometheus/Grafana. Configure backup and disaster recovery procedures. Set up performance monitoring and alerting.
+
+# Test Strategy:
+Test auto-scaling under load. Verify monitoring and alerting systems. Test backup and recovery procedures with production-like data.
+
+# Subtasks:
+## 1. Design and Create User Database Table [pending]
+### Dependencies: None
+### Description: Define the schema for the 'users' table and create the corresponding database migration file. The table should store essential user information for authentication.
+### Details:
+The table should include columns for 'id' (primary key, auto-increment), 'email' (string, unique, indexed), 'password_hash' (string), 'created_at' (timestamp), and 'updated_at' (timestamp). Use the project's ORM or migration tool to generate and apply the schema.
+
+## 2. Implement JWT Generation and Validation Service [pending]
+### Dependencies: None
+### Description: Create a reusable service or utility module for handling JSON Web Tokens (JWT). This includes functions for generating new tokens upon login and middleware for validating tokens on protected routes.
+### Details:
+The generation function should accept a user payload (e.g., user ID) and sign it using a secret key from environment variables. The validation function should verify the token's signature and expiration. The secret key must not be hardcoded.
+
+## 3. Implement User Registration API Endpoint [pending]
+### Dependencies: 18.1
+### Description: Create a public API endpoint (e.g., POST /api/auth/register) to handle new user sign-ups. This endpoint will validate input, hash the password, and create a new user record.
+### Details:
+The endpoint should accept 'email' and 'password'. Implement input validation for email format and password strength (e.g., min 8 characters). Use a strong hashing algorithm like bcrypt to hash the password before storing it. On success, return a 201 Created status.
+
+## 4. Implement User Login API Endpoint [pending]
+### Dependencies: 18.1, 18.2
+### Description: Create a public API endpoint (e.g., POST /api/auth/login) to authenticate existing users. It will validate credentials and issue a JWT access token upon success.
+### Details:
+The endpoint should accept 'email' and 'password'. Fetch the user by email. Use bcrypt's compare function to verify the password against the stored hash. If credentials are valid, generate a JWT using the service from task 2 and return it in the response body.
+
+## 5. Create Authentication Middleware for Protected Routes [pending]
+### Dependencies: 18.2
+### Description: Develop middleware to secure API routes that require an authenticated user. The middleware will inspect incoming requests for a valid JWT and reject unauthorized requests.
+### Details:
+The middleware should extract the JWT from the 'Authorization: Bearer <token>' header. Use the JWT validation service (from task 2) to verify the token. If valid, attach the decoded user payload to the request object (e.g., req.user) and pass control to the next handler. If invalid or missing, respond with a 401 Unauthorized error.
+
+## 6. Develop Frontend Registration and Login UI [pending]
+### Dependencies: 18.3, 18.4
+### Description: Build the user interface components for the registration and login pages. These forms will capture user input and communicate with the backend API endpoints.
+### Details:
+Create two separate forms/pages for registration and login. Implement client-side validation for immediate user feedback. On form submission, make API calls to the respective endpoints. Handle success by storing the JWT and redirecting the user. Handle errors by displaying appropriate messages to the user.
+

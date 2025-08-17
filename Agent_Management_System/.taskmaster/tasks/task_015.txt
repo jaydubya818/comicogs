@@ -1,0 +1,43 @@
+# Task ID: 15
+# Title: RBAC & Security Framework
+# Status: pending
+# Dependencies: 3
+# Priority: medium
+# Description: Role-based access control system with JWT authentication and authorization
+# Details:
+Implement JWT-based authentication system. Create role definitions (Viewer, Operator, Agent Owner, Admin) with corresponding permissions. Add middleware for endpoint authorization. Implement emergency stop functionality with proper access controls.
+
+# Test Strategy:
+Test authentication flows and token validation. Verify role-based access restrictions. Test emergency stop functionality and access logging.
+
+# Subtasks:
+## 1. Design and Implement User Authentication Database Schema [pending]
+### Dependencies: None
+### Description: Create the necessary database tables to support user authentication, including users, roles, and password reset tokens.
+### Details:
+Define a 'users' table with columns for id, email (unique), hashed_password, created_at, and updated_at. Define a 'password_resets' table with columns for email, token, and created_at. Use a migration tool (e.g., Flyway, Alembic, Knex) to create and apply the schema.
+
+## 2. Implement User Registration API Endpoint [pending]
+### Dependencies: 15.1
+### Description: Create a public API endpoint for new users to register for an account.
+### Details:
+Create a POST /api/auth/register endpoint. It should accept email and password. Validate the input: ensure email is a valid format and not already in use. Hash the password using a strong algorithm like bcrypt. Store the new user in the 'users' table. Return a success message or the newly created user object (without the password).
+
+## 3. Implement User Login API Endpoint [pending]
+### Dependencies: 15.1
+### Description: Create a public API endpoint for existing users to log in and receive an authentication token.
+### Details:
+Create a POST /api/auth/login endpoint. It should accept email and password. Find the user by email. If the user exists, compare the provided password with the stored hash using bcrypt's compare function. If they match, generate a JSON Web Token (JWT) containing the user ID and an expiration date. Return the JWT to the client.
+
+## 4. Create Authentication Middleware for Protected Routes [pending]
+### Dependencies: 15.3
+### Description: Develop middleware to verify the authentication token on incoming requests to secure specific API endpoints.
+### Details:
+The middleware should extract the JWT from the 'Authorization' header (e.g., 'Bearer <token>'). It will then verify the token's signature and expiration. If valid, it should decode the payload, identify the user, and attach the user object to the request for downstream handlers. If invalid, it should return a 401 Unauthorized error.
+
+## 5. Implement Password Reset Flow [pending]
+### Dependencies: 15.1
+### Description: Create the endpoints and logic for a user to reset their forgotten password via email.
+### Details:
+1. Create POST /api/auth/forgot-password: takes an email, generates a unique, short-lived token, stores it in the 'password_resets' table, and triggers an email with a reset link. 2. Create POST /api/auth/reset-password: takes the token and a new password. It validates the token, finds the associated user, updates their hashed password, and invalidates the token.
+

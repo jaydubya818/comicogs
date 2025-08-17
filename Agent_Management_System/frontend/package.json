@@ -1,0 +1,52 @@
+{
+  "name": "@ams/frontend",
+  "version": "1.0.0",
+  "description": "AMS Frontend - React TypeScript application for agent management",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --fix"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.18.0",
+    "axios": "^1.6.0",
+    "zustand": "^4.4.0",
+    "@tanstack/react-query": "^5.8.0",
+    "framer-motion": "^10.16.0",
+    "tailwindcss": "^3.3.0",
+    "lucide-react": "^0.294.0",
+    "recharts": "^2.8.0",
+    "date-fns": "^2.30.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitejs/plugin-react": "^4.1.0",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.53.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.0",
+    "postcss": "^8.4.0",
+    "typescript": "^5.2.0",
+    "vite": "^4.5.0",
+    "vitest": "^0.34.0"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "vite",
+    "agent-management",
+    "observability"
+  ],
+  "author": "AMS Team",
+  "license": "MIT"
+}

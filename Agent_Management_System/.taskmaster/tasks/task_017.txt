@@ -1,0 +1,49 @@
+# Task ID: 17
+# Title: External Integrations
+# Status: pending
+# Dependencies: 15
+# Priority: low
+# Description: OAuth-based integrations with Jira, GitHub, Slack, and other enterprise tools
+# Details:
+Implement OAuth2 flows for Jira, GitHub, and Slack integrations. Create integration management UI for configuring connections. Add webhook handling for external system events. Implement data synchronization and conflict resolution.
+
+# Test Strategy:
+Test OAuth flows with real external systems. Verify webhook handling and data synchronization. Test error handling for integration failures.
+
+# Subtasks:
+## 1. Design and Implement User Database Schema [pending]
+### Dependencies: None
+### Description: Create the necessary database table(s) to store user information, including credentials and profile data.
+### Details:
+Create a 'users' table with columns: id (primary key, auto-increment), email (unique, not null), password_hash (string, not null), created_at (timestamp), and updated_at (timestamp). Use a database migration tool to manage schema changes.
+
+## 2. Implement Secure Password Hashing Service [pending]
+### Dependencies: None
+### Description: Create a reusable service for hashing and verifying passwords using a strong, salted hashing algorithm like bcrypt.
+### Details:
+The service should expose two functions: `hashPassword(plainTextPassword)` which returns a promise resolving to the hash, and `comparePassword(plainTextPassword, hash)` which returns a promise resolving to a boolean. Use a configurable salt round value stored in environment variables.
+
+## 3. Implement JWT Generation and Validation Service [pending]
+### Dependencies: None
+### Description: Create a service to handle the creation and verification of JSON Web Tokens (JWTs) for stateless session management.
+### Details:
+Implement a `generateToken(payload)` function that creates a signed JWT with a configurable expiration. Implement a `verifyToken(token)` function that validates the token's signature and expiration. The JWT secret key must be loaded from environment variables.
+
+## 4. Develop User Registration API Endpoint [pending]
+### Dependencies: 17.1, 17.2
+### Description: Create a public API endpoint (e.g., POST /api/auth/register) to allow new users to create an account.
+### Details:
+The endpoint should accept email and password. It must validate the input, check if the email is already in use, hash the password using the Password Hashing Service, and store the new user record in the database. Return a success message or user object without the password hash.
+
+## 5. Develop User Login API Endpoint [pending]
+### Dependencies: 17.1, 17.2, 17.3
+### Description: Create a public API endpoint (e.g., POST /api/auth/login) to authenticate users and issue a JWT.
+### Details:
+The endpoint accepts email and password. It will find the user by email, use the Password Hashing Service to compare the provided password with the stored hash. If credentials are valid, use the JWT Service to generate a token and return it to the client.
+
+## 6. Create Authentication Middleware for Protected Routes [pending]
+### Dependencies: 17.3
+### Description: Implement middleware to secure API routes, requiring a valid JWT for access.
+### Details:
+The middleware should extract the JWT from the 'Authorization: Bearer <token>' header. Use the JWT Service to verify the token. If valid, attach the decoded payload (e.g., user ID) to the request object and pass control to the next handler. If invalid, respond with a 401 Unauthorized error.
+

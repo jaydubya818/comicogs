@@ -1,0 +1,77 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment variables and secrets
+.env
+.env.local
+.env.production
+.env.staging
+**/.env*
+
+# IDE and editor files
+.vscode/
+.cursor/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Docker
+.docker/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# MCP configuration with secrets
+**/mcp.json
+**/.cursor/mcp.json
+**/cursor/mcp.json
+
+# Taskmaster local state
+.taskmaster/state.json
+
+# Temporary files
+tmp/
+temp/
+
+# Build outputs
+dist/
+build/
+*.tgz
+*.tar.gz
+
+# Test results
+test-results/
+playwright-report/
+
+# Cache
+.cache/
+.npm/
+.yarn/
+
+# Miscellaneous
+*.bak
+*.backup
+*.old

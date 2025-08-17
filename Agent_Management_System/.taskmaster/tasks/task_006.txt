@@ -1,0 +1,43 @@
+# Task ID: 6
+# Title: Distributed Trace Explorer
+# Status: pending
+# Dependencies: 5
+# Priority: high
+# Description: Core observability feature for visualizing agent execution paths with step-by-step details
+# Details:
+Implement ExecutionLogViewer component displaying TaskStep records in chronological order. Create TraceStep component showing individual step details (type, status, latency, cost). Add filtering and search capabilities. Implement live-updating mechanism for active tasks.
+
+# Test Strategy:
+Test trace visualization with complex execution paths. Verify filtering and search functionality. Test live updates and handling of large trace datasets.
+
+# Subtasks:
+## 1. Design and Implement User Authentication Database Schema [pending]
+### Dependencies: None
+### Description: Create the necessary database tables to store user credentials and profile information securely.
+### Details:
+Create a 'users' table with columns for id (primary key), username (unique), email (unique), hashed_password, created_at, and updated_at. Use a migration script to apply the schema changes.
+
+## 2. Develop User Registration API Endpoint [pending]
+### Dependencies: 6.1
+### Description: Create a public API endpoint (e.g., POST /api/register) that allows new users to create an account.
+### Details:
+The endpoint should accept username, email, and password. It must validate the input (e.g., password strength, valid email format), hash the password using a strong algorithm like bcrypt, and store the new user record in the database. Return a success message or user object upon successful registration.
+
+## 3. Develop User Login API Endpoint [pending]
+### Dependencies: 6.1
+### Description: Create a public API endpoint (e.g., POST /api/login) to authenticate users and issue an access token.
+### Details:
+The endpoint should accept a username/email and a password. It will find the user in the database, compare the provided password with the stored hash, and if they match, generate a JSON Web Token (JWT) containing the user's ID. The JWT should be returned to the client.
+
+## 4. Implement Authentication Middleware for Protected Routes [pending]
+### Dependencies: 6.3
+### Description: Create a middleware function that verifies the JWT on incoming requests to secure specific API endpoints.
+### Details:
+The middleware should extract the JWT from the 'Authorization' header. It must then verify the token's signature and expiration. If valid, it should decode the payload, identify the user, and attach the user object to the request. If invalid, it should return a 401 Unauthorized error.
+
+## 5. Create a Protected 'Get User Profile' Endpoint [pending]
+### Dependencies: 6.2, 6.4
+### Description: Develop a new API endpoint (e.g., GET /api/me) that is protected by the authentication middleware and returns the current user's data.
+### Details:
+This endpoint will be placed behind the authentication middleware. The handler will access the user object attached to the request by the middleware and return it as a JSON response, excluding sensitive information like the hashed password.
+

@@ -1,0 +1,43 @@
+# Task ID: 2
+# Title: Backend Core Infrastructure
+# Status: pending
+# Dependencies: 1
+# Priority: high
+# Description: Implement core backend infrastructure with FastAPI, database models, and foundational API endpoints
+# Details:
+Create SQLAlchemy models for Agent, Task, TaskStep, and AuditLog. Implement Pydantic schemas for API validation. Set up database migrations and connection handling. Create basic FastAPI app structure with health check endpoints.
+
+# Test Strategy:
+Unit tests for all models and schemas. Integration tests for database connections. API endpoint tests with various input validation scenarios.
+
+# Subtasks:
+## 1. Design and Implement User Database Schema [pending]
+### Dependencies: None
+### Description: Create the database schema for storing user information, including credentials and profile data. Set up the database and necessary tables.
+### Details:
+Use PostgreSQL. The 'users' table should include 'id' (PK), 'username' (unique), 'email' (unique), 'password_hash' (string), 'created_at', and 'updated_at'. Use a migration tool like Alembic to manage schema changes.
+
+## 2. Implement User Registration Endpoint [pending]
+### Dependencies: 2.1
+### Description: Create a public API endpoint (e.g., POST /api/users/register) to allow new users to sign up by providing a username, email, and password.
+### Details:
+Endpoint must validate input (e.g., valid email format, password strength). Hash the password using bcrypt before storing it. Return a success message or appropriate error (e.g., 409 Conflict if username/email exists).
+
+## 3. Implement User Login Endpoint and JWT Generation [pending]
+### Dependencies: 2.1
+### Description: Create an API endpoint (e.g., POST /api/auth/login) for users to authenticate and receive a JSON Web Token (JWT).
+### Details:
+Endpoint accepts username/email and password. Verify credentials against the database. On success, generate a signed JWT containing the user ID and an expiration claim. Return the JWT to the client.
+
+## 4. Create Authentication Middleware for Protected Routes [pending]
+### Dependencies: 2.3
+### Description: Implement middleware to verify the JWT on incoming requests to protected endpoints, ensuring only authenticated users can access them.
+### Details:
+The middleware should extract the JWT from the 'Authorization: Bearer <token>' header. It must validate the token's signature and expiration. If valid, attach user info to the request object. If invalid, return a 401 Unauthorized error.
+
+## 5. Implement Protected 'Get User Profile' Endpoint [pending]
+### Dependencies: 2.1, 2.4
+### Description: Create a protected endpoint (e.g., GET /api/users/me) that returns the authenticated user's profile information.
+### Details:
+Apply the authentication middleware to this route. Use the user ID from the request object (added by the middleware) to fetch the user's data from the database. Ensure the response excludes sensitive data like the password hash.
+

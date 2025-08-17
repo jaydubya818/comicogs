@@ -1,0 +1,49 @@
+# Task ID: 9
+# Title: Fleet Command Dashboard
+# Status: pending
+# Dependencies: 8
+# Priority: medium
+# Description: High-level overview dashboard showing health and status of entire agent fleet
+# Details:
+Build FleetCommand page with agent heatmap showing KPI performance. Implement 'Attention Required' widget highlighting critical issues. Add fleet-wide statistics and sparkline charts for 7-day trends. Create AI briefing system for daily/weekly summaries.
+
+# Test Strategy:
+Test heatmap rendering with large numbers of agents. Verify alert prioritization logic. Test briefing generation and display formatting.
+
+# Subtasks:
+## 1. Design and Implement User Database Schema [pending]
+### Dependencies: None
+### Description: Create the necessary database tables and columns to store user credentials and profile information securely.
+### Details:
+Create a 'users' table with columns: id (primary key), email (unique, indexed), password_hash (string), created_at (timestamp), updated_at (timestamp). Use a migration tool (e.g., Flyway, Alembic, Knex.js migrations) to version the schema.
+
+## 2. Develop User Registration API Endpoint [pending]
+### Dependencies: 9.1
+### Description: Implement the backend API endpoint (e.g., POST /api/auth/register) to allow new users to create an account.
+### Details:
+The endpoint should accept user data (email, password). It must validate the input (e.g., valid email format, strong password policy). Hash the password using a strong algorithm like bcrypt before storing it in the database. Return a success message or the created user object (without the password hash).
+
+## 3. Implement JWT Generation and Verification Service [pending]
+### Dependencies: None
+### Description: Create a reusable service or utility for generating and verifying JSON Web Tokens (JWTs) for authenticated sessions.
+### Details:
+Use a standard JWT library (e.g., jsonwebtoken for Node.js, PyJWT for Python). The service should have two main functions: one to generate a token (taking a user ID/payload and an expiration time) and one to verify a token (returning the decoded payload or an error). Store the JWT secret key securely in environment variables.
+
+## 4. Develop User Login API Endpoint [pending]
+### Dependencies: 9.1, 9.3
+### Description: Implement the backend API endpoint (e.g., POST /api/auth/login) for users to authenticate.
+### Details:
+The endpoint should accept user credentials (email, password). It will find the user by email in the database, compare the provided password with the stored hash using bcrypt's compare function. If credentials are valid, generate a JWT using the service from subtask 3 and return it to the client.
+
+## 5. Create Authentication Middleware for Protected Routes [pending]
+### Dependencies: 9.3
+### Description: Implement middleware that intercepts requests to protected API routes and validates the user's JWT.
+### Details:
+The middleware should extract the JWT from the request header (e.g., 'Authorization: Bearer <token>'). Use the JWT service to verify the token. If valid, attach the user's information (e.g., user ID from the token payload) to the request object and pass control to the next handler. If invalid, return a 401 Unauthorized error.
+
+## 6. Build and Integrate Frontend Authentication Forms [pending]
+### Dependencies: 9.2, 9.4
+### Description: Create the UI components for Login and Registration pages and connect them to the backend API endpoints.
+### Details:
+Develop UI components for the registration and login forms. Implement form state management and validation. On form submission, make API calls to the /register and /login endpoints. Upon successful login, store the received JWT securely in the client (e.g., HttpOnly cookie) and redirect the user.
+

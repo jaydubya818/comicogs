@@ -1,0 +1,37 @@
+# Task ID: 3
+# Title: Agent Registration & Management API
+# Status: pending
+# Dependencies: 2
+# Priority: high
+# Description: Core API endpoints for agent registration, task creation, and basic CRUD operations
+# Details:
+Implement POST /v1/agents for agent registration, POST /v1/tasks for task creation, GET /v1/tasks/{task_id} for task details, GET /v1/agents for agent listing, and PATCH /v1/agents/{agent_id}/control for agent control (pause/resume).
+
+# Test Strategy:
+Comprehensive API tests covering success cases, error conditions, and input validation. Test agent state transitions and task lifecycle management.
+
+# Subtasks:
+## 1. Design and Implement User Database Schema [pending]
+### Dependencies: None
+### Description: Create the database schema and migrations for the 'users' table to store user credentials and profile information.
+### Details:
+The 'users' table should include fields for 'id' (primary key), 'email' (unique), 'hashed_password', 'full_name', 'created_at', and 'updated_at'. Use a migration tool to create and version the schema.
+
+## 2. Develop Authentication API Endpoints [pending]
+### Dependencies: 3.1
+### Description: Build the backend API endpoints for user registration, login, and retrieving the current user's profile.
+### Details:
+Create three endpoints: POST /api/register, POST /api/login, and GET /api/me. The registration endpoint should hash the password using bcrypt. The login endpoint should verify credentials and return a JWT. The /api/me endpoint should be protected and return the authenticated user's data.
+
+## 3. Build Frontend Registration and Login UI [pending]
+### Dependencies: None
+### Description: Create the user interface components for the registration and login forms using a frontend framework.
+### Details:
+Develop two separate pages/components: a registration form with fields for name, email, and password, and a login form with email and password. Implement client-side validation for required fields and email format.
+
+## 4. Integrate Frontend with Auth API and Secure Routes [pending]
+### Dependencies: 3.2, 3.3
+### Description: Connect the frontend forms to the backend API and implement client-side route protection.
+### Details:
+Wire the login/registration forms to call the respective API endpoints. Upon successful login, store the received JWT securely (e.g., in an HttpOnly cookie or local storage). Implement a routing guard that checks for a valid JWT before allowing access to protected dashboard pages, redirecting to login if no token is present.
+
