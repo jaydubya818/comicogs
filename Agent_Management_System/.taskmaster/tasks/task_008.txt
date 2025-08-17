@@ -1,0 +1,43 @@
+# Task ID: 8
+# Title: KPI Dashboard & Analytics
+# Status: pending
+# Dependencies: 7, 5
+# Priority: medium
+# Description: Frontend dashboard displaying agent performance metrics with time-series visualizations
+# Details:
+Create GET /v1/agents/{agent_id}/metrics API endpoint. Build Agent Productivity Dashboard with MetricCard components for key KPIs. Implement time-series charts using Chart.js for trend visualization. Add date range selection and metric comparison capabilities.
+
+# Test Strategy:
+Test metric displays with various data ranges. Verify chart rendering and interactivity. Test performance with large datasets and responsive design.
+
+# Subtasks:
+## 1. Design and Implement User Database Schema [pending]
+### Dependencies: None
+### Description: Create the necessary database tables to store user information, including credentials, profile data, and timestamps.
+### Details:
+Define a 'users' table with columns: id (UUID, primary key), email (varchar, unique), hashed_password (varchar), created_at (timestamp), and updated_at (timestamp). Use a database migration tool (e.g., Flyway, Alembic) to create and version the schema.
+
+## 2. Develop User Registration API Endpoint [pending]
+### Dependencies: 8.1
+### Description: Create a public API endpoint (e.g., POST /api/auth/register) that allows new users to create an account.
+### Details:
+The endpoint must validate incoming data (e.g., valid email format, password complexity). It should hash the user's password using a strong algorithm like bcrypt before storing the new user record in the database. Prevent duplicate email registration.
+
+## 3. Develop User Login Endpoint and JWT Issuance [pending]
+### Dependencies: 8.1
+### Description: Create an API endpoint (e.g., POST /api/auth/login) to authenticate users and issue a JSON Web Token (JWT) on success.
+### Details:
+The endpoint will receive an email and password. It must find the user by email, compare the provided password against the stored hash, and if they match, generate a signed JWT. The JWT payload should include the user ID and an expiration time. The JWT secret key must be stored securely as an environment variable.
+
+## 4. Implement Authentication Middleware for Protected Routes [pending]
+### Dependencies: 8.3
+### Description: Create a middleware function to verify the JWT on incoming requests to secure specific API endpoints.
+### Details:
+The middleware should extract the JWT from the 'Authorization: Bearer <token>' header. It must verify the token's signature and check its expiration. If valid, decode the payload and attach the user's ID to the request object for use by route handlers. If invalid, it should respond with a 401 Unauthorized error.
+
+## 5. Create Protected 'Get Current User' Endpoint [pending]
+### Dependencies: 8.4
+### Description: Develop a protected API endpoint (e.g., GET /api/users/me) that returns the profile information of the currently authenticated user.
+### Details:
+This endpoint must be protected by the authentication middleware from the previous task. It will use the user ID from the request object (added by the middleware) to query the database for the user's details. Ensure sensitive data like the hashed password is not included in the response.
+

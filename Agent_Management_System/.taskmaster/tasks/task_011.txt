@@ -1,0 +1,43 @@
+# Task ID: 11
+# Title: Governance Policy Engine
+# Status: pending
+# Dependencies: 3
+# Priority: medium
+# Description: Policy system for controlling agent actions and spending with configurable rules
+# Details:
+Create Governance Policy models for spend caps and action allow/deny lists. Implement policy evaluation engine that checks every agent action. Add policy inheritance and override capabilities. Create audit trail for all policy decisions.
+
+# Test Strategy:
+Test policy enforcement with various rule combinations. Verify proper blocking of unauthorized actions. Test audit trail completeness and accuracy.
+
+# Subtasks:
+## 1. Design and Implement User Database Schema [pending]
+### Dependencies: None
+### Description: Create the necessary database tables to store user credentials and profile information. This includes fields for a unique identifier, email, a hashed password, and timestamps.
+### Details:
+Use a migration tool to create a 'users' table. The table should include columns: `id` (primary key, UUID), `email` (unique, indexed), `password_hash` (string), `created_at` (timestamp), and `updated_at` (timestamp). Ensure the password field is long enough for a strong hash (e.g., bcrypt).
+
+## 2. Develop User Registration API Endpoint [pending]
+### Dependencies: 11.1
+### Description: Create a public API endpoint (e.g., POST /api/auth/register) that allows new users to create an account.
+### Details:
+The endpoint should accept user data (email, password) in the request body. It must validate the input (e.g., valid email format, password complexity). Before saving, hash the password using a strong, salted algorithm like bcrypt. Return a success message and a 201 Created status code.
+
+## 3. Implement JWT Generation and Validation Service [pending]
+### Dependencies: None
+### Description: Create a reusable service or utility to generate and validate JSON Web Tokens (JWTs) for authenticated users.
+### Details:
+Use a standard JWT library. The token generation function should accept a user ID and create a signed token with a reasonable expiration time (e.g., 15 minutes for an access token). The validation function should verify the signature and expiration. The JWT secret key must be stored securely in environment variables, not in code.
+
+## 4. Develop User Login API Endpoint [pending]
+### Dependencies: 11.1, 11.3
+### Description: Create a public API endpoint (e.g., POST /api/auth/login) for users to sign in and receive an authentication token.
+### Details:
+The endpoint should accept user credentials (email, password). It will find the user by email in the database and then securely compare the provided password with the stored hash. If credentials are valid, use the JWT service to generate an access token and return it in the response body.
+
+## 5. Create Authentication Middleware for Protected Routes [pending]
+### Dependencies: 11.3
+### Description: Implement middleware that can be applied to API routes to ensure that only authenticated users can access them.
+### Details:
+The middleware should extract the JWT from the 'Authorization: Bearer <token>' header. It will use the JWT service to validate the token. If valid, it should attach the user's identity (e.g., user ID from the token payload) to the request object for use in downstream handlers. If the token is missing, invalid, or expired, it must return a 401 Unauthorized error response.
+

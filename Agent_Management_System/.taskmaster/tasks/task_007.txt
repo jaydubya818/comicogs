@@ -1,0 +1,43 @@
+# Task ID: 7
+# Title: Metrics Aggregation System
+# Status: pending
+# Dependencies: 3
+# Priority: medium
+# Description: Backend service for calculating and storing KPI metrics (TSR, HIR, latency, cost)
+# Details:
+Create Celery-based async service for periodic metrics calculation. Implement DailyMetric model for storing aggregated data. Calculate Task Success Rate (TSR), Human Intervention Rate (HIR), P95 Latency, and Cost-per-Task. Set up scheduled jobs for daily aggregation.
+
+# Test Strategy:
+Unit tests for metrics calculation algorithms. Integration tests for Celery task execution. Verify metric accuracy with known datasets.
+
+# Subtasks:
+## 1. Design and Implement User Database Schema [pending]
+### Dependencies: None
+### Description: Create the necessary database tables to store user information, including credentials, profile data, and session tokens.
+### Details:
+The schema must include a `users` table with columns for `id`, `email`, `password_hash`, `created_at`, and `updated_at`. Use a database migration tool like Alembic or Flyway to version control the schema. Ensure email column has a unique constraint.
+
+## 2. Develop User Registration API Endpoint [pending]
+### Dependencies: 7.1
+### Description: Create a public API endpoint (e.g., `POST /api/v1/register`) that allows new users to create an account.
+### Details:
+The endpoint must accept `email` and `password`. It should validate the input, ensuring the email is a valid format and the password meets complexity requirements (e.g., min 8 characters). Hash the password using bcrypt before storing it. Return a 201 status on success and appropriate 4xx errors for invalid input or duplicate email.
+
+## 3. Implement User Login and JWT Generation [pending]
+### Dependencies: 7.1, 7.2
+### Description: Create an API endpoint (e.g., `POST /api/v1/login`) for users to authenticate and receive a JSON Web Token (JWT).
+### Details:
+The endpoint will accept `email` and `password`. It will find the user by email and verify the provided password against the stored hash using bcrypt's compare function. Upon success, generate a signed JWT containing the `user_id` and an expiration claim (e.g., 1 hour). Return the JWT in the response body.
+
+## 4. Create Authentication Middleware for Protected Routes [pending]
+### Dependencies: 7.3
+### Description: Implement middleware to protect specific API routes, ensuring they can only be accessed by users with a valid JWT.
+### Details:
+The middleware must extract the JWT from the `Authorization: Bearer <token>` header. It needs to verify the token's signature and check that it has not expired. If valid, decode the payload and attach the user's ID or the full user object to the request context for use in downstream handlers. If invalid, it must abort the request and return a 401 Unauthorized error.
+
+## 5. Implement 'Get User Profile' Protected Endpoint [pending]
+### Dependencies: 7.1, 7.4
+### Description: Create a protected endpoint (e.g., `GET /api/v1/profile`) that returns the authenticated user's information.
+### Details:
+This endpoint will be protected by the authentication middleware created in task 4. It should use the user ID from the request context (added by the middleware) to fetch the user's data (e.g., ID, email, creation date) from the database. The endpoint should not return sensitive information like the password hash.
+

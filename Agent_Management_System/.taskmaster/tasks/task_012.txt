@@ -1,0 +1,43 @@
+# Task ID: 12
+# Title: Governance Management UI
+# Status: pending
+# Dependencies: 11, 5
+# Priority: medium
+# Description: User interface for creating, editing, and managing governance policies
+# Details:
+Build Governance page with policy listing and management. Create PolicyEditorRow component for rule configuration. Implement policy testing and validation tools. Add policy impact analysis showing affected agents.
+
+# Test Strategy:
+Test policy creation and editing workflows. Verify validation of policy rules. Test impact analysis accuracy and performance.
+
+# Subtasks:
+## 1. Design and Implement User Database Schema [pending]
+### Dependencies: None
+### Description: Create the necessary database tables to store user information, including credentials and profile data.
+### Details:
+Define and create a `users` table with columns for `id`, `email`, `username`, `password_hash`, `created_at`, and `updated_at`. Use a database migration tool (e.g., Alembic, Flyway) to manage schema changes. Ensure email and username fields have unique constraints.
+
+## 2. Develop User Registration API Endpoint [pending]
+### Dependencies: 12.1
+### Description: Create a public API endpoint (e.g., `POST /api/auth/register`) that allows new users to create an account.
+### Details:
+The endpoint should accept `email`, `username`, and `password`. It must validate input: check for existing email/username and enforce password complexity rules. Use a strong hashing algorithm like bcrypt to hash the password before storing it in the database. Return a success message or user object (without the password hash).
+
+## 3. Develop User Login API Endpoint [pending]
+### Dependencies: 12.1, 12.2
+### Description: Create an API endpoint (e.g., `POST /api/auth/login`) for users to authenticate and receive an access token.
+### Details:
+The endpoint should accept `email` and `password`. It will find the user by email, then compare the provided password with the stored hash. If credentials are valid, generate a signed JSON Web Token (JWT) containing the user ID and an expiration date. Return the JWT to the client.
+
+## 4. Implement Authentication Middleware for Protected Routes [pending]
+### Dependencies: 12.3
+### Description: Create middleware to verify the JWT on incoming requests to secure specific API endpoints, making them accessible only to authenticated users.
+### Details:
+The middleware should extract the JWT from the `Authorization` header. It must validate the token's signature and check its expiration. If valid, decode the token and attach the user's identity (e.g., user ID) to the request context. If invalid, it must return a 401 Unauthorized error.
+
+## 5. Develop User Logout Endpoint and Token Invalidation [pending]
+### Dependencies: 12.4
+### Description: Create an API endpoint (e.g., `POST /api/auth/logout`) to invalidate the user's current session token.
+### Details:
+This endpoint must be protected by the authentication middleware. To invalidate the JWT, implement a token denylist strategy using a fast-access cache like Redis. On logout, add the token's unique identifier (JTI) to the denylist with a TTL matching the token's remaining validity. The auth middleware must be updated to check this denylist.
+

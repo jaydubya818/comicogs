@@ -1,0 +1,43 @@
+# Task ID: 5
+# Title: Agent Management Interface
+# Status: pending
+# Dependencies: 3, 4
+# Priority: high
+# Description: Frontend pages for viewing and managing registered agents with real-time status updates
+# Details:
+Build AgentManagementPage showing list of all agents with status indicators. Create AgentDetailPage with comprehensive agent information. Implement ControlPanel component with pause/resume functionality. Add real-time status updates using polling or WebSocket connections.
+
+# Test Strategy:
+Test agent list rendering with mock data. Verify control actions trigger correct API calls. Test real-time updates and error handling for network issues.
+
+# Subtasks:
+## 1. Design and Implement User Database Schema [pending]
+### Dependencies: None
+### Description: Create the necessary database tables to store user account information, including credentials and profile data.
+### Details:
+Create a 'users' table with columns: id (primary key, auto-increment), email (varchar, unique), password_hash (varchar), created_at (timestamp), and updated_at (timestamp). Use a database migration tool to version control and apply the schema changes.
+
+## 2. Develop User Registration API Endpoint [pending]
+### Dependencies: 5.1
+### Description: Create a backend API endpoint (e.g., POST /api/auth/register) to handle new user sign-ups.
+### Details:
+The endpoint should accept an email and password. It must validate the input (e.g., valid email format, password meets complexity requirements), hash the password using bcrypt, and store the new user record in the 'users' table. Return a 201 Created status on success.
+
+## 3. Develop User Login API Endpoint [pending]
+### Dependencies: 5.1
+### Description: Create a backend API endpoint (e.g., POST /api/auth/login) to authenticate users and issue a JSON Web Token (JWT).
+### Details:
+The endpoint should accept an email and password. It will find the user by email, compare the provided password with the stored hash using bcrypt's compare function. If credentials are valid, generate a signed JWT containing the user ID and an expiration claim. Return the JWT in the response body.
+
+## 4. Create Frontend Registration Page [pending]
+### Dependencies: 5.2
+### Description: Build the UI component for the registration page with a form to capture user email and password.
+### Details:
+Create a form with email and password input fields. Implement client-side validation for immediate user feedback. On form submission, make an asynchronous request to the registration API endpoint. Handle success by redirecting to the login page. Display clear error messages returned from the API.
+
+## 5. Create Frontend Login Page and Token Handling [pending]
+### Dependencies: 5.3
+### Description: Build the UI for the login page and implement logic to handle the authentication token.
+### Details:
+Create a login form that calls the login API endpoint. Upon successful login, securely store the received JWT (e.g., in an HttpOnly cookie or local storage). Update the application's global state to reflect the authenticated status. Redirect the user to a protected route, like a user dashboard.
+

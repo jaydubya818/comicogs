@@ -1,0 +1,37 @@
+# Task ID: 4
+# Title: Frontend Application Shell
+# Status: pending
+# Dependencies: 1
+# Priority: high
+# Description: React TypeScript frontend with routing, API service layer, and basic UI components
+# Details:
+Initialize React app with TypeScript and Vite. Set up Tailwind CSS for styling. Create routing structure with React Router. Implement typed API service layer using Axios. Create basic layout components with sidebar navigation.
+
+# Test Strategy:
+Component tests for UI elements. Integration tests for API service layer. End-to-end tests for basic navigation and page rendering.
+
+# Subtasks:
+## 1. Design and Set Up User Database Schema [pending]
+### Dependencies: None
+### Description: Create the necessary database tables and migrations to store user information, including credentials and profile data.
+### Details:
+Define a 'users' table with columns for id, email (unique), password_hash, first_name, last_name, created_at, and updated_at. Use a database migration tool like Alembic or Flyway to script the schema creation.
+
+## 2. Implement User Registration API Endpoint [pending]
+### Dependencies: 4.1
+### Description: Develop a public API endpoint (e.g., POST /api/v1/register) that allows new users to create an account.
+### Details:
+The endpoint should accept user details (email, password, name). It must validate input, check for existing emails, and securely hash the password using bcrypt before storing the new user record in the database.
+
+## 3. Implement User Login and JWT Generation [pending]
+### Dependencies: 4.1
+### Description: Create an API endpoint (e.g., POST /api/v1/login) for users to authenticate and receive a JSON Web Token (JWT).
+### Details:
+The endpoint will receive an email and password. It must find the user by email, compare the provided password with the stored hash using bcrypt. On success, generate a signed JWT containing the user ID, role, and an expiration claim. Return the token in the response.
+
+## 4. Develop Authentication Middleware for Protected Routes [pending]
+### Dependencies: 4.3
+### Description: Create middleware to secure specific API endpoints, requiring a valid JWT for access.
+### Details:
+The middleware should extract the JWT from the 'Authorization: Bearer <token>' header. It must verify the token's signature and check that it has not expired. If valid, decode the payload and attach the user's identity to the request context for use in protected handlers. If invalid, it must abort the request with a 401 Unauthorized response.
+

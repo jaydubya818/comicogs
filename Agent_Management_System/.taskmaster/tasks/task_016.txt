@@ -1,0 +1,49 @@
+# Task ID: 16
+# Title: Agent SDK & Developer Platform
+# Status: pending
+# Dependencies: 15
+# Priority: low
+# Description: Python SDK and documentation for integrating custom agents with AMS platform
+# Details:
+Create Python SDK for easy agent registration and integration. Implement OpenTelemetry instrumentation for automatic observability. Create comprehensive documentation and example implementations. Add SDK testing utilities and debugging tools.
+
+# Test Strategy:
+Test SDK with various agent implementations. Verify instrumentation accuracy and completeness. Test documentation examples and code samples.
+
+# Subtasks:
+## 1. Design and Implement User Database Schema [pending]
+### Dependencies: None
+### Description: Create the necessary database tables to store user information, including credentials, profile data, and timestamps.
+### Details:
+Define a 'users' table with columns for id, email, password_hash, created_at, and updated_at. Ensure email is unique. Use a database migration tool to version control the schema. The password_hash column must be large enough for modern hashing algorithms like Argon2 or bcrypt.
+
+## 2. Develop User Registration API Endpoint [pending]
+### Dependencies: 16.1
+### Description: Create a public API endpoint (e.g., POST /api/auth/register) that allows new users to create an account.
+### Details:
+The endpoint should accept an email and password. It must validate the input: check for a valid email format, enforce password complexity rules, and verify the email is not already in use. On success, hash the password securely before storing the new user record in the database.
+
+## 3. Implement User Login and JWT Issuance [pending]
+### Dependencies: 16.1
+### Description: Create an API endpoint (e.g., POST /api/auth/login) for users to authenticate and receive a JSON Web Token (JWT).
+### Details:
+The endpoint will receive an email and password. It must find the user by email and securely compare the provided password with the stored hash. If credentials are valid, generate a signed JWT containing the user ID and an expiration claim. Return the JWT to the client.
+
+## 4. Create Authentication Middleware for Protected Routes [pending]
+### Dependencies: 16.3
+### Description: Implement middleware to verify the JWT on incoming requests to secure specific API endpoints.
+### Details:
+The middleware should extract the JWT from the 'Authorization: Bearer <token>' header. It must validate the token's signature and check for expiration. If valid, decode the payload and attach the user's identity (e.g., user ID) to the request object for use by route handlers. If invalid, it must return a 401 Unauthorized response.
+
+## 5. Develop 'Get Current User' Protected Endpoint [pending]
+### Dependencies: 16.1, 16.4
+### Description: Create a protected endpoint (e.g., GET /api/users/me) that returns the profile information of the currently authenticated user.
+### Details:
+This endpoint must be protected by the authentication middleware created in the previous task. It will use the user ID from the request object (added by the middleware) to query the database for the user's profile. Ensure sensitive information like the password hash is not included in the response.
+
+## 6. Implement Secure Logout Functionality [pending]
+### Dependencies: 16.3
+### Description: Develop a mechanism for clients to invalidate a user's session or token.
+### Details:
+For a stateless JWT approach, implement a client-side solution where the client simply discards the token. For a stateful approach, implement a server-side token blocklist (e.g., in Redis). Create an endpoint (e.g., POST /api/auth/logout) that adds the current token's ID (jti claim) to the blocklist until it expires. The authentication middleware must be updated to check this blocklist.
+
