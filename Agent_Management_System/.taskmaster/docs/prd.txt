@@ -1,0 +1,135 @@
+# AMS (Agent Management System) - Product Requirements Document
+
+## Executive Summary
+AMS (Agent Management System) is a B2B SaaS platform designed to be the definitive command and control layer for the enterprise AI agent fleet. As companies move from experimenting with individual AI agents to deploying fleets of them, they are encountering a new and unsolved discipline: Agent Operations (AgentOps). This emerging field is fraught with chaos, characterized by a lack of observability, runaway costs, and severe governance and security risks.
+
+AMS provides a comprehensive suite of tools for the observability, governance, and optimization of these digital workforces. We transform agent operations from a high-risk, chaotic black box into a reliable, cost-effective, and scalable competitive advantage.
+
+## The Problem
+The promise of AI agents to revolutionize productivity is massive, but the reality of deploying them at scale is dangerously chaotic:
+
+1. **No Observability**: When an agent fails or produces a bad outcome, it's a black box. Engineers cannot trace the agent's reasoning, inspect the tools it used, or understand the root cause.
+
+2. **Runaway Financial Risk**: A single agent with a flawed prompt or a logic loop can burn thousands of dollars in LLM tokens and API calls in minutes. Without real-time monitoring, cost attribution, and budget guardrails, agent fleets represent an unacceptable financial liability.
+
+3. **Critical Governance & Safety Gaps**: Autonomous agents with write-access to internal systems (Jira, GitHub, production databases) are a massive security and compliance risk.
+
+4. **Inconsistent Performance & Quality**: It's impossible to measure the true performance and ROI of an agent fleet.
+
+## The Solution: AMS Platform
+AMS is the first platform built from the ground up to solve the AgentOps crisis. We provide a single, unified command center that delivers on three core value propositions:
+
+### Deep Observability
+We provide distributed tracing, structured logging, and real-time dashboards for every agent task, turning the "black box" into a transparent, debuggable system.
+
+### Robust Governance
+We offer a powerful policy engine that allows companies to set spend caps, action allow/deny lists, and an "Emergency Stop" switch to safely control their agent fleet.
+
+### Autonomous Optimization
+Our most powerful feature is a "Meta-Agent" layer—an AI that manages other AIs. It autonomously runs A/B tests to find the most cost-effective models, performs self-healing routines, and recommends the deprecation of inefficient agents.
+
+## Technical Architecture
+- **Orchestration**: LangGraph
+- **Backend**: FastAPI (Python)
+- **Async Tasks**: Celery with Redis
+- **Storage**: PostgreSQL (Operational Data), ClickHouse (Events/Logs)
+- **Observability**: OpenTelemetry, LangSmith
+- **Frontend**: React (TypeScript) with Tailwind CSS
+
+## Core Features
+
+### Epic 1: Core Observability & Command Center
+- **Fleet Command Dashboard**: Heatmap of all registered agents against their core KPIs (TSR, HIR, Cost, Latency)
+- **Agent Cockpit**: Real-time, filterable list of all agents with status and sparklines
+- **"Attention Required" Widget**: Intelligently surfaces the top 3 most critical issues
+- **AI Briefings**: Daily/Weekly plain-language summaries of fleet performance
+- **Distributed Trace Explorer**: Step-by-step visualizer of agent execution paths
+- **Sentient Co-Pilot**: Conversational AI for natural language queries about agent performance
+- **Real-time Alerting Engine**: Webhook-based alerts for SLO breaches
+
+### Epic 2: Agent Lifecycle & Versioning Management
+- **First-Class Agent Identity**: Unique ID and detailed profile pages
+- **Champion/Challenger (A/B) Testing**: Side-by-side KPI comparison with promotion capability
+- **Automated Canary Deployments & Rollbacks**: Automatic monitoring and rollback triggers
+- **Agent Lifecycle Manager (Meta-Agent)**: Background analysis and deprecation recommendations
+
+### Epic 3: Governance, Safety & Cost Control
+- **Governance Policy Editor**: UI for Action Allow/Deny Lists and Spend Caps
+- **Immutable Audit Trail**: Human-readable logging of all actions and controls
+- **RBAC**: Role-based access control (Viewer, Operator, Agent Owner, Admin)
+- **Emergency Stop Switch**: Fleet-wide pause capability
+- **"Why?" Panel & Explainability**: Reasoning behind AI-driven recommendations
+
+### Epic 4: FinOps & Performance Optimization (Meta-Agent)
+- **Model Performance FinOps**: Autonomous A/B testing for cost optimization
+- **Self-Healing Logic**: Automatic detection and recovery from transient errors
+
+### Epic 5: Developer Platform & Integrations
+- **Native Integrations**: OAuth-based connections for Jira, GitHub, Slack
+- **Agent SDK**: Python SDK for LangGraph agent registration
+- **Public REST API**: Secure, documented API for programmatic control
+
+## Development Roadmap
+
+### Phase 1: Sprint 0 - Foundation (1 Week)
+**Goal**: Establish stable, automated, and scalable foundation
+- Project scaffolding with monorepo structure
+- Backend dependencies (FastAPI, SQLAlchemy, Celery, Redis)
+- Frontend dependencies (React, TypeScript, Tailwind, Chart.js)
+- Infrastructure setup with Docker Compose
+
+### Phase 2: Sprints 1-2 - Observability & Control MVP
+**Goal**: Register an agent, see live activity in trace explorer, manually pause/resume
+- Backend data models (Agent, Task, TaskStep, AuditLog)
+- Core API endpoints (POST /v1/tasks, GET /v1/tasks/{id}, GET /v1/agents, PATCH control)
+- Frontend API service layer
+- Agent Management and Detail pages with Control Panel
+- Live-updating Execution Log Viewer
+
+### Phase 3: Sprints 3-4 - Insight & Alerting Layer
+**Goal**: KPI dashboards and alerting when things go wrong
+- Metrics aggregation service calculating TSR, HIR, P95 Latency, Cost-per-Task
+- Time-series metrics API
+- Agent Productivity Dashboard with MetricCard components
+- Fleet Command page with sparkline charts
+- Basic alerting service with Slack webhook integration
+
+### Phase 4: Sprints 5-6 - Optimization & Governance Engine
+**Goal**: Proactive AI features and enterprise-grade controls
+- Governance Policies with spend caps and action allow/deny lists
+- Champion/Challenger A/B testing backend logic
+- RBAC implementation with role-based permissions
+- Governance UI with PolicyEditorRow components
+- Champion/Challenger UI with side-by-side KPI comparison
+- First Meta-Agent capability: FinOps cost optimization recommendations
+
+## AMS Agent KPI Framework
+AMS measures agent performance on what matters:
+
+### Reliability & Quality
+- Task Success Rate (TSR)
+- Human-Intervention Rate (HIR)
+- Error Rate
+
+### Speed & Cost
+- P95 Latency
+- Throughput
+- Cost per Task
+- Token Efficiency
+
+## Logical Dependency Chain
+1. **Foundation Infrastructure** (Sprint 0) - Must be completed first
+2. **Core Observability Loop** (Sprints 1-2) - Basic agent registration and monitoring
+3. **Metrics & Insights** (Sprints 3-4) - Build upon observability to provide analytics
+4. **Advanced Features** (Sprints 5-6) - Governance and optimization require the full foundation
+
+## MVP Scope & Phased Rollout
+- **Sprint 1-2**: Core loop - register agent, see live activity, manual controls
+- **Sprint 3-4**: KPI aggregation, dashboards, basic Slack alerts
+- **Sprint 5-6**: Enterprise features - A/B testing, governance policies, Meta-Agent FinOps
+
+## Risks and Mitigations
+- **Technical Complexity**: Mitigate with clear separation of concerns and comprehensive testing
+- **Scalability Requirements**: Address with proper architecture choices (ClickHouse for events, Redis for caching)
+- **Integration Challenges**: Start with core functionality, add integrations incrementally
+- **User Adoption**: Focus on solving real pain points first (observability) before advanced features
