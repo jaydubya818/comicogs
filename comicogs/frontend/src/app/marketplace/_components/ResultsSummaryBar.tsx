@@ -38,7 +38,7 @@ export function ResultsSummaryBar({
   isLoading = false
 }: ResultsSummaryBarProps) {
   const [focusedChipIndex, setFocusedChipIndex] = useState<number>(-1)
-  const chipRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const chipRefs = useRef<(HTMLDivElement | null)[]>([])
   const { announce } = useLiveAnnouncer()
 
   // Calculate results range for current page
@@ -193,7 +193,7 @@ export function ResultsSummaryBar({
               return (
                 <Badge
                   key={chipId}
-                  ref={(el) => (chipRefs.current[index] = el as HTMLButtonElement)}
+                  ref={(el) => { chipRefs.current[index] = el as HTMLDivElement; }}
                   variant="secondary"
                   className="group relative pr-8 pl-3 py-1 text-sm font-medium bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 cursor-pointer transition-colors"
                   onClick={() => handleRemoveFilter(filter.key, typeof filter.value === 'string' ? filter.value : undefined)}

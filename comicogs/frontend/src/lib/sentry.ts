@@ -30,12 +30,7 @@ export function initSentry() {
       }),
       
       // Browser tracing for performance
-      Sentry.browserTracingIntegration({
-        // Capture interactions
-        enableInteractionInstrumentation: true,
-        // Capture long tasks
-        enableLongTaskInstrumentation: true,
-      }),
+      Sentry.browserTracingIntegration(),
       
       // Capture console logs as breadcrumbs
       Sentry.breadcrumbsIntegration({
@@ -147,11 +142,11 @@ export function captureUserFeedback(feedback: {
   message: string;
   eventId?: string;
 }) {
-  Sentry.captureUserFeedback({
+  Sentry.captureFeedback({
     name: feedback.name || 'Anonymous',
     email: feedback.email || 'anonymous@comicogs.com',
-    comments: feedback.message,
-    event_id: feedback.eventId || Sentry.lastEventId(),
+    message: feedback.message,
+    associatedEventId: feedback.eventId || Sentry.lastEventId(),
   });
 }
 
@@ -222,9 +217,11 @@ export function setContext(key: string, context: Record<string, any>) {
 
 // Create performance transaction
 export function startTransaction(name: string, operation: string) {
-  return Sentry.startTransaction({
+  return Sentry.startSpan({
     name,
     op: operation,
+  }, (span) => {
+    return span;
   });
 }
 

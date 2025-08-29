@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { useForm, FormProvider, UseFormReturn, FieldValues, UseFormProps } from 'react-hook-form'
+import { useForm, FormProvider, UseFormReturn, FieldValues, UseFormProps, useFormContext as useFormContextHook } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { cn } from '@/lib/utils'
@@ -40,7 +40,7 @@ export function Form<TSchema extends z.ZodType<any, any, any>>({
   ...formProps
 }: FormProps<TSchema>) {
   const methods = useForm<z.infer<TSchema>>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as any,
     defaultValues,
     mode,
   })
@@ -100,7 +100,7 @@ export function Form<TSchema extends z.ZodType<any, any, any>>({
 
 // Hook to access form methods within form context
 export function useFormContext<T extends FieldValues = FieldValues>(): UseFormReturn<T> {
-  return React.useContext(FormProvider) as UseFormReturn<T>
+  return useFormContextHook() as UseFormReturn<T>
 }
 
 // Form section component for grouping related fields
@@ -252,7 +252,7 @@ export const comicSchemas = {
     images: z.array(z.string().url()).optional(),
     condition: formSchemas.required('Condition is required'),
     format: z.enum(['raw', 'slab'], {
-      required_error: 'Format is required',
+      message: 'Format is required',
     }),
   }),
   

@@ -25,9 +25,9 @@ export function formatFilterValue(
     case 'multiselect':
       if (Array.isArray(value)) {
         if (value.length === 1) {
-          return formatSelectValue(value[0])
+          return formatSelectValue(String(value[0]))
         }
-        return `${formatSelectValue(value[0])} +${value.length - 1} more`
+        return `${formatSelectValue(String(value[0]))} +${value.length - 1} more`
       }
       return typeof value === 'string' ? formatSelectValue(value) : String(value)
 
