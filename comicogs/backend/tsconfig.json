@@ -30,9 +30,11 @@
   "exclude": [
     "node_modules",
     "dist",
-    "prisma",
+    "prisma/**/*",
     "**/*.test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "src/testing/**/*",
+    "src/scripts/**/*"
   ],
   "ts-node": {
     "esm": true,

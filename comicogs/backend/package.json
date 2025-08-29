@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc",
+    "build": "npx tsc",
     "start": "node dist/server.js",
     "worker": "tsx watch src/worker/index.ts",
     "alerts:trigger": "tsx src/scripts/triggerAlerts.ts",
@@ -15,7 +15,7 @@
     "test:golden": "tsx src/scripts/apiAssertions.ts",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
-    "type-check": "tsc --noEmit",
+    "type-check": "npx tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
     "db:setup": "prisma generate",
