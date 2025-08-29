@@ -1,31 +1,7 @@
 {
   "name": "comicogs",
   "private": true,
-  "workspaces": ["frontend", "backend"],
-  "engines": { 
-    "node": "18.x" 
-  },
-  "scripts": {
-    "dev": "npm --workspace frontend run dev",
-    "build": "echo \"root has no build; see frontend workspace\"",
-    "start": "npm --workspace frontend run start",
-    "db:setup": "npm --workspace backend run db:setup",
-    "db:migrate": "npm --workspace backend run db:migrate",
-    "db:seed": "npm --workspace backend run db:seed",
-    "db:reset": "npm --workspace backend run db:reset",
-    "db:studio": "npm --workspace backend run db:studio",
-    "test": "npm --workspace frontend run test && npm --workspace backend run test",
-    "lint": "npm --workspace frontend run lint && npm --workspace backend run lint"
-  },
-  "keywords": [
-    "comicogs",
-    "comics",
-    "nextjs",
-    "collection-management"
-  ],
-  "author": "Comicogs Team",
-  "license": "MIT",
-  "devDependencies": {
-    "concurrently": "^8.2.2"
-  }
+  "workspaces": ["frontend","backend"],
+  "engines": { "node": "22.x" },
+  "packageManager": "npm@10"
 }

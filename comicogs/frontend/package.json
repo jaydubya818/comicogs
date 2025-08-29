@@ -1,8 +1,9 @@
 {
-  "name": "@comicogs/frontend",
+  "name": "comicogs-frontend",
   "version": "2.0.1",
   "description": "Comicogs Frontend - Next.js application",
   "private": true,
+  "engines": { "node": "22.x" },
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",
