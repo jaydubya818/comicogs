@@ -1,33 +1,19 @@
 {
   "version": 2,
-  "buildCommand": "cd frontend && npm ci && npm run build",
-  "outputDirectory": "frontend/.next",
-  "installCommand": "npm ci",
-  "framework": "nextjs",
-  "rootDirectory": "./",
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+  "builds": [
+    { 
+      "src": "frontend/next.config.*", 
+      "use": "@vercel/next" 
     }
   ],
+  "installCommand": "npm ci && npm --workspace frontend ci",
+  "buildCommand": "npm --workspace frontend run build",
+  "outputDirectory": "frontend/.next",
+  "framework": "nextjs",
   "env": {
-    "NEXT_TELEMETRY_DISABLED": "1"
-  },
-  "functions": {
-    "frontend/src/app/api/**/*.ts": {
-      "runtime": "@vercel/node"
-    }
-  },
-  "crons": [],
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
-    }
-  ]
+    "NEXTAUTH_SECRET": "@nextauth-secret",
+    "DATABASE_URL": "@comicogs-database-url",
+    "STRIPE_PUBLIC_KEY": "@stripe-public-key",
+    "STRIPE_SECRET_KEY": "@stripe-secret-key"
+  }
 }
