@@ -4,6 +4,7 @@
   "outputDirectory": "frontend/.next",
   "installCommand": "npm ci",
   "framework": "nextjs",
+  "rootDirectory": "./",
   "routes": [
     {
       "src": "/api/(.*)",
