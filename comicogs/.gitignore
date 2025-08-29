@@ -26,3 +26,6 @@ node_modules/
 
 *storybook.log
 storybook-static
+
+# Conflicting nested project
+comicogs-nextjs/
