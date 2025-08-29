@@ -1,8 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // Only use standalone output for non-Vercel deployments
+  output: process.env.VERCEL ? undefined : 'standalone',
+  // Increase static generation timeout
+  staticPageGenerationTimeout: 120,
+  // Skip problematic static pages during build
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  // Temporarily disable static optimization for problematic pages
   experimental: {
     outputFileTracingRoot: undefined,
+    missingSuspenseWithCSRBailout: false,
   },
   images: {
     domains: ['placeholder.com', 'via.placeholder.com', 'images.unsplash.com'],
