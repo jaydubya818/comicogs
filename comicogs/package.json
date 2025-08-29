@@ -1,6 +1,6 @@
 {
   "name": "comicogs",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Ultimate comic book collection management platform with AI-powered features",
   "private": true,
   "workspaces": [

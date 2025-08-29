@@ -1,6 +1,6 @@
 {
   "name": "@comicogs/backend",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Comicogs Backend - Express.js API with Prisma",
   "private": true,
   "scripts": {
