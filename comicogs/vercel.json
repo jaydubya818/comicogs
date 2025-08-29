@@ -1,18 +1,12 @@
 {
   "version": 2,
-  "builds": [
-    { 
-      "src": "frontend/next.config.*", 
-      "use": "@vercel/next" 
-    }
-  ],
+  "builds": [{ "src": "frontend/next.config.*", "use": "@vercel/next" }],
   "installCommand": "npm ci && npm --workspace frontend ci",
   "buildCommand": "npm --workspace frontend run build",
   "outputDirectory": "frontend/.next",
-  "framework": "nextjs",
   "env": {
-    "NEXTAUTH_SECRET": "@nextauth-secret",
     "DATABASE_URL": "@comicogs-database-url",
+    "NEXTAUTH_SECRET": "@nextauth-secret",
     "STRIPE_PUBLIC_KEY": "@stripe-public-key",
     "STRIPE_SECRET_KEY": "@stripe-secret-key"
   }
