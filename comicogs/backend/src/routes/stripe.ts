@@ -8,14 +8,20 @@ import { logger } from "../middleware/logger";
 const router = Router();
 const prisma = new PrismaClient();
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { 
+// Initialize Stripe only if API key is provided
+const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, { 
   apiVersion: "2024-06-20" 
-});
+}) : null;
 
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 // Stripe webhook endpoint with raw body parsing
 router.post("/webhook", express.raw({ type: "application/json" }), async (req: Request, res: Response) => {
+  if (!stripe || !endpointSecret) {
+    logger.warn("Stripe webhook called but Stripe is not configured");
+    return res.status(400).json({ error: "Stripe not configured" });
+  }
+
   const sig = req.headers["stripe-signature"] as string;
   let event: Stripe.Event;
 

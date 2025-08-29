@@ -8,9 +8,10 @@ import { z } from "zod";
 const router = Router();
 const prisma = new PrismaClient();
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { 
+// Initialize Stripe only if API key is provided
+const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, { 
   apiVersion: "2024-06-20" 
-});
+}) : null;
 
 const CheckoutSchema = z.object({
   listingId: z.string(),
@@ -64,6 +65,14 @@ router.post("/", requireAuth, asyncHandler(async (req, res) => {
       `Grade: ${listing.comic.grade || 'Ungraded'}`;
 
     const amount = Math.round(Number(listing.price) * 100); // Convert to cents
+
+    // Check if Stripe is configured
+    if (!stripe) {
+      return res.status(500).json({ 
+        error: "Payment processing not configured",
+        message: "Stripe is not configured for this environment"
+      });
+    }
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({

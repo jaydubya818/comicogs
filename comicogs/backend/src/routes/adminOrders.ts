@@ -8,9 +8,10 @@ import { z } from "zod";
 const router = Router();
 const prisma = new PrismaClient();
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+// Initialize Stripe only if API key is provided
+const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2024-06-20"
-});
+}) : null;
 
 // Middleware to require admin role
 const requireAdmin = (req: any, res: any, next: any) => {
