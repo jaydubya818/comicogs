@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" fill="#3b82f6" rx="64"/>
+  <path fill="white" d="M128 144h256a32 32 0 0 1 32 32v160a32 32 0 0 1-32 32H128a32 32 0 0 1-32-32V176a32 32 0 0 1 32-32z"/>
+  <rect x="144" y="160" width="224" height="16" fill="#3b82f6" rx="8"/>
+  <rect x="144" y="192" width="180" height="12" fill="#6b7280" rx="6"/>
+  <rect x="144" y="216" width="160" height="12" fill="#6b7280" rx="6"/>
+  <rect x="144" y="240" width="200" height="12" fill="#6b7280" rx="6"/>
+  <circle cx="320" cy="296" r="24" fill="#f59e0b"/>
+  <text x="256" y="440" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="36" font-weight="bold">Comicogs</text>
+</svg>

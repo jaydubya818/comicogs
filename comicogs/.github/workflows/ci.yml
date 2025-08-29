@@ -1,0 +1,123 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - "frontend/**"
+      - "backend/**"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/**"
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Node ${{ matrix.node }} • Ubuntu
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [18.x, 20.x]
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: comicogs_ci
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        # Wait for Postgres to be healthy before running migrations/tests
+        options: >-
+          --health-cmd="pg_isready -U postgres -d comicogs_ci"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    env:
+      # Point Prisma/Backend to CI DB
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/comicogs_ci
+      NODE_ENV: test
+      # Optional: if your frontend needs these in build
+      NEXT_TELEMETRY_DISABLED: "1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install root deps (workspaces)
+        run: npm ci
+
+      # Optional: cache Next.js build cache for faster frontend builds
+      - name: Cache Next.js .next/cache
+        uses: actions/cache@v4
+        with:
+          path: frontend/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ matrix.node }}-${{ hashFiles('frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ matrix.node }}-
+            ${{ runner.os }}-nextjs-
+
+      - name: Prepare DB (Prisma)
+        run: |
+          # These scripts should exist in backend workspace scripts
+          npm --workspace backend run db:setup || true
+          npm --workspace backend run db:migrate
+          npm --workspace backend run db:seed || true
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm test
+
+      # Install Playwright browsers for E2E tests
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      # Run E2E smoke tests
+      - name: Run E2E Smoke Tests
+        run: npm run test:smoke
+
+      # Run accessibility tests
+      - name: Run Accessibility Tests
+        run: npm run test:a11y
+
+      # Upload test results and screenshots on failure
+      - name: Upload Playwright Test Results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results-${{ matrix.node }}
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 30
+
+      # Upload test coverage
+      - name: Upload Jest Coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.node }}
+          path: |
+            coverage/**
+            frontend/coverage/**
+            backend/coverage/**

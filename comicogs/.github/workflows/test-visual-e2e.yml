@@ -1,0 +1,339 @@
+name: Visual & E2E Testing
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Test type to run'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - visual
+          - e2e
+          - smoke
+
+env:
+  NODE_ENV: test
+  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/comicogs_test
+  REDIS_URL: redis://localhost:6379
+  JWT_SECRET: test-jwt-secret-key-for-ci
+  CORS_ORIGIN: http://localhost:3000
+
+jobs:
+  visual-regression:
+    if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'visual' || github.event.inputs.test_type == '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: comicogs_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps
+
+      - name: Setup database
+        run: |
+          npm run db:setup
+          npm run db:migrate
+          npm run db:seed:e2e
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run visual regression tests
+        run: npm run snap:serve
+        env:
+          SNAP_BASE_URL: http://localhost:3000
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-screenshots-${{ github.run_id }}
+          path: docs/screenshots
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload visual test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-test-results-${{ github.run_id }}
+          path: test-results
+          retention-days: 7
+
+  e2e-tests:
+    if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'e2e' || github.event.inputs.test_type == '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: comicogs_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps
+
+      - name: Setup database
+        run: |
+          npm run db:setup
+          npm run db:migrate
+
+      - name: Seed E2E test data
+        run: npm run db:seed:e2e
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run E2E tests
+        run: npm run test:e2e:serve
+        env:
+          BASE_URL: http://localhost:3000
+
+      - name: Upload E2E test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-report-${{ github.run_id }}
+          path: playwright-report
+          retention-days: 7
+
+      - name: Upload E2E test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-results-${{ github.run_id }}
+          path: test-results
+          retention-days: 7
+
+  smoke-tests:
+    if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'smoke' || github.event.inputs.test_type == '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: comicogs_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npx playwright install chromium
+
+      - name: Setup database
+        run: |
+          npm run db:setup
+          npm run db:migrate
+          npm run db:seed:e2e
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run smoke tests
+        run: npm run test:smoke
+        env:
+          BASE_URL: http://localhost:3000
+
+      - name: Upload smoke test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-test-results-${{ github.run_id }}
+          path: test-results
+          retention-days: 7
+
+  accessibility-tests:
+    if: ${{ github.event.inputs.test_type == 'all' || github.event.inputs.test_type == '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: comicogs_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npx playwright install chromium
+
+      - name: Setup database
+        run: |
+          npm run db:setup
+          npm run db:migrate
+          npm run db:seed:e2e
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run accessibility tests
+        run: npm run test:a11y
+        env:
+          BASE_URL: http://localhost:3000
+
+      - name: Upload accessibility test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-test-results-${{ github.run_id }}
+          path: test-results
+          retention-days: 7
+
+  test-summary:
+    needs: [visual-regression, e2e-tests, smoke-tests, accessibility-tests]
+    if: always()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test Summary
+        run: |
+          echo "# 🧪 Test Suite Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Test Type | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|---------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Visual Regression | ${{ needs.visual-regression.result || 'skipped' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| E2E Tests | ${{ needs.e2e-tests.result || 'skipped' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Smoke Tests | ${{ needs.smoke-tests.result || 'skipped' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Accessibility | ${{ needs.accessibility-tests.result || 'skipped' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📸 Visual Screenshots" >> $GITHUB_STEP_SUMMARY
+          echo "Screenshots captured for light/dark themes across desktop/mobile viewports." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 🔗 Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "- Site screenshots (visual regression)" >> $GITHUB_STEP_SUMMARY
+          echo "- Playwright HTML reports (E2E, smoke, accessibility)" >> $GITHUB_STEP_SUMMARY
+          echo "- Test results and traces for debugging" >> $GITHUB_STEP_SUMMARY

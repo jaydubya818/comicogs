@@ -1,0 +1,146 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  user
+  seller
+  admin
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  image     String?
+  role      Role     @default(user)
+  createdAt DateTime @default(now())
+  listings  Listing[]
+  orders    Order[]   @relation("BuyerOrders")
+  collection CollectionItem[]
+  wantlist  WantItem[]
+  savedSearches SavedSearch[]
+  reports   Report[] @relation("UserReports")
+}
+
+model Comic {
+  id        String   @id @default(cuid())
+  title     String
+  series    String
+  issue     String
+  grade     String?   // e.g., CGC 9.4
+  format    String?   // "slab" | "raw"
+  price     Decimal?  @db.Decimal(10,2)
+  coverUrl  String?
+  tags      String[]  // ["silver-age","key-issue"]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  listings  Listing[]
+  collectionItems CollectionItem[]
+
+  @@index([series, issue])
+  @@index([series])
+  @@index([tags], type: Gin)
+}
+
+model Listing {
+  id        String   @id @default(cuid())
+  comicId   String
+  sellerId  String
+  price     Decimal  @db.Decimal(10,2)
+  status    String   // "active" | "sold" | "draft" | "hidden"
+  images    Json?    // { thumb: "path", card: "path", full: "path" }
+  blur      String?  // base64 blur placeholder
+  createdAt DateTime @default(now())
+  comic     Comic    @relation(fields: [comicId], references: [id])
+  seller    User     @relation(fields: [sellerId], references: [id])
+  order     Order?
+  reports   Report[]
+
+  @@index([status, price])
+  @@index([createdAt])
+  @@index([sellerId])
+}
+
+model Order {
+  id            String   @id @default(cuid())
+  userId        String
+  listingId     String   @unique
+  status        String   @default("pending") // pending|paid|refunded|failed|canceled
+  amount        Int      // cents
+  currency      String   @default("usd")
+  stripeSession String?  @unique
+  paymentIntent String?  @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  buyer         User     @relation("BuyerOrders", fields: [userId], references: [id])
+  listing       Listing  @relation(fields: [listingId], references: [id])
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([userId])
+}
+
+model CollectionItem {
+  id        String   @id @default(cuid())
+  userId    String
+  comicId   String
+  notes     String?
+  acquiredAt DateTime?
+  user      User  @relation(fields: [userId], references: [id])
+  comic     Comic @relation(fields: [comicId], references: [id])
+  
+  @@unique([userId, comicId])
+}
+
+model WantItem {
+  id        String   @id @default(cuid())
+  userId    String
+  series    String
+  issue     String
+  maxPrice  Decimal? @db.Decimal(10,2)
+  user      User @relation(fields: [userId], references: [id])
+  
+  @@unique([userId, series, issue])
+}
+
+model WebhookEvent {
+  id     String   @id
+  type   String
+  seenAt DateTime @default(now())
+}
+
+model SavedSearch {
+  id        String    @id @default(cuid())
+  userId    String
+  name      String
+  queryJson Json
+  cadence   String    @default("weekly") // "daily" | "weekly"
+  lastRunAt DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+}
+
+model Report {
+  id        String   @id @default(cuid())
+  listingId String
+  reporterId String
+  reason    String   // spam, counterfeit, offensive, other
+  note      String?
+  status    String   @default("open") // open|actioned|dismissed
+  createdAt DateTime @default(now())
+  listing   Listing  @relation(fields: [listingId], references: [id])
+  reporter  User     @relation("UserReports", fields: [reporterId], references: [id])
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([listingId])
+}

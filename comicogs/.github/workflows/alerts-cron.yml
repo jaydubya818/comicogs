@@ -1,0 +1,89 @@
+name: Nightly Alerts Cron
+
+on:
+  schedule:
+    # Run at 8:00 AM UTC daily (adjust timezone as needed)
+    - cron: "0 8 * * *"
+  
+  # Allow manual triggering for testing
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run against'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+jobs:
+  trigger-alerts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      - name: Trigger alerts via HTTPS endpoint (preferred)
+        if: ${{ secrets.ALERTS_TRIGGER_URL && secrets.CRON_TOKEN }}
+        run: |
+          echo "🚀 Triggering alerts via HTTPS endpoint..."
+          
+          response=$(curl -sS -w "%{http_code}" -o response.json -X POST \
+            -H "x-cron-token: ${{ secrets.CRON_TOKEN }}" \
+            -H "User-Agent: GitHub-Actions-Cron/1.0" \
+            "${{ secrets.ALERTS_TRIGGER_URL }}")
+          
+          echo "📊 HTTP Status: $response"
+          echo "📄 Response:"
+          cat response.json | jq '.' || cat response.json
+          
+          if [ "$response" -eq 200 ]; then
+            echo "✅ Alerts triggered successfully"
+          else
+            echo "❌ Failed to trigger alerts (HTTP $response)"
+            exit 1
+          fi
+
+      - name: Fallback - Setup Node.js environment
+        if: ${{ !secrets.ALERTS_TRIGGER_URL }}
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        if: ${{ !secrets.ALERTS_TRIGGER_URL }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            backend/package-lock.json
+
+      - name: Install dependencies
+        if: ${{ !secrets.ALERTS_TRIGGER_URL }}
+        run: |
+          echo "📦 Installing dependencies..."
+          npm ci --workspace=backend
+
+      - name: Trigger alerts via script (fallback)
+        if: ${{ !secrets.ALERTS_TRIGGER_URL }}
+        run: |
+          echo "🔄 Triggering alerts via Node.js script..."
+          npm --workspace=backend run alerts:trigger
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Alerts cron job failed!"
+          echo "::error title=Alerts Cron Failed::Failed to trigger nightly alerts"
+          
+          # You could add notification logic here (Slack, email, etc.)
+          # For example:
+          # curl -X POST -H 'Content-type: application/json' \
+          #   --data '{"text":"🚨 Comicogs alerts cron failed!"}' \
+          #   ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -1,0 +1,228 @@
+/* TweakCN Theme Override for Comicogs */
+/* Source: https://tweakcn.com/ - Professional Comic Marketplace theme */
+/* Only overrides our CSS variables, maintains semantic token structure */
+
+/* Light mode TweakCN theme */
+.theme-tweakcn :root {
+  /* Override our Coolors palette with TweakCN values */
+  --coolors-hero-blue: #2563eb;      /* TweakCN primary - trust, CTAs */
+  --coolors-comic-purple: #7c3aed;   /* TweakCN secondary - premium features */
+  --coolors-energy-orange: #ea580c;  /* TweakCN accent - alerts, sales */
+  --coolors-neutral-slate: #475569;  /* TweakCN foreground - text */
+  --coolors-surface-gray: #f8fafc;   /* TweakCN background - surfaces */
+  
+  /* Status colors from TweakCN palette */
+  --coolors-success-green: #059669;  /* Success states, verified sellers */
+  --coolors-warning-amber: #d97706;  /* Warnings, price alerts */
+  --coolors-danger-red: #dc2626;     /* Errors, critical actions */
+  
+  /* Additional semantic mappings for enhanced TweakCN experience */
+  --color-muted: color-mix(in srgb, var(--coolors-neutral-slate) 15%, var(--coolors-surface-gray));
+  --color-border: color-mix(in srgb, var(--coolors-neutral-slate) 12%, transparent);
+  --color-input: color-mix(in srgb, var(--coolors-neutral-slate) 8%, var(--coolors-surface-gray));
+  
+  /* Enhanced interactive states for TweakCN theme */
+  --color-primary-hover: color-mix(in srgb, var(--coolors-hero-blue) 88%, black);
+  --color-secondary-hover: color-mix(in srgb, var(--coolors-comic-purple) 88%, black);
+  --color-accent-hover: color-mix(in srgb, var(--coolors-energy-orange) 88%, black);
+  
+  /* Comic-specific theme adaptations */
+  --comic-card-background: color-mix(in srgb, var(--coolors-surface-gray) 98%, var(--coolors-hero-blue));
+  --comic-cover-overlay: color-mix(in srgb, var(--coolors-surface-gray) 92%, transparent);
+  --price-highlight-bg: color-mix(in srgb, var(--coolors-success-green) 15%, transparent);
+  --sale-highlight-bg: color-mix(in srgb, var(--coolors-energy-orange) 15%, transparent);
+}
+
+/* Dark mode TweakCN theme */
+.dark.theme-tweakcn :root {
+  /* Dark mode color adjustments for TweakCN theme */
+  --coolors-surface-gray: #0f172a;   /* Deep blue-gray background */
+  --coolors-neutral-slate: #f1f5f9;  /* Light foreground text */
+  
+  /* Adjusted primary colors for dark mode readability */
+  --coolors-hero-blue: #3b82f6;      /* Lighter blue for dark backgrounds */
+  --coolors-comic-purple: #8b5cf6;   /* Lighter purple for contrast */
+  --coolors-energy-orange: #f59e0b;  /* Warmer orange for dark mode */
+  
+  /* Dark mode status colors */
+  --coolors-success-green: #10b981;  /* Brighter green for visibility */
+  --coolors-warning-amber: #f59e0b;  /* Amber that works in dark */
+  --coolors-danger-red: #ef4444;     /* Brighter red for dark backgrounds */
+  
+  /* Dark mode semantic tokens */
+  --color-muted: color-mix(in srgb, var(--coolors-neutral-slate) 15%, var(--coolors-surface-gray));
+  --color-border: color-mix(in srgb, var(--coolors-neutral-slate) 18%, transparent);
+  --color-input: color-mix(in srgb, var(--coolors-neutral-slate) 12%, var(--coolors-surface-gray));
+  
+  /* Dark mode interactive states */
+  --color-primary-hover: color-mix(in srgb, var(--coolors-hero-blue) 85%, white);
+  --color-secondary-hover: color-mix(in srgb, var(--coolors-comic-purple) 85%, white);
+  --color-accent-hover: color-mix(in srgb, var(--coolors-energy-orange) 85%, white);
+  
+  /* Dark mode comic-specific adaptations */
+  --comic-card-background: color-mix(in srgb, var(--coolors-surface-gray) 95%, var(--coolors-hero-blue));
+  --comic-cover-overlay: color-mix(in srgb, var(--coolors-surface-gray) 88%, transparent);
+  --price-highlight-bg: color-mix(in srgb, var(--coolors-success-green) 20%, transparent);
+  --sale-highlight-bg: color-mix(in srgb, var(--coolors-energy-orange) 20%, transparent);
+}
+
+/* Component-specific TweakCN theme enhancements */
+
+/* Comic cards get subtle theme integration */
+.theme-tweakcn .comic-card {
+  background: var(--comic-card-background);
+  border: 1px solid var(--color-border);
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.theme-tweakcn .comic-card:hover {
+  border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary) 15%, transparent);
+}
+
+/* Comic cover overlays for better text readability */
+.theme-tweakcn .comic-cover-text-overlay {
+  background: var(--comic-cover-overlay);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius);
+}
+
+/* Price highlighting with theme colors */
+.theme-tweakcn .price-current {
+  background: var(--price-highlight-bg);
+  color: var(--color-success);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+
+.theme-tweakcn .price-sale {
+  background: var(--sale-highlight-bg);
+  color: var(--color-accent);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+
+/* Data table optimizations for TweakCN theme */
+.theme-tweakcn .data-table {
+  --table-border: color-mix(in srgb, var(--color-border) 60%, transparent);
+  --table-header-bg: color-mix(in srgb, var(--color-muted) 50%, transparent);
+  --table-row-hover: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+
+.theme-tweakcn .data-table thead {
+  background: var(--table-header-bg);
+  border-bottom: 2px solid var(--table-border);
+}
+
+.theme-tweakcn .data-table tbody tr:hover {
+  background: var(--table-row-hover);
+}
+
+.theme-tweakcn .data-table td {
+  border-bottom: 1px solid var(--table-border);
+}
+
+/* Navigation and branding adjustments */
+.theme-tweakcn .navbar {
+  background: color-mix(in srgb, var(--color-background) 95%, var(--color-primary));
+  border-bottom: 1px solid var(--color-border);
+  backdrop-filter: blur(12px);
+}
+
+.theme-tweakcn .logo {
+  /* Preserve brand logo colors */
+  filter: none;
+}
+
+/* Form elements with TweakCN styling */
+.theme-tweakcn .form-input {
+  background: var(--color-input);
+  border: 1px solid var(--color-border);
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.theme-tweakcn .form-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+}
+
+/* Filter panels and drawers */
+.theme-tweakcn .filter-panel {
+  background: color-mix(in srgb, var(--color-background) 98%, var(--color-muted));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.theme-tweakcn .filter-tag {
+  background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+  color: var(--color-primary);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  border-radius: var(--radius);
+  padding: 0.25rem 0.75rem;
+  font-size: var(--font-size-sm);
+}
+
+/* Status badges with theme integration */
+.theme-tweakcn .status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.theme-tweakcn .status-active {
+  background: var(--price-highlight-bg);
+  color: var(--color-success);
+}
+
+.theme-tweakcn .status-sold {
+  background: color-mix(in srgb, var(--color-muted) 80%, transparent);
+  color: var(--color-muted-foreground);
+}
+
+.theme-tweakcn .status-featured {
+  background: var(--sale-highlight-bg);
+  color: var(--color-accent);
+}
+
+/* Loading states with theme colors */
+.theme-tweakcn .loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-muted) 25%,
+    color-mix(in srgb, var(--color-muted) 50%, white) 50%,
+    var(--color-muted) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading-shimmer 1.5s infinite ease-in-out;
+}
+
+@keyframes loading-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Accessibility enhancements for TweakCN theme */
+.theme-tweakcn *:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support for TweakCN */
+@media (prefers-contrast: high) {
+  .theme-tweakcn :root {
+    --color-border: var(--color-foreground);
+    --color-ring: var(--color-foreground);
+    --comic-card-background: var(--color-background);
+  }
+}
+
+/* Reduced motion respect */
+@media (prefers-reduced-motion: reduce) {
+  .theme-tweakcn * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
