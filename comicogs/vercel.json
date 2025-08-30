@@ -1,7 +1,20 @@
 {
   "version": 2,
   "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next"
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_API_URL": "https://comicogs-01.vercel.app/api"
+    }
+  },
+  "functions": {
+    "frontend/src/app/**/*.{js,ts,tsx}": {
+      "runtime": "nodejs22.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/frontend/$1"
+    }
+  ]
 }
-
