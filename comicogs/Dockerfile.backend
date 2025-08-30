@@ -1,0 +1,46 @@
+# Backend Dockerfile for Express/Node.js API
+FROM node:20-alpine AS deps
+
+# Install dependencies
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production && npm cache clean --force
+
+# Build stage
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+# Copy source code
+COPY . .
+COPY --from=deps /app/node_modules ./node_modules
+
+# Build the application (if you have a build step)
+# RUN npm run build
+
+# Production stage
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Create app user for security
+RUN addgroup --system --gid 1001 appgroup
+RUN adduser --system --uid 1001 appuser
+
+# Copy built application
+COPY --from=builder --chown=appuser:appgroup /app .
+
+# Install only production dependencies
+RUN npm ci --only=production && npm cache clean --force
+
+USER appuser
+
+EXPOSE 4000
+ENV PORT=4000
+ENV HOST=0.0.0.0
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node --version || exit 1
+
+CMD ["npm", "start"]

@@ -25,7 +25,7 @@ test.describe('Marketplace Visual Regression Tests', () => {
       // Wait for any loading states to complete
       await page.waitForFunction(() => {
         const loader = document.querySelector('[data-testid="loading-spinner"]');
-        return !loader || loader.style.display === 'none';
+        return !loader || (loader as HTMLElement).style.display === 'none';
       }, { timeout: 10000 });
       
       // Ensure images are loaded

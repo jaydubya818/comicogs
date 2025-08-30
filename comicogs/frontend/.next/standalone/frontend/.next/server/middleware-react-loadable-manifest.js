@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST='{"app/vault/page.tsx -> @/components/vault/VaultFilters":{"id":6356,"files":["static/chunks/356.a999664e8e01cc05.js"]},"app/vault/page.tsx -> @/components/vault/VaultTable":{"id":9725,"files":["static/chunks/725.5b7c306a0921b3f7.js"]}}';
+self.__REACT_LOADABLE_MANIFEST='{"app/vault/page.tsx -> @/components/vault/VaultFilters":{"id":6356,"files":["static/chunks/356.41582e472043275f.js"]},"app/vault/page.tsx -> @/components/vault/VaultTable":{"id":9725,"files":["static/chunks/725.5b7c306a0921b3f7.js"]}}';

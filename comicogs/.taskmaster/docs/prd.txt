@@ -1,0 +1,139 @@
+# Comicogs Enhancement PRD
+
+## Overview
+Enhance the existing Comicogs comic collection platform with role-based access control, SEO optimization, data management features, analytics, internationalization, and reliability improvements.
+
+## Core Requirements
+
+### 1. Roles & Guarded UX
+- **Database Changes**: Add Role enum to Prisma schema with values: "user", "seller", "admin"
+- **User Model**: Add role field with default value "user" 
+- **API Protection**: Protect POST/PUT/DELETE operations on listings to roles "seller" and "admin"
+- **Admin Dashboard**: Create /admin/moderation page with table of latest listings, ability to mark as featured/hidden
+- **Navigation**: Update navbar to show "Sell" and "Admin" links based on user role
+- **Error Handling**: Return 401 for unauthenticated users, show CTA to upgrade for non-sellers
+
+### 2. SEO Foundation
+- **Metadata**: Add Next.js metadata API for title, description, and OpenGraph images per route
+- **Sitemap**: Generate /sitemap.xml including comics, listings, and homepage routes
+- **SEO Assets**: Add /robots.txt and canonical link tags to all pages
+- **Structured Data**: Inject JSON-LD for Product schema on listing detail pages
+- **Validation**: Ensure sitemap is valid and OG cards render properly in previews
+
+### 3. CSV Import/Export
+- **Export Feature**: Add "Export CSV" button in /vault page with server endpoint
+- **Import Feature**: Create "Import CSV" modal with client-side parsing and server validation
+- **Server Endpoint**: POST to /api/collection/import with Zod validation
+- **Preview System**: Show dry-run preview with error handling and line numbers
+- **Data Integrity**: Ensure round-trip export/import with zero data loss
+
+### 4. Feature Flags
+- **Database**: Add Flag table with name, enabled status, and description
+- **Caching**: Implement in-memory caching for flag lookup performance
+- **Hook**: Create useFlag("flagName", "defaultValue") React hook
+- **Admin UI**: Build interface to toggle flags, protected behind admin role
+- **Runtime Control**: Enable behavior changes without requiring deployments
+
+### 5. Event Pipeline & Dashboard
+- **Frontend Tracking**: Create event helper track(event, props) function
+- **API Endpoint**: POST to /api/events for event collection
+- **Data Storage**: Persist events with userId, name, props JSON, and timestamp
+- **Logging**: Mirror events to pino logger for debugging
+- **Analytics Dashboard**: Build /admin/analytics with charts for DAU, listings created, buy clicks, checkout conversions
+- **Development**: Sample events appropriately in development environment
+
+### 6. Internationalization (i18n)
+- **Library**: Integrate next-intl or similar i18n solution
+- **Default Locale**: Start with English ("en") message catalog
+- **Content Migration**: Replace hard-coded text with t("...") function calls in key components
+- **Locale Switcher**: Add UI component with persistence via cookie/query parameter
+- **Number Formatting**: Localize prices using Intl.NumberFormat
+
+### 7. Reliability Basics
+- **Health Endpoints**: Add /readyz and /livez endpoints for monitoring
+- **Error Pages**: Create custom 404 and 500 pages with helpful navigation links
+- **Backup Strategy**: Document PostgreSQL backup procedures (pg_dump cron or host-based snapshots)
+- **Testing**: Verify health check integration and test backup procedure once
+
+### 8. Visual Regression Testing
+- **Playwright Setup**: Add snapshot tests for key pages: Home, Vault (with filters), Listing Detail, Wishlist
+- **Baseline Management**: Store reference images and fail on >0.2% visual differences
+- **CI Integration**: Upload test artifacts on failures for review
+- **Quality Gate**: Prevent PRs with unintended visual changes from merging
+
+### 9. Discovery & Search Enhancement
+- **Sort Options**: Add sorting by newest, price ascending/descending, popularity
+- **Search Relevance**: Boost title/series matches, implement fuzzy search fallback
+- **Saved Searches**: Allow users to persist queries with notification cadence
+- **Alerts System**: Create alerts table structure for future email notifications
+- **User Experience**: Obvious improvement in search result quality and relevance
+
+### 10. User Onboarding Flow
+- **First Login Modal**: 3-step wizard: choose series preferences, optional CSV import, theme selection
+- **Progress Tracking**: Store completion flag on User model
+- **Personalization**: Use step 1 data to customize Vault filter defaults
+- **Skip Logic**: Allow returning users to bypass wizard
+- **Data Integration**: Seamlessly incorporate onboarding choices into user experience
+
+## Technical Requirements
+
+### Backend Technologies
+- Express.js with TypeScript
+- Prisma ORM with PostgreSQL
+- Zod for validation
+- Pino for logging
+- Stripe for payments
+
+### Frontend Technologies  
+- Next.js 14 with App Router
+- React 18 with TypeScript
+- ShadCN UI components
+- Tailwind CSS v4
+- Framer Motion for animations
+
+### Testing & Quality
+- Playwright for E2E testing
+- Jest for unit testing
+- ESLint and Prettier for code quality
+- Accessibility testing with axe-core
+
+### Infrastructure
+- Docker containerization
+- PostgreSQL database
+- Redis for caching (optional)
+- GitHub Actions for CI/CD
+
+## Success Criteria
+
+### Functionality
+- All role-based features work correctly with proper authorization
+- SEO improvements result in valid sitemaps and proper OG card rendering  
+- CSV import/export maintains data integrity
+- Feature flags toggle behavior without deployments
+- Analytics dashboard shows live event data
+- i18n system changes UI text based on locale selection
+- Health checks integrate properly with hosting platform
+- Visual regression tests catch unintended UI changes
+- Search improvements provide noticeably better results
+- Onboarding flow personalizes user experience
+
+### Performance
+- Feature flag lookups are fast due to caching
+- Event tracking doesn't impact user experience
+- Health endpoints respond quickly
+- Visual regression tests complete in reasonable time
+
+### User Experience
+- Role-based navigation is intuitive
+- CSV import provides clear feedback and error handling
+- Admin dashboards are functional and useful
+- Search results feel obviously improved
+- Onboarding is smooth and adds value
+
+## Implementation Notes
+- Maintain existing design system and component patterns
+- Ensure all new features are accessible (WCAG 2.1 AA)
+- Add comprehensive tests for new functionality
+- Document new APIs and features
+- Follow existing code style and conventions
+- Implement feature flags for gradual rollouts where appropriate

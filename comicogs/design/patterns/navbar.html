@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navbar Pattern - Comicogs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: 'var(--color-primary)',
+            secondary: 'var(--color-secondary)',
+            accent: 'var(--color-accent)',
+            background: 'var(--color-background)',
+            foreground: 'var(--color-foreground)',
+            muted: 'var(--color-muted)',
+            border: 'var(--color-border)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      /* Using our token system */
+      --color-primary: #2563eb;
+      --color-secondary: #7c3aed;
+      --color-accent: #ea580c;
+      --color-background: #f8fafc;
+      --color-foreground: #475569;
+      --color-muted: #f1f5f9;
+      --color-border: #e2e8f0;
+      --color-success: #059669;
+      --color-warning: #d97706;
+      --color-danger: #dc2626;
+    }
+    
+    .dark {
+      --color-background: #0f172a;
+      --color-foreground: #f1f5f9;
+      --color-primary: #3b82f6;
+      --color-secondary: #8b5cf6;
+      --color-accent: #f59e0b;
+      --color-muted: #1e293b;
+      --color-border: #334155;
+    }
+  </style>
+</head>
+<body class="bg-background text-foreground">
+
+<!-- Main Navigation Bar -->
+<nav class="bg-background/95 backdrop-blur-md border-b border-border sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      
+      <!-- Left Section: Logo + Primary Navigation -->
+      <div class="flex items-center space-x-8">
+        <!-- Logo -->
+        <div class="flex-shrink-0">
+          <a href="/" class="flex items-center space-x-2 text-primary font-bold text-xl">
+            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            <span>Comicogs</span>
+          </a>
+        </div>
+        
+        <!-- Primary Navigation (Desktop) -->
+        <div class="hidden md:flex space-x-8">
+          <a href="/vault" class="text-foreground hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">
+            My Vault
+          </a>
+          <a href="/marketplace" class="text-foreground hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">
+            Marketplace
+          </a>
+          <a href="/wishlist" class="text-foreground hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">
+            Wishlist
+          </a>
+          <a href="/sell" class="text-foreground hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">
+            Sell Comics
+          </a>
+        </div>
+      </div>
+
+      <!-- Center Section: Search Bar -->
+      <div class="flex-1 max-w-lg mx-8 hidden lg:flex">
+        <div class="w-full">
+          <label for="search" class="sr-only">Search comics</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+            <input
+              id="search"
+              name="search"
+              type="search"
+              placeholder="Search comics, series, creators..."
+              class="block w-full pl-10 pr-3 py-2 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Section: Actions + User Menu -->
+      <div class="flex items-center space-x-4">
+        
+        <!-- Search Icon (Mobile) -->
+        <button class="lg:hidden p-2 rounded-md text-foreground hover:text-primary hover:bg-muted transition-colors">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </button>
+
+        <!-- Cart/Watchlist -->
+        <button class="relative p-2 rounded-md text-foreground hover:text-primary hover:bg-muted transition-colors">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+          </svg>
+          <span class="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+        </button>
+
+        <!-- Notifications -->
+        <button class="relative p-2 rounded-md text-foreground hover:text-primary hover:bg-muted transition-colors">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM10.94 7.94L7.94 4.94A3 3 0 015 3a3 3 0 00-3 3v4.5a.5.5 0 001 0V6a2 2 0 012-2 2 2 0 012 2v4.5a.5.5 0 001 0V6a3 3 0 00-3-3z"/>
+          </svg>
+          <span class="absolute -top-1 -right-1 bg-danger text-white text-xs rounded-full h-2 w-2"></span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <div class="flex gap-2">
+          <button class="p-2 rounded-md text-foreground hover:text-primary hover:bg-muted transition-colors">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+          </button>
+          <button class="p-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5H9M21 9H9M21 13H9"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- User Menu -->
+        <div class="relative">
+          <button class="flex items-center space-x-3 p-2 rounded-md text-foreground hover:bg-muted transition-colors">
+            <img class="h-8 w-8 rounded-full bg-muted" src="data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23e2e8f0'/%3E%3Cpath d='M16 16a4 4 0 100-8 4 4 0 000 8zM16 18c-4.42 0-8 2.69-8 6v2h16v-2c0-3.31-3.58-6-8-6z' fill='%23475569'/%3E%3C/svg%3E" alt="User avatar" />
+            <span class="hidden sm:block text-sm font-medium">John Collector</span>
+            <svg class="hidden sm:block h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden p-2 rounded-md text-foreground hover:text-primary hover:bg-muted transition-colors">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Menu (Hidden by default) -->
+    <div class="md:hidden hidden" id="mobile-menu">
+      <div class="px-2 pt-2 pb-3 space-y-1 border-t border-border">
+        <a href="/vault" class="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-primary hover:bg-muted transition-colors">
+          My Vault
+        </a>
+        <a href="/marketplace" class="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-primary hover:bg-muted transition-colors">
+          Marketplace
+        </a>
+        <a href="/wishlist" class="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-primary hover:bg-muted transition-colors">
+          Wishlist
+        </a>
+        <a href="/sell" class="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-primary hover:bg-muted transition-colors">
+          Sell Comics
+        </a>
+        
+        <!-- Mobile Search -->
+        <div class="pt-4">
+          <label for="mobile-search" class="sr-only">Search comics</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+            <input
+              id="mobile-search"
+              name="search"
+              type="search"
+              placeholder="Search comics, series, creators..."
+              class="block w-full pl-10 pr-3 py-2 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Demo Content -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="bg-muted rounded-lg p-8 text-center">
+    <h1 class="text-2xl font-bold text-foreground mb-4">Navbar Pattern Demo</h1>
+    <p class="text-muted-foreground">This navbar uses only CSS variables (no hard-coded colors) and is fully responsive.</p>
+    
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+      <div class="bg-background p-4 rounded border border-border">
+        <h3 class="font-medium text-foreground mb-2">Features</h3>
+        <ul class="text-muted-foreground space-y-1">
+          <li>• Responsive design</li>
+          <li>• Search integration</li>
+          <li>• Theme toggle</li>
+          <li>• User menu</li>
+        </ul>
+      </div>
+      <div class="bg-background p-4 rounded border border-border">
+        <h3 class="font-medium text-foreground mb-2">Accessibility</h3>
+        <ul class="text-muted-foreground space-y-1">
+          <li>• Keyboard navigation</li>
+          <li>• Screen reader labels</li>
+          <li>• Focus indicators</li>
+          <li>• High contrast support</li>
+        </ul>
+      </div>
+      <div class="bg-background p-4 rounded border border-border">
+        <h3 class="font-medium text-foreground mb-2">Tokens Used</h3>
+        <ul class="text-muted-foreground space-y-1">
+          <li>• --color-primary</li>
+          <li>• --color-background</li>
+          <li>• --color-foreground</li>
+          <li>• --color-border</li>
+        </ul>
+      </div>
+      <div class="bg-background p-4 rounded border border-border">
+        <h3 class="font-medium text-foreground mb-2">Interactions</h3>
+        <ul class="text-muted-foreground space-y-1">
+          <li>• Hover states</li>
+          <li>• Active states</li>
+          <li>• Focus states</li>
+          <li>• Mobile menu</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Simple mobile menu toggle
+  document.querySelector('[md\\:hidden] button:last-child').addEventListener('click', function() {
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('hidden');
+  });
+  
+  // Demo theme toggle
+  document.querySelector('button[class*="bg-primary"]').addEventListener('click', function() {
+    document.documentElement.classList.toggle('dark');
+  });
+</script>
+
+</body>
+</html>

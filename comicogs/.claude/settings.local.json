@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "Read(/Users/jaywest/Agent_Management_System/**)",
+      "Read(/Users/jaywest/Agent_Management_System/**)",
+      "Read(/Users/jaywest/Agent_Management_System/**)",
+      "Read(/Users/jaywest/temp-ams/**)",
+      "Read(/Users/jaywest/temp-ams/**)",
+      "Read(/Users/jaywest/temp-ams/**)",
+      "Read(/Users/jaywest/temp-ams/**)",
+      "Read(/Users/jaywest/temp-ams/**)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

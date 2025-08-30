@@ -1,1 +1,1 @@
-{"/_not-found/page":"/_not-found","/orders/[id]/page":"/orders/[id]","/checkout/page":"/checkout","/page":"/","/vault/page":"/vault"}
+{"/_not-found/page":"/_not-found","/(legal)/moderation/page":"/moderation","/account/saved-searches/page":"/account/saved-searches","/(legal)/privacy/page":"/privacy","/(legal)/terms/page":"/terms","/admin/moderation/page":"/admin/moderation","/checkout/page":"/checkout","/page":"/","/orders/[id]/page":"/orders/[id]","/vault/page":"/vault","/offline/page":"/offline"}

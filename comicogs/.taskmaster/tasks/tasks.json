@@ -1,0 +1,121 @@
+{
+  "project": {
+    "name": "Comicogs Enhancement",
+    "description": "Comprehensive enhancement of the Comicogs comic collection platform with role-based access, SEO, analytics, and reliability improvements",
+    "version": "1.0.0"
+  },
+  "tags": {
+    "master": {
+      "name": "master",
+      "description": "Main development tasks",
+      "created": "2024-12-19T00:00:00.000Z",
+      "tasks": [
+        {
+          "id": 1,
+          "title": "Roles & Guarded UX Implementation",
+          "description": "Implement role-based access control with user roles (user, seller, admin) and protect marketplace operations",
+          "status": "pending",
+          "priority": "high",
+          "dependencies": [],
+          "details": "Add Role enum to Prisma schema with values 'user', 'seller', 'admin'. Update User model with role field defaulting to 'user'. Protect POST/PUT/DELETE operations on listings to roles 'seller' and 'admin'. Create /admin/moderation page with table of latest listings and ability to mark as featured/hidden. Update navbar to show 'Sell' and 'Admin' links based on user role. Handle authentication errors with 401 for unauth users and CTA for non-sellers.",
+          "testStrategy": "Test role-based access by creating users with different roles and verifying API endpoints return appropriate responses. Test admin dashboard functionality for listing moderation. Verify navbar shows correct links based on user role."
+        },
+        {
+          "id": 2,
+          "title": "SEO Foundation Setup",
+          "description": "Implement comprehensive SEO optimization with metadata, sitemaps, and structured data",
+          "status": "pending",
+          "priority": "high",
+          "dependencies": [],
+          "details": "Add Next.js metadata API for title, description, and OpenGraph images per route. Generate /sitemap.xml including comics, listings, and homepage routes. Add /robots.txt and canonical link tags to all pages. Inject JSON-LD for Product schema on listing detail pages. Ensure sitemap is valid and OG cards render properly in previews.",
+          "testStrategy": "Use npx next-sitemap or custom implementation to verify valid sitemap output. Test OG card rendering in social media preview tools. Validate JSON-LD structured data using Google's Rich Results test."
+        },
+        {
+          "id": 3,
+          "title": "CSV Import/Export System",
+          "description": "Build data import/export functionality for user collections with validation and error handling",
+          "status": "pending",
+          "priority": "medium",
+          "dependencies": [],
+          "details": "Add 'Export CSV' button in /vault page with server endpoint to export user collection. Create 'Import CSV' modal with client-side parsing and POST to /api/collection/import with Zod validation. Show dry-run preview with errors and line numbers. Ensure round-trip export/import with zero data loss.",
+          "testStrategy": "Test export functionality to generate CSV file. Import the same CSV file and verify data integrity with zero loss. Test error handling with malformed CSV files and display of line-specific errors."
+        },
+        {
+          "id": 4,
+          "title": "Feature Flags System",
+          "description": "Implement lightweight feature flag system with database storage and admin controls",
+          "status": "pending",
+          "priority": "medium",
+          "dependencies": [],
+          "details": "Add Flag table to database with name, enabled status, and description. Implement in-memory caching for flag lookup performance. Create useFlag('flagName', 'defaultValue') React hook. Build admin UI to toggle flags, protected behind admin role. Enable runtime behavior changes without requiring deployments.",
+          "testStrategy": "Create test flags and verify admin can toggle them. Test useFlag hook returns correct values based on flag state. Verify caching works and flags update appropriately. Test that toggling flags switches runtime behavior without redeploy."
+        },
+        {
+          "id": 5,
+          "title": "Event Pipeline & Analytics Dashboard",
+          "description": "Build comprehensive event tracking system with analytics dashboard for business insights",
+          "status": "pending",
+          "priority": "medium",
+          "dependencies": [],
+          "details": "Create frontend event helper track(event, props) function that sends to /api/events. Persist events with userId, name, props JSON, and timestamp. Mirror events to pino logger for debugging. Build /admin/analytics dashboard with charts for DAU, listings created, buy clicks, checkout conversions. Sample events appropriately in development environment.",
+          "testStrategy": "Test event tracking by triggering various user actions and verifying events are captured. Verify analytics dashboard renders charts from live event data. Test event sampling works properly in development environment."
+        },
+        {
+          "id": 6,
+          "title": "Internationalization (i18n) Scaffold",
+          "description": "Set up i18n infrastructure with locale switching and content translation system",
+          "status": "pending",
+          "priority": "low",
+          "dependencies": [],
+          "details": "Integrate next-intl or similar i18n solution with English ('en') as default locale. Replace hard-coded text with t('...') function calls in key pages and components. Add locale switcher component with persistence via cookie/query parameter. Implement price localization using Intl.NumberFormat.",
+          "testStrategy": "Test locale switching changes UI text appropriately. Verify prices are localized correctly for different locales. Test persistence of locale selection across browser sessions."
+        },
+        {
+          "id": 7,
+          "title": "Reliability & Monitoring Basics",
+          "description": "Implement health checks, error pages, and backup procedures for production readiness",
+          "status": "pending",
+          "priority": "high",
+          "dependencies": [],
+          "details": "Add /readyz and /livez endpoints for health monitoring. Create custom 404 and 500 error pages with helpful navigation links. Document PostgreSQL backup strategy using pg_dump cron or host-based snapshots. Verify health check integration with hosting platform.",
+          "testStrategy": "Test health endpoints return appropriate responses. Verify custom error pages display correctly. Document and test backup procedure once to ensure it works properly."
+        },
+        {
+          "id": 8,
+          "title": "Visual Regression Testing",
+          "description": "Implement visual regression testing to prevent unintended UI changes",
+          "status": "pending",
+          "priority": "medium",
+          "dependencies": [],
+          "details": "Add Playwright snapshot tests for key pages: Home, Vault (with filters open), Listing Detail, Wishlist. Store baseline images and fail on >0.2% visual differences. Upload test artifacts on CI failures for review. Prevent PRs with unintended visual changes from merging.",
+          "testStrategy": "Generate baseline snapshots and verify tests fail appropriately when visual changes occur. Test CI integration uploads artifacts on failures. Verify diff threshold of 0.2% catches meaningful changes."
+        },
+        {
+          "id": 9,
+          "title": "Discovery & Search Enhancement",
+          "description": "Improve search functionality with sorting, relevance boosting, and saved searches",
+          "status": "pending",
+          "priority": "medium",
+          "dependencies": [],
+          "details": "Add sort options for newest, price ascending/descending, and popularity. Implement search relevance boosting for title/series matches with fuzzy search fallback. Allow users to save searches with notification cadence persistence. Create alerts table structure for future email notifications. Ensure search results feel obviously better with relevance improvements.",
+          "testStrategy": "Test all sort options work correctly. Verify search relevance improvements with title/series matches ranking higher. Test saved search functionality persists user queries and preferences."
+        },
+        {
+          "id": 10,
+          "title": "User Onboarding Flow",
+          "description": "Create guided onboarding experience for new users with personalization",
+          "status": "pending",
+          "priority": "low",
+          "dependencies": [],
+          "details": "Create first login modal wizard with 3 steps: choose series preferences, optional CSV import, and theme selection. Store completion flag on User model. Use step 1 data to personalize Vault filter defaults. Allow returning users to skip wizard. Seamlessly integrate onboarding choices into user experience.",
+          "testStrategy": "Test onboarding wizard appears for new users and can be completed successfully. Verify returning users can skip the wizard. Test that onboarding data personalizes the Vault filters appropriately."
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "created": "2024-12-19T00:00:00.000Z",
+    "updated": "2024-12-19T00:00:00.000Z",
+    "version": "1.0.0"
+  }
+}

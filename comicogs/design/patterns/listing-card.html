@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listing Card Pattern - Comicogs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --color-primary: #2563eb;
+      --color-secondary: #7c3aed;
+      --color-accent: #ea580c;
+      --color-background: #f8fafc;
+      --color-foreground: #475569;
+      --color-muted: #f1f5f9;
+      --color-border: #e2e8f0;
+      --color-success: #059669;
+      --color-warning: #d97706;
+      --color-danger: #dc2626;
+    }
+    .dark {
+      --color-background: #0f172a;
+      --color-foreground: #f1f5f9;
+      --color-primary: #3b82f6;
+      --color-secondary: #8b5cf6;
+      --color-accent: #f59e0b;
+      --color-muted: #1e293b;
+      --color-border: #334155;
+    }
+  </style>
+</head>
+<body class="bg-background text-foreground p-8">
+
+<div class="max-w-6xl mx-auto space-y-8">
+  <h1 class="text-3xl font-bold text-center mb-8">Comic Listing Card Patterns</h1>
+  
+  <!-- Grid Layout -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    
+    <!-- Standard Listing Card -->
+    <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+      <!-- Comic Cover -->
+      <div class="relative aspect-[2/3] bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800">
+        <img src="data:image/svg+xml,%3Csvg width='200' height='300' viewBox='0 0 200 300' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='200' height='300' fill='%232563eb'/%3E%3Ctext x='100' y='150' text-anchor='middle' fill='white' font-size='24' font-weight='bold'%3EAmazing Spider-Man%3C/text%3E%3C/svg%3E" 
+             alt="Amazing Spider-Man #1" 
+             class="w-full h-full object-cover" />
+        
+        <!-- Status Badge -->
+        <div class="absolute top-3 right-3">
+          <span class="bg-green-500 text-white text-xs font-medium px-2 py-1 rounded-full">
+            Available
+          </span>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button class="bg-white/90 text-gray-700 p-2 rounded-full shadow-sm hover:bg-white transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Card Content -->
+      <div class="p-4 space-y-3">
+        <!-- Title & Issue -->
+        <div>
+          <h3 class="font-semibold text-foreground text-sm">Amazing Spider-Man</h3>
+          <p class="text-muted-foreground text-xs">#1 (1963) • Marvel Comics</p>
+        </div>
+        
+        <!-- Condition & Grade -->
+        <div class="flex items-center gap-2">
+          <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2 py-1 rounded">
+            NM 9.4
+          </span>
+          <span class="text-muted-foreground text-xs">CGC Graded</span>
+        </div>
+        
+        <!-- Price & Seller -->
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-foreground font-bold text-lg">$12,500</span>
+            <span class="text-muted-foreground text-xs line-through ml-2">$15,000</span>
+          </div>
+          <div class="text-right text-xs text-muted-foreground">
+            <div>by ComicVault</div>
+            <div class="flex items-center">
+              <span class="text-yellow-500">★★★★★</span>
+              <span class="ml-1">(4.9)</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex gap-2 pt-2">
+          <button class="flex-1 bg-blue-600 text-white text-sm font-medium py-2 px-3 rounded hover:bg-blue-700 transition-colors">
+            Add to Cart
+          </button>
+          <button class="bg-gray-100 dark:bg-gray-700 text-foreground text-sm font-medium py-2 px-3 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+            Quick View
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Premium Listing Card -->
+    <div class="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border-2 border-yellow-200 dark:border-yellow-800 rounded-lg overflow-hidden shadow-md">
+      <div class="relative">
+        <!-- Premium Badge -->
+        <div class="absolute -top-1 -right-1 z-10">
+          <div class="bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-bl-lg">
+            FEATURED
+          </div>
+        </div>
+      </div>
+      
+      <!-- Comic Cover -->
+      <div class="relative aspect-[2/3] bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900 dark:to-purple-800">
+        <img src="data:image/svg+xml,%3Csvg width='200' height='300' viewBox='0 0 200 300' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='200' height='300' fill='%237c3aed'/%3E%3Ctext x='100' y='130' text-anchor='middle' fill='white' font-size='20' font-weight='bold'%3EX-Men%3C/text%3E%3Ctext x='100' y='170' text-anchor='middle' fill='white' font-size='32' font-weight='bold'%3E%23001%3C/text%3E%3C/svg%3E" 
+             alt="X-Men #1" 
+             class="w-full h-full object-cover" />
+             
+        <!-- Rarity Indicator -->
+        <div class="absolute bottom-3 left-3">
+          <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+            RARE
+          </span>
+        </div>
+      </div>
+      
+      <div class="p-4 space-y-3">
+        <div>
+          <h3 class="font-bold text-foreground">X-Men</h3>
+          <p class="text-muted-foreground text-sm">#1 (1963) • Marvel Comics</p>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <span class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-bold px-2 py-1 rounded">
+            CGC 9.8
+          </span>
+          <span class="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-medium px-2 py-1 rounded">
+            WHITE PAGES
+          </span>
+        </div>
+        
+        <div class="bg-yellow-100 dark:bg-yellow-900/50 p-3 rounded-lg">
+          <div class="text-center">
+            <span class="text-foreground font-black text-2xl">$45,000</span>
+            <div class="text-muted-foreground text-xs mt-1">Market Price: $50,000</div>
+          </div>
+        </div>
+        
+        <div class="text-center text-xs text-muted-foreground">
+          <div class="font-medium">GoldenAge Comics</div>
+          <div class="flex items-center justify-center">
+            <span class="text-yellow-500">★★★★★</span>
+            <span class="ml-1">(5.0) • 1,200+ sales</span>
+          </div>
+        </div>
+        
+        <div class="space-y-2">
+          <button class="w-full bg-gradient-to-r from-yellow-400 to-orange-400 text-yellow-900 font-bold py-3 px-4 rounded-lg hover:from-yellow-500 hover:to-orange-500 transition-all transform hover:scale-105">
+            Buy Now - $45,000
+          </button>
+          <div class="flex gap-2">
+            <button class="flex-1 bg-gray-100 dark:bg-gray-700 text-foreground text-sm py-2 px-3 rounded">
+              Make Offer
+            </button>
+            <button class="flex-1 bg-gray-100 dark:bg-gray-700 text-foreground text-sm py-2 px-3 rounded">
+              Watch
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Auction Listing Card -->
+    <div class="bg-white dark:bg-slate-800 border-2 border-red-200 dark:border-red-800 rounded-lg overflow-hidden shadow-sm">
+      <!-- Auction Timer -->
+      <div class="bg-red-500 text-white text-center py-2">
+        <div class="text-xs font-medium">AUCTION ENDING IN</div>
+        <div class="text-sm font-bold">2d 14h 32m</div>
+      </div>
+      
+      <!-- Comic Cover -->
+      <div class="relative aspect-[2/3] bg-gradient-to-br from-red-100 to-red-200 dark:from-red-900 dark:to-red-800">
+        <img src="data:image/svg+xml,%3Csvg width='200' height='300' viewBox='0 0 200 300' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='200' height='300' fill='%23dc2626'/%3E%3Ctext x='100' y='130' text-anchor='middle' fill='white' font-size='18' font-weight='bold'%3EFantastic Four%3C/text%3E%3Ctext x='100' y='170' text-anchor='middle' fill='white' font-size='36' font-weight='bold'%3E%23001%3C/text%3E%3C/svg%3E" 
+             alt="Fantastic Four #1" 
+             class="w-full h-full object-cover" />
+             
+        <!-- Bid Count -->
+        <div class="absolute top-3 right-3">
+          <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+            23 bids
+          </span>
+        </div>
+      </div>
+      
+      <div class="p-4 space-y-3">
+        <div>
+          <h3 class="font-semibold text-foreground">Fantastic Four</h3>
+          <p class="text-muted-foreground text-sm">#1 (1961) • Marvel Comics</p>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <span class="bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-xs font-medium px-2 py-1 rounded">
+            FN 6.0
+          </span>
+          <span class="text-muted-foreground text-xs">Raw (Ungraded)</span>
+        </div>
+        
+        <div class="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
+          <div class="text-xs text-muted-foreground">Current Bid</div>
+          <div class="text-foreground font-bold text-xl">$8,750</div>
+          <div class="text-xs text-muted-foreground">Starting: $5,000 • Reserve: Not Met</div>
+        </div>
+        
+        <div class="text-center text-xs text-muted-foreground">
+          <div>Seller: VintageComics</div>
+          <div class="flex items-center justify-center">
+            <span class="text-yellow-500">★★★★☆</span>
+            <span class="ml-1">(4.2) • 89 sales</span>
+          </div>
+        </div>
+        
+        <div class="space-y-2">
+          <button class="w-full bg-red-600 text-white font-medium py-2 px-4 rounded hover:bg-red-700 transition-colors">
+            Place Bid
+          </button>
+          <div class="flex gap-2">
+            <button class="flex-1 bg-gray-100 dark:bg-gray-700 text-foreground text-sm py-2 px-3 rounded">
+              Watch
+            </button>
+            <button class="flex-1 bg-gray-100 dark:bg-gray-700 text-foreground text-sm py-2 px-3 rounded">
+              History
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Demo Controls -->
+  <div class="fixed bottom-4 right-4">
+    <button 
+      onclick="document.documentElement.classList.toggle('dark')"
+      class="bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors"
+    >
+      🌙
+    </button>
+  </div>
+</div>
+
+</body>
+</html>
