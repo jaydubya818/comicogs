@@ -1,0 +1,19 @@
+📋 VERCEL CONFIGURATION STEPS:
+
+🎯 OPTION 1: Set Root Directory (Recommended)
+Go to your Vercel Dashboard → comicogs-01 → Settings → General
+Set 'Root Directory' to: frontend
+
+🎯 OPTION 2: Alternative vercel.json approach
+Keep Root Directory as '.' but use this vercel.json:
+
+{
+  "buildCommand": "cd frontend && npm run build",
+  "devCommand": "cd frontend && npm run dev",
+  "installCommand": "cd frontend && npm install",
+  "outputDirectory": "frontend/.next"
+}
+
+📝 CURRENT STATUS:
+Your vercel.json is now simplified. You need to set the Root Directory in Vercel Dashboard.
+
