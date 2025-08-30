@@ -1,12 +1,12 @@
-import { Navbar, Hero } from "@/components/ui/patterns";
-
-export default function HomePage() {
+export default function Home() {
   return (
-    <div className="min-h-screen">
-      <Navbar />
-      <main id="main-content">
-        <Hero />
-      </main>
-    </div>
-  )
+    <main style={{ padding: 24 }}>
+      <h1>Comicogs</h1>
+      <p>If you see this on Vercel, Next.js build is working 🎉</p>
+      <ul>
+        <li><a href="/marketplace">/marketplace</a></li>
+        <li><a href="/vault">/vault</a></li>
+      </ul>
+    </main>
+  );
 }

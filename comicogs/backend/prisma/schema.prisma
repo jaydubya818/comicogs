@@ -16,131 +16,354 @@ enum Role {
   admin
 }
 
+enum ListingStatus {
+  draft
+  active
+  sold
+  hidden
+  suspended
+}
+
+enum OrderStatus {
+  pending
+  paid
+  refunded
+  failed
+  canceled
+  expired
+}
+
+enum ReportStatus {
+  open
+  actioned
+  dismissed
+  escalated
+}
+
+enum ReportReason {
+  spam
+  counterfeit
+  offensive
+  mispricing
+  copyright
+  other
+}
+
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
   name      String?
   image     String?
+  bio       String?  @db.Text
   role      Role     @default(user)
+  verified  Boolean  @default(false)
+  suspended Boolean  @default(false)
+  lastLoginAt DateTime?
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
   listings  Listing[]
   orders    Order[]   @relation("BuyerOrders")
   collection CollectionItem[]
   wantlist  WantItem[]
   savedSearches SavedSearch[]
   reports   Report[] @relation("UserReports")
+  sessions  UserSession[] @relation("UserSessions")
+  
+  // Indexes
+  @@index([email])
+  @@index([role])
+  @@index([verified])
+  @@index([createdAt])
+  
+  // Constraints
+  @@map("users")
 }
 
 model Comic {
-  id        String   @id @default(cuid())
-  title     String
-  series    String
-  issue     String
-  grade     String?   // e.g., CGC 9.4
-  format    String?   // "slab" | "raw"
-  price     Decimal?  @db.Decimal(10,2)
-  coverUrl  String?
-  tags      String[]  // ["silver-age","key-issue"]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  listings  Listing[]
+  id          String   @id @default(cuid())
+  title       String
+  series      String
+  issue       String
+  variant     String?  // Cover variant description
+  publisher   String?
+  year        Int?
+  grade       String?  // e.g., CGC 9.4, CBCS 9.6
+  format      String?  // "slab" | "raw"
+  estimatedPrice Decimal? @db.Decimal(10,2)
+  coverUrl    String?
+  thumbnailUrl String?
+  description String?  @db.Text
+  keyIssue    Boolean  @default(false)
+  firstAppearance String? // Character first appearance
+  tags        String[] // ["silver-age","key-issue"]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  listings    Listing[]
   collectionItems CollectionItem[]
-
+  
+  // Indexes
   @@index([series, issue])
   @@index([series])
+  @@index([publisher])
+  @@index([year])
+  @@index([keyIssue])
   @@index([tags], type: Gin)
+  @@index([createdAt])
+  
+  // Unique constraint on series, issue, variant to prevent duplicates
+  @@unique([series, issue, variant])
+  @@map("comics")
 }
 
 model Listing {
-  id        String   @id @default(cuid())
-  comicId   String
-  sellerId  String
-  price     Decimal  @db.Decimal(10,2)
-  status    String   // "active" | "sold" | "draft" | "hidden"
-  images    Json?    // { thumb: "path", card: "path", full: "path" }
-  blur      String?  // base64 blur placeholder
-  createdAt DateTime @default(now())
-  comic     Comic    @relation(fields: [comicId], references: [id])
-  seller    User     @relation(fields: [sellerId], references: [id])
-  order     Order?
-  reports   Report[]
-
+  id          String        @id @default(cuid())
+  comicId     String
+  sellerId    String
+  price       Decimal       @db.Decimal(10,2)
+  originalPrice Decimal?    @db.Decimal(10,2) // Track price changes
+  status      ListingStatus @default(draft)
+  condition   String?       // Custom condition notes
+  images      Json?         // { thumb: "path", card: "path", full: "path" }
+  blur        String?       // base64 blur placeholder
+  description String?       @db.Text
+  featured    Boolean       @default(false)
+  views       Int           @default(0)
+  watchCount  Int           @default(0)
+  soldAt      DateTime?     // When item was sold
+  expiresAt   DateTime?     // Auto-expire listings
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  // Relations
+  comic       Comic         @relation(fields: [comicId], references: [id], onDelete: Restrict)
+  seller      User          @relation(fields: [sellerId], references: [id], onDelete: Restrict)
+  order       Order?
+  reports     Report[]
+  
+  // Indexes
   @@index([status, price])
+  @@index([status, createdAt])
   @@index([createdAt])
   @@index([sellerId])
+  @@index([featured])
+  @@index([expiresAt])
+  
+  // Constraints - prevent duplicate active listings for same comic by same seller
+  @@unique([comicId, sellerId, status], name: "unique_active_listing")
+  @@map("listings")
 }
 
 model Order {
-  id            String   @id @default(cuid())
+  id            String      @id @default(cuid())
   userId        String
-  listingId     String   @unique
-  status        String   @default("pending") // pending|paid|refunded|failed|canceled
-  amount        Int      // cents
-  currency      String   @default("usd")
-  stripeSession String?  @unique
-  paymentIntent String?  @unique
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  buyer         User     @relation("BuyerOrders", fields: [userId], references: [id])
-  listing       Listing  @relation(fields: [listingId], references: [id])
-
+  listingId     String      @unique
+  status        OrderStatus @default(pending)
+  amount        Int         // cents - must be positive
+  fees          Int         @default(0) // platform fees in cents
+  tax           Int         @default(0) // tax in cents
+  currency      String      @default("usd")
+  stripeSession String?     @unique
+  paymentIntent String?     @unique
+  shippingAddress Json?     // Structured shipping address
+  billingAddress Json?      // Structured billing address
+  trackingNumber String?
+  shippedAt     DateTime?
+  deliveredAt   DateTime?
+  canceledAt    DateTime?
+  cancelReason  String?
+  refundAmount  Int?        // refund amount in cents
+  refundReason  String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  // Relations
+  buyer         User        @relation("BuyerOrders", fields: [userId], references: [id], onDelete: Restrict)
+  listing       Listing     @relation(fields: [listingId], references: [id], onDelete: Restrict)
+  
+  // Indexes
   @@index([status])
+  @@index([status, createdAt])
   @@index([createdAt])
   @@index([userId])
+  @@index([shippedAt])
+  @@index([deliveredAt])
+  
+  // Constraints - amount must be positive
+  @@map("orders")
 }
 
 model CollectionItem {
-  id        String   @id @default(cuid())
-  userId    String
-  comicId   String
-  notes     String?
-  acquiredAt DateTime?
-  user      User  @relation(fields: [userId], references: [id])
-  comic     Comic @relation(fields: [comicId], references: [id])
+  id          String    @id @default(cuid())
+  userId      String
+  comicId     String
+  notes       String?   @db.Text
+  condition   String?   // Personal condition assessment
+  acquiredAt  DateTime?
+  paidPrice   Decimal?  @db.Decimal(10,2) // What user paid
+  currentValue Decimal? @db.Decimal(10,2) // Current estimated value
+  favorite    Boolean   @default(false)
+  forSale     Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comic       Comic     @relation(fields: [comicId], references: [id], onDelete: Restrict)
+  
+  // Indexes
+  @@index([userId])
+  @@index([comicId])
+  @@index([favorite])
+  @@index([forSale])
+  @@index([createdAt])
+  
+  // Unique constraint - user can only have one item per comic in collection
   @@unique([userId, comicId])
+  @@map("collection_items")
 }
 
 model WantItem {
-  id        String   @id @default(cuid())
-  userId    String
-  series    String
-  issue     String
-  maxPrice  Decimal? @db.Decimal(10,2)
-  user      User @relation(fields: [userId], references: [id])
+  id          String    @id @default(cuid())
+  userId      String
+  series      String
+  issue       String
+  variant     String?   // Specific variant wanted
+  publisher   String?
+  minGrade    String?   // Minimum acceptable grade
+  maxPrice    Decimal?  @db.Decimal(10,2)
+  notes       String?   @db.Text
+  priority    Int       @default(3) // 1=high, 2=medium, 3=low
+  emailAlerts Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   
-  @@unique([userId, series, issue])
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Indexes
+  @@index([userId])
+  @@index([series, issue])
+  @@index([priority])
+  @@index([createdAt])
+  
+  // Unique constraint - user can only want one item per series/issue/variant combo
+  @@unique([userId, series, issue, variant])
+  @@map("want_items")
 }
 
 model WebhookEvent {
-  id     String   @id
-  type   String
-  seenAt DateTime @default(now())
+  id        String   @id
+  type      String
+  payload   Json?    // Store the full webhook payload
+  processed Boolean  @default(false)
+  attempts  Int      @default(0)
+  lastError String?
+  seenAt    DateTime @default(now())
+  processedAt DateTime?
+  
+  // Indexes
+  @@index([type])
+  @@index([processed])
+  @@index([seenAt])
+  @@map("webhook_events")
 }
 
 model SavedSearch {
   id        String    @id @default(cuid())
   userId    String
-  name      String
-  queryJson Json
-  cadence   String    @default("weekly") // "daily" | "weekly"
+  name      String    // User-friendly name for the search
+  queryJson Json      // Search parameters and filters
+  cadence   String    @default("weekly") // "daily" | "weekly" | "monthly"
+  enabled   Boolean   @default(true)
   lastRunAt DateTime?
+  resultsCount Int    @default(0) // Last search result count
   createdAt DateTime  @default(now())
-  user      User      @relation(fields: [userId], references: [id])
+  updatedAt DateTime  @updatedAt
+  
+  // Relations
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Indexes
+  @@index([userId])
+  @@index([enabled])
+  @@index([cadence])
+  @@index([lastRunAt])
+  @@map("saved_searches")
 }
 
 model Report {
-  id        String   @id @default(cuid())
-  listingId String
-  reporterId String
-  reason    String   // spam, counterfeit, offensive, other
-  note      String?
-  status    String   @default("open") // open|actioned|dismissed
-  createdAt DateTime @default(now())
-  listing   Listing  @relation(fields: [listingId], references: [id])
-  reporter  User     @relation("UserReports", fields: [reporterId], references: [id])
-
+  id          String       @id @default(cuid())
+  listingId   String
+  reporterId  String
+  reason      ReportReason
+  note        String?      @db.Text
+  status      ReportStatus @default(open)
+  reviewedBy  String?      // Admin who reviewed
+  reviewNote  String?      @db.Text
+  actionTaken String?      // What action was taken
+  priority    Int          @default(2) // 1=high, 2=medium, 3=low
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  reviewedAt  DateTime?
+  
+  // Relations
+  listing     Listing      @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  reporter    User         @relation("UserReports", fields: [reporterId], references: [id], onDelete: Restrict)
+  
+  // Indexes
   @@index([status])
+  @@index([status, priority])
   @@index([createdAt])
   @@index([listingId])
+  @@index([reporterId])
+  @@index([reason])
+  
+  // Prevent duplicate reports from same user for same listing
+  @@unique([listingId, reporterId])
+  @@map("reports")
+}
+
+// New models for enhanced functionality
+
+model UserSession {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  userAgent String?
+  ipAddress String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  lastUsedAt DateTime @default(now())
+  
+  // Relations
+  user      User     @relation("UserSessions", fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Indexes
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+  @@map("user_sessions")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String   // CREATE, UPDATE, DELETE, LOGIN, etc.
+  resource  String   // User, Listing, Order, etc.
+  resourceId String?
+  details   Json?    // Additional context
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  
+  // Indexes
+  @@index([userId])
+  @@index([action])
+  @@index([resource])
+  @@index([createdAt])
+  @@map("audit_logs")
 }
