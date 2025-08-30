@@ -387,9 +387,9 @@ When planning UI components, ALWAYS query the MCP for:
 - Theming guidance
 ```
 
-### Agent Slash Commands
+### Design System Commands
 
-Quick design system commands for AI agents:
+Quick design system commands for development:
 - `/layout-5 [route]` - Generate 5 ASCII layout variants
 - `/theme-5 [component]` - Apply 5 theme variants using tokens
 - `/shadcn-plan [feature]` - Generate implementation plan

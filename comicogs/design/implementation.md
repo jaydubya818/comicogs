@@ -25,7 +25,7 @@ This file serves as a template for `/shadcn-plan` command outputs and manual imp
 
 ## Usage Instructions
 
-### For AI Agents
+### For Development
 When using `/shadcn-plan [feature-description]`:
 1. Replace this template content with actual implementation plan
 2. Include detailed component breakdown
