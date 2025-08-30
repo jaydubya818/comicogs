@@ -1,0 +1,199 @@
+/* === Tailwind v4 base === */
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+/* === Core tokens (shadcn-compatible) === */
+:root {
+  /* Base */
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+
+  /* Surfaces */
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+
+  /* Semantic */
+  --primary: 221 83% 53%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 22 82% 39%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+
+  /* Misc */
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 215 20.2% 65.1%;
+  --radius: 0.5rem;
+
+  /* Typography */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  
+  /* Comic-specific colors (Coolors palette) */
+  --coolors-hero-blue: 221 83% 53%;
+  --coolors-comic-purple: 271 81% 56%;
+  --coolors-energy-orange: 22 82% 39%;
+  --coolors-success-green: 160 84% 39%;
+  --coolors-warning-amber: 36 100% 50%;
+  --coolors-danger-red: 0 84% 60%;
+}
+
+/* === Dark tokens === */
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 217 91% 60%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 22 82% 49%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 215 20.2% 65.1%;
+}
+
+/* === Optional: Coolors palette map (paste your CSS vars below this comment)
+   Copy from coolors.co → Export → CSS Variables, then map them to tokens above
+   or override tokens in a theme class (e.g., .theme-tweakcn) === */
+/* @coolors
+:root {
+  --coolors-primary: 250 95% 60%;
+  --coolors-accent: 160 90% 45%;
+  ...
+}
+*/
+
+/* === Multi-theme system (toggle by adding theme class to <body>) === */
+
+/* Default theme (current design) */
+.theme-default {
+  /* Already defined in :root above - no overrides needed */
+}
+.dark.theme-default {
+  /* Already defined in .dark above - no overrides needed */
+}
+
+/* Neon theme (cyberpunk/gaming aesthetic) */
+.theme-neon {
+  --primary: 320 100% 60%;        /* Hot pink */
+  --primary-foreground: 0 0% 0%;
+  --secondary: 180 100% 50%;      /* Cyan */
+  --secondary-foreground: 0 0% 0%;
+  --accent: 60 100% 50%;          /* Electric yellow */
+  --accent-foreground: 0 0% 0%;
+  --muted: 280 20% 10%;           /* Dark purple */
+  --muted-foreground: 280 20% 80%;
+  --background: 0 0% 2%;          /* Near black */
+  --foreground: 0 0% 95%;         /* Near white */
+  --card: 280 20% 8%;
+  --card-foreground: 0 0% 95%;
+  --border: 320 50% 30%;          /* Neon pink border */
+  --input: 280 20% 8%;
+  --ring: 320 100% 60%;
+}
+.dark.theme-neon {
+  /* Neon theme is inherently dark - same as above */
+  --primary: 320 100% 70%;        /* Brighter in dark mode */
+  --secondary: 180 100% 60%;
+  --accent: 60 100% 60%;
+  --border: 320 50% 40%;
+}
+
+/* Paper theme (minimal/newspaper aesthetic) */
+.theme-paper {
+  --primary: 0 0% 20%;            /* Charcoal */
+  --primary-foreground: 0 0% 98%;
+  --secondary: 30 5% 85%;         /* Warm gray */
+  --secondary-foreground: 0 0% 20%;
+  --accent: 25 30% 45%;           /* Sepia brown */
+  --accent-foreground: 0 0% 98%;
+  --muted: 30 10% 90%;            /* Light cream */
+  --muted-foreground: 0 0% 45%;
+  --background: 45 15% 97%;       /* Off-white/cream */
+  --foreground: 0 0% 15%;         /* Dark gray */
+  --card: 0 0% 100%;              /* Pure white */
+  --card-foreground: 0 0% 15%;
+  --border: 30 8% 80%;            /* Light brown-gray */
+  --input: 30 10% 90%;
+  --ring: 25 30% 45%;
+  --destructive: 0 50% 40%;       /* Muted red */
+  --destructive-foreground: 0 0% 98%;
+}
+.dark.theme-paper {
+  --primary: 30 15% 80%;          /* Light cream */
+  --primary-foreground: 0 0% 10%;
+  --secondary: 30 8% 25%;         /* Dark warm gray */
+  --secondary-foreground: 30 15% 80%;
+  --accent: 25 25% 55%;           /* Lighter sepia */
+  --accent-foreground: 0 0% 10%;
+  --muted: 30 8% 20%;             /* Dark cream */
+  --muted-foreground: 30 15% 70%;
+  --background: 30 8% 8%;         /* Dark warm gray */
+  --foreground: 30 15% 85%;       /* Light cream */
+  --card: 30 8% 12%;
+  --card-foreground: 30 15% 85%;
+  --border: 30 8% 25%;
+  --input: 30 8% 12%;
+  --ring: 25 25% 55%;
+}
+
+/* TweakCN theme (professional/enterprise) - keeping for backward compatibility */
+.theme-tweakcn {
+  /* Comic marketplace professional theme */
+  --primary: 221 83% 53%;
+  --accent: 22 82% 39%;
+  --secondary: 271 81% 56%;
+  --muted: 220 14% 96%;
+  --border: 220 15% 86%;
+}
+.dark.theme-tweakcn {
+  --primary: 217 91% 60%;
+  --accent: 22 82% 49%;
+  --secondary: 271 81% 66%;
+  --muted: 240 10% 16%;
+  --border: 240 12% 22%;
+}
+
+/* === Base layer + radius mapping === */
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
+
+  :root {
+    --radius-sm: calc(var(--radius) - 2px);
+    --radius-md: var(--radius);
+    --radius-lg: calc(var(--radius) + 2px);
+  }
+}
+
+/* === Motion-safety utilities for subtle UI polish === */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-safe-fade-in { animation: fade-in 180ms ease-out both; }
+  .motion-safe-scale-in { animation: scale-in 160ms ease-out both; }
+}
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.98); }
+  to   { opacity: 1; transform: scale(1); }
+}

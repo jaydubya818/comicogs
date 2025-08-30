@@ -1,0 +1,410 @@
+/* Animatopy-inspired Micro-Animations for Comicogs */
+/* Motion-safe wrapper ensures animations only run when user prefers motion */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Fade animations */
+  .animatopy-fade-in {
+    animation: animatopy-fade-in var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  .animatopy-fade-out {
+    animation: animatopy-fade-out var(--motion-duration-normal, 200ms) var(--motion-ease-in, ease-in);
+  }
+
+  .animatopy-fade-in-up {
+    animation: animatopy-fade-in-up var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  .animatopy-fade-in-down {
+    animation: animatopy-fade-in-down var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  .animatopy-fade-in-left {
+    animation: animatopy-fade-in-left var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  .animatopy-fade-in-right {
+    animation: animatopy-fade-in-right var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  /* Slide animations */
+  .animatopy-slide-up {
+    animation: animatopy-slide-up var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  .animatopy-slide-down {
+    animation: animatopy-slide-down var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  .animatopy-slide-left {
+    animation: animatopy-slide-left var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  .animatopy-slide-right {
+    animation: animatopy-slide-right var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  /* Scale animations */
+  .animatopy-scale-in {
+    animation: animatopy-scale-in var(--motion-duration-fast, 150ms) var(--motion-ease-out, ease-out);
+  }
+
+  .animatopy-scale-out {
+    animation: animatopy-scale-out var(--motion-duration-fast, 150ms) var(--motion-ease-in, ease-in);
+  }
+
+  .animatopy-scale-up {
+    animation: animatopy-scale-up var(--motion-duration-fast, 150ms) var(--motion-ease-out, ease-out);
+  }
+
+  .animatopy-scale-down {
+    animation: animatopy-scale-down var(--motion-duration-fast, 150ms) var(--motion-ease-in, ease-in);
+  }
+
+  /* Bounce animations (subtle) */
+  .animatopy-bounce-in {
+    animation: animatopy-bounce-in var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  .animatopy-bounce-up {
+    animation: animatopy-bounce-up var(--motion-duration-fast, 150ms) var(--motion-ease-out, ease-out);
+  }
+
+  /* Pulse animations */
+  .animatopy-pulse {
+    animation: animatopy-pulse var(--motion-duration-slow, 300ms) var(--motion-ease-in-out, ease-in-out) infinite;
+  }
+
+  .animatopy-pulse-once {
+    animation: animatopy-pulse var(--motion-duration-normal, 200ms) var(--motion-ease-in-out, ease-in-out);
+  }
+
+  /* Wobble animation (very subtle) */
+  .animatopy-wobble {
+    animation: animatopy-wobble var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  /* Flip animations */
+  .animatopy-flip-x {
+    animation: animatopy-flip-x var(--motion-duration-normal, 200ms) var(--motion-ease-in-out, ease-in-out);
+  }
+
+  .animatopy-flip-y {
+    animation: animatopy-flip-y var(--motion-duration-normal, 200ms) var(--motion-ease-in-out, ease-in-out);
+  }
+
+  /* Rotate animations */
+  .animatopy-rotate-in {
+    animation: animatopy-rotate-in var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  .animatopy-rotate-out {
+    animation: animatopy-rotate-out var(--motion-duration-normal, 200ms) var(--motion-ease-in, ease-in);
+  }
+
+  /* Stagger animations for lists */
+  .animatopy-stagger-in > * {
+    animation: animatopy-fade-in-up var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  .animatopy-stagger-in > *:nth-child(1) { animation-delay: 0ms; }
+  .animatopy-stagger-in > *:nth-child(2) { animation-delay: 50ms; }
+  .animatopy-stagger-in > *:nth-child(3) { animation-delay: 100ms; }
+  .animatopy-stagger-in > *:nth-child(4) { animation-delay: 150ms; }
+  .animatopy-stagger-in > *:nth-child(5) { animation-delay: 200ms; }
+  .animatopy-stagger-in > *:nth-child(6) { animation-delay: 250ms; }
+  .animatopy-stagger-in > *:nth-child(7) { animation-delay: 300ms; }
+  .animatopy-stagger-in > *:nth-child(8) { animation-delay: 350ms; }
+  .animatopy-stagger-in > *:nth-child(9) { animation-delay: 400ms; }
+  .animatopy-stagger-in > *:nth-child(10) { animation-delay: 450ms; }
+
+  /* Hover interactions */
+  .animatopy-hover-lift:hover {
+    animation: animatopy-hover-lift var(--motion-duration-fast, 150ms) var(--motion-ease-out, ease-out) forwards;
+  }
+
+  .animatopy-hover-scale:hover {
+    animation: animatopy-hover-scale var(--motion-duration-fast, 150ms) var(--motion-ease-out, ease-out) forwards;
+  }
+
+  .animatopy-hover-rotate:hover {
+    animation: animatopy-hover-rotate var(--motion-duration-fast, 150ms) var(--motion-ease-out, ease-out) forwards;
+  }
+}
+
+/* Keyframe definitions */
+@keyframes animatopy-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes animatopy-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes animatopy-fade-in-up {
+  from { 
+    opacity: 0; 
+    transform: translateY(1rem); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes animatopy-fade-in-down {
+  from { 
+    opacity: 0; 
+    transform: translateY(-1rem); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes animatopy-fade-in-left {
+  from { 
+    opacity: 0; 
+    transform: translateX(-1rem); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateX(0); 
+  }
+}
+
+@keyframes animatopy-fade-in-right {
+  from { 
+    opacity: 0; 
+    transform: translateX(1rem); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateX(0); 
+  }
+}
+
+@keyframes animatopy-slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes animatopy-slide-down {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes animatopy-slide-left {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes animatopy-slide-right {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes animatopy-scale-in {
+  from { 
+    opacity: 0; 
+    transform: scale(0.9); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+}
+
+@keyframes animatopy-scale-out {
+  from { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+  to { 
+    opacity: 0; 
+    transform: scale(0.9); 
+  }
+}
+
+@keyframes animatopy-scale-up {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+@keyframes animatopy-scale-down {
+  from { transform: scale(1.05); }
+  to { transform: scale(1); }
+}
+
+@keyframes animatopy-bounce-in {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.9); 
+  }
+  60% { 
+    opacity: 1; 
+    transform: scale(1.02); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+}
+
+@keyframes animatopy-bounce-up {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-0.25rem); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes animatopy-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes animatopy-wobble {
+  0% { transform: translateX(0); }
+  15% { transform: translateX(-0.125rem) rotate(-1deg); }
+  30% { transform: translateX(0.125rem) rotate(1deg); }
+  45% { transform: translateX(-0.0625rem) rotate(-0.5deg); }
+  60% { transform: translateX(0.0625rem) rotate(0.5deg); }
+  75% { transform: translateX(-0.03125rem) rotate(-0.25deg); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes animatopy-flip-x {
+  0% { transform: perspective(400px) rotateX(90deg); opacity: 0; }
+  40% { transform: perspective(400px) rotateX(-10deg); }
+  70% { transform: perspective(400px) rotateX(10deg); }
+  100% { transform: perspective(400px) rotateX(0deg); opacity: 1; }
+}
+
+@keyframes animatopy-flip-y {
+  0% { transform: perspective(400px) rotateY(90deg); opacity: 0; }
+  40% { transform: perspective(400px) rotateY(-10deg); }
+  70% { transform: perspective(400px) rotateY(10deg); }
+  100% { transform: perspective(400px) rotateY(0deg); opacity: 1; }
+}
+
+@keyframes animatopy-rotate-in {
+  from { 
+    opacity: 0; 
+    transform: rotate(-180deg) scale(0.9); 
+  }
+  to { 
+    opacity: 1; 
+    transform: rotate(0deg) scale(1); 
+  }
+}
+
+@keyframes animatopy-rotate-out {
+  from { 
+    opacity: 1; 
+    transform: rotate(0deg) scale(1); 
+  }
+  to { 
+    opacity: 0; 
+    transform: rotate(180deg) scale(0.9); 
+  }
+}
+
+@keyframes animatopy-hover-lift {
+  from { transform: translateY(0); }
+  to { transform: translateY(-0.125rem); }
+}
+
+@keyframes animatopy-hover-scale {
+  from { transform: scale(1); }
+  to { transform: scale(1.02); }
+}
+
+@keyframes animatopy-hover-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(2deg); }
+}
+
+/* Utility classes for common combinations */
+@media (prefers-reduced-motion: no-preference) {
+  /* Card entrance animations */
+  .animatopy-card-enter {
+    animation: 
+      animatopy-fade-in var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out),
+      animatopy-scale-in var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  /* Modal/drawer animations */
+  .animatopy-modal-enter {
+    animation: 
+      animatopy-fade-in var(--motion-duration-fast, 150ms) var(--motion-ease-out, ease-out),
+      animatopy-scale-in var(--motion-duration-fast, 150ms) var(--motion-ease-out, ease-out);
+  }
+
+  .animatopy-drawer-enter {
+    animation: animatopy-slide-right var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  /* Button interaction feedback */
+  .animatopy-button-press:active {
+    animation: animatopy-scale-down var(--motion-duration-fast, 150ms) var(--motion-ease-in, ease-in);
+  }
+
+  /* Loading state animations */
+  .animatopy-loading-pulse {
+    animation: animatopy-pulse 1.5s var(--motion-ease-in-out, ease-in-out) infinite;
+  }
+
+  /* Success/error feedback */
+  .animatopy-success-bounce {
+    animation: animatopy-bounce-in var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+
+  .animatopy-error-wobble {
+    animation: animatopy-wobble var(--motion-duration-normal, 200ms) var(--motion-ease-out, ease-out);
+  }
+}
+
+/* Performance optimizations */
+.animatopy-fade-in,
+.animatopy-fade-out,
+.animatopy-fade-in-up,
+.animatopy-fade-in-down,
+.animatopy-fade-in-left,
+.animatopy-fade-in-right,
+.animatopy-scale-in,
+.animatopy-scale-out,
+.animatopy-bounce-in,
+.animatopy-card-enter,
+.animatopy-modal-enter {
+  /* Optimize for animations */
+  will-change: transform, opacity;
+}
+
+.animatopy-slide-up,
+.animatopy-slide-down,
+.animatopy-slide-left,
+.animatopy-slide-right,
+.animatopy-drawer-enter {
+  /* Optimize for transform animations */
+  will-change: transform;
+}
+
+/* Reset will-change after animation completes */
+.animatopy-fade-in,
+.animatopy-scale-in,
+.animatopy-bounce-in,
+.animatopy-card-enter,
+.animatopy-modal-enter {
+  animation-fill-mode: forwards;
+}
+
+/* Remove will-change after animation */
+@media (prefers-reduced-motion: no-preference) {
+  .animatopy-fade-in:not(:hover):not(:focus):not(:active),
+  .animatopy-scale-in:not(:hover):not(:focus):not(:active),
+  .animatopy-bounce-in:not(:hover):not(:focus):not(:active) {
+    animation-delay: 0s;
+  }
+}
