@@ -34,7 +34,7 @@ export default function ListingCard({
   grade = "9.8",
   price = 2500,
   originalPrice,
-  coverImage = "https://via.placeholder.com/200x300/2563eb/ffffff?text=Comic+Cover",
+  coverImage = "",
   sellerName = "ComicVault Pro",
   sellerRating = 4.9,
   condition = "Near Mint",

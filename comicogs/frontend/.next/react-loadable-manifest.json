@@ -1,20 +1,14 @@
 {
   "app/vault/page.tsx -> @/components/vault/VaultFilters": {
-    "id": 8682,
+    "id": "app/vault/page.tsx -> @/components/vault/VaultFilters",
     "files": [
-      "static/chunks/325-beed9191abd81dfa.js",
-      "static/chunks/682.b00d6751dd6c9ffc.js"
+      "static/chunks/_app-pages-browser_src_components_vault_VaultFilters_tsx.js"
     ]
   },
   "app/vault/page.tsx -> @/components/vault/VaultTable": {
-    "id": 2919,
+    "id": "app/vault/page.tsx -> @/components/vault/VaultTable",
     "files": [
-      "static/chunks/325-beed9191abd81dfa.js",
-      "static/chunks/233-aaae71f5650ce67f.js",
-      "static/chunks/322-d0b88aa3251e58eb.js",
-      "static/chunks/266.050a318d9abb704c.js",
-      "static/chunks/175-74c6cc82bd9271ce.js",
-      "static/chunks/919.a405185604c9b38e.js"
+      "static/chunks/_app-pages-browser_src_components_vault_VaultTable_tsx.js"
     ]
   }
 }
