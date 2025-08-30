@@ -1,6 +1,7 @@
-/* === Tailwind v4 base === */
-@import "tailwindcss";
-@plugin "tailwindcss-animate";
+/* === Tailwind CSS base === */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* === Core tokens (shadcn-compatible) === */
 :root {

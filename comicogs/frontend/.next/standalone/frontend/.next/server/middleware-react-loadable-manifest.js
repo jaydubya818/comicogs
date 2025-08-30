@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST='{"app/vault/page.tsx -> @/components/vault/VaultFilters":{"id":4796,"files":["static/chunks/796.8fe6bc412eb80ddc.js"]},"app/vault/page.tsx -> @/components/vault/VaultTable":{"id":7922,"files":["static/chunks/922.11ba8cc7a22cd757.js"]}}';

@@ -1,7 +1,8 @@
 "use client";
 
+export const dynamic = 'force-dynamic'
+
 import { Suspense, lazy, useState } from "react";
-import { Navbar } from "@/components/ui/patterns";
 
 // Lazy load heavy components
 const VaultTable = lazy(() => import("@/components/vault/VaultTable"));
@@ -47,30 +48,26 @@ export default function VaultPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      
-      <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-8">
-          {/* Header */}
-          <div className="space-y-4">
-            <h1 className="text-3xl font-bold text-foreground">My Comic Vault</h1>
-            <p className="text-muted-foreground">
-              Manage your comic book collection, track values, and organize your library.
-            </p>
-          </div>
-
-          {/* Filters */}
-          <Suspense fallback={<FiltersSkeleton />}>
-            <VaultFilters onFiltersChange={handleFiltersChange} />
-          </Suspense>
-
-          {/* Table */}
-          <Suspense fallback={<TableSkeleton />}>
-            <VaultTable filters={filters} />
-          </Suspense>
+    <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="space-y-8">
+        {/* Header */}
+        <div className="space-y-4">
+          <h1 className="text-3xl font-bold text-foreground">My Comic Vault</h1>
+          <p className="text-muted-foreground">
+            Manage your comic book collection, track values, and organize your library.
+          </p>
         </div>
-      </main>
-    </div>
+
+        {/* Filters */}
+        <Suspense fallback={<FiltersSkeleton />}>
+          <VaultFilters onFiltersChange={handleFiltersChange} />
+        </Suspense>
+
+        {/* Table */}
+        <Suspense fallback={<TableSkeleton />}>
+          <VaultTable filters={filters} />
+        </Suspense>
+      </div>
+    </main>
   );
 }

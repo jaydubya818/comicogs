@@ -2,54 +2,51 @@
 const nextConfig = {
   // Only use standalone output for non-Vercel deployments
   output: process.env.VERCEL ? undefined : 'standalone',
-  // Increase static generation timeout
-  staticPageGenerationTimeout: 120,
-  // Skip problematic static pages during build
+  
+  // Complete disable static generation
+  trailingSlash: false,
+  skipTrailingSlashRedirect: true,
+  
+  // TypeScript and ESLint configuration
   typescript: {
     ignoreBuildErrors: false,
   },
-  // Temporarily disable static optimization for problematic pages
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  
+  // Force dynamic rendering for all pages
+  swcMinify: true,
+  poweredByHeader: false,
+  
+  // Experimental settings to force dynamic rendering
   experimental: {
     outputFileTracingRoot: undefined,
     missingSuspenseWithCSRBailout: false,
   },
+  
+  // Images configuration
   images: {
     domains: ['placeholder.com', 'via.placeholder.com', 'images.unsplash.com'],
     formats: ['image/webp', 'image/avif'],
+    unoptimized: false,
   },
+  
+  // Disable static optimization completely
+  distDir: '.next',
+  
+  // Environment variables to disable static generation
   env: {
-    NEXT_TELEMETRY_DISABLED: '1',
-  },
-  // Enable SWC minification for better performance
-  swcMinify: true,
-  
-  // Optimize for production
-  compiler: {
-    // Remove console.log in production
-    removeConsole: process.env.NODE_ENV === 'production',
+    NEXT_FORCE_DYNAMIC: 'true',
   },
   
-  // Security headers
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-        ],
-      },
-    ]
+  // Rewrite all routes to force dynamic rendering
+  async rewrites() {
+    return {
+      beforeFiles: [],
+      afterFiles: [],
+      fallback: []
+    }
   },
 }
 

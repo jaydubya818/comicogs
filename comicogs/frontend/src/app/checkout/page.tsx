@@ -1,9 +1,11 @@
 "use client";
 
+export const dynamic = 'force-dynamic'
+
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ArrowLeft, CreditCard, ShoppingCart } from "lucide-react";
-import { Navbar } from "@/components/ui/patterns";
+// Navbar now provided by AppShell layout
 import { Button } from "@/components/ui/button";
 
 interface CheckoutItem {
@@ -83,11 +85,8 @@ function CheckoutContent() {
   const total = subtotal + shipping + tax;
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      
-      <main id="main-content" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-8">
+    <main id="main-content" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="space-y-8">
           {/* Header */}
           <div className="flex items-center space-x-4">
             <Button
@@ -248,23 +247,19 @@ function CheckoutContent() {
               </div>
             </div>
           </div>
-        </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
 
 export default function CheckoutPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <main id="main-content" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-          </div>
-        </main>
-      </div>
+      <main id="main-content" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        </div>
+      </main>
     }>
       <CheckoutContent />
     </Suspense>
