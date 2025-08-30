@@ -10,7 +10,13 @@
       "Read(/Users/jaywest/temp-ams/**)",
       "Read(/Users/jaywest/temp-ams/**)",
       "Read(/Users/jaywest/temp-ams/**)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(find:*)",
+      "Read(/Users/jaywest/**)",
+      "Read(/Users/jaywest/Agent_Management_System/**)",
+      "Bash(git ls-tree:*)",
+      "Bash(test:*)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []

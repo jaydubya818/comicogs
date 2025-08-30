@@ -1,0 +1,27 @@
+# VERCEL PRODUCTION ENVIRONMENT VARIABLES
+# Copy these to your Vercel Dashboard > Settings > Environment Variables
+
+# CRITICAL: UPDATE THESE VALUES BEFORE DEPLOYMENT
+
+# 1. DATABASE_URL (REQUIRED)
+# You need to set up a hosted database first. Popular options:
+# - Vercel Postgres (recommended): Create at vercel.com/storage
+# - Supabase: Create free database at supabase.com
+# - Railway: Create at railway.app
+# - Neon: Create at neon.tech
+
+DATABASE_URL=postgresql://your_user:your_password@your_host:5432/your_database
+
+# 2. NEXTAUTH_URL (REQUIRED)
+NEXTAUTH_URL=https://comicogs-01.vercel.app
+
+# 3. NODE_ENV (REQUIRED)
+NODE_ENV=production
+
+# 4. SECRETS (REQUIRED)
+NEXTAUTH_SECRET=generate-a-32-character-secret-key-here
+JWT_SECRET=generate-another-secret-key-here
+
+# 5. API CONFIGURATION
+NEXT_PUBLIC_API_URL=https://comicogs-01.vercel.app/api
+NEXT_TELEMETRY_DISABLED=1

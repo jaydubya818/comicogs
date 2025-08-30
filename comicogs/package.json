@@ -1,12 +1,13 @@
 {
   "name": "comicogs",
   "private": true,
-  "workspaces": ["frontend","backend"],
-  "packageManager": "npm@10",
-  "engines": { "node": "22.x" },
+  "workspaces": ["frontend", "backend"],
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "npm --workspace frontend run dev",
-    "build": "npm --workspace frontend run build",
+    "build": "npm --workspace frontend run build", 
     "start": "npm --workspace frontend run start",
     "db:setup": "npm --workspace backend run db:setup",
     "db:migrate": "npm --workspace backend run db:migrate",

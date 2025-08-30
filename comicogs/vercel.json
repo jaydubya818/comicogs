@@ -1,6 +1,10 @@
 {
   "version": 2,
   "framework": "nextjs",
+  "installCommand": "cd frontend && npm install",
+  "buildCommand": "cd frontend && npm run build",
+  "devCommand": "cd frontend && npm run dev",
+  "outputDirectory": "frontend/.next",
   "build": {
     "env": {
       "NEXT_PUBLIC_API_URL": "https://comicogs-01.vercel.app/api"
