@@ -16,7 +16,9 @@
       "Read(/Users/jaywest/Agent_Management_System/**)",
       "Bash(git ls-tree:*)",
       "Bash(test:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(./scripts/generate-secrets.sh:*)",
+      "WebFetch(domain:frontend-4773gd54n-jaydubya818.vercel.app)"
     ],
     "deny": [],
     "ask": []
