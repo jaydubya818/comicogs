@@ -1,9 +1,9 @@
 {
   "version": 2,
   "framework": "nextjs",
-  "installCommand": "cd frontend && npm install",
-  "buildCommand": "cd frontend && npm run build",
-  "devCommand": "cd frontend && npm run dev",
+  "installCommand": "npm install --workspace=frontend",
+  "buildCommand": "npm run build --workspace=frontend",
+  "devCommand": "npm run dev --workspace=frontend", 
   "outputDirectory": "frontend/.next",
   "build": {
     "env": {
