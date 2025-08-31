@@ -21,7 +21,8 @@
       "WebFetch(domain:frontend-4773gd54n-jaydubya818.vercel.app)",
       "Bash(git remote add:*)",
       "Bash(git clone:*)",
-      "Read(/private/tmp/comicogs-ui-test/frontend/**)"
+      "Read(/private/tmp/comicogs-ui-test/frontend/**)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ],
     "deny": [],
     "ask": []

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Filter, Star, Clock, Eye } from "lucide-react";
+import Link from "next/link";
 
 export default function MarketplacePage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -56,7 +57,8 @@ export default function MarketplacePage() {
                 seller: "ComicVault92",
                 watchers: 23,
                 timeLeft: "3d 12h",
-                isKey: true
+                isKey: true,
+                image: "https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?w=400&h=600&fit=crop&crop=center"
               },
               {
                 id: 2,
@@ -67,7 +69,8 @@ export default function MarketplacePage() {
                 seller: "VintageComics",
                 watchers: 45,
                 timeLeft: "1d 8h",
-                isKey: true
+                isKey: true,
+                image: "https://images.unsplash.com/photo-1608889476561-6242cfdbf622?w=400&h=600&fit=crop&crop=center"
               },
               {
                 id: 3,
@@ -78,7 +81,8 @@ export default function MarketplacePage() {
                 seller: "MarvelMaster",
                 watchers: 18,
                 timeLeft: "5d 2h",
-                isKey: true
+                isKey: true,
+                image: "https://images.unsplash.com/photo-1611604548018-d56bbd85d681?w=400&h=600&fit=crop&crop=center"
               },
               {
                 id: 4,
@@ -89,7 +93,8 @@ export default function MarketplacePage() {
                 seller: "GoldenAge",
                 watchers: 67,
                 timeLeft: "2d 18h",
-                isKey: true
+                isKey: true,
+                image: "https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?w=400&h=600&fit=crop&crop=faces"
               },
               {
                 id: 5,
@@ -100,7 +105,8 @@ export default function MarketplacePage() {
                 seller: "KeyIssues",
                 watchers: 34,
                 timeLeft: "4d 6h",
-                isKey: true
+                isKey: true,
+                image: "https://images.unsplash.com/photo-1609781137903-5d1e3ba48b5b?w=400&h=600&fit=crop&crop=center"
               },
               {
                 id: 6,
@@ -111,7 +117,8 @@ export default function MarketplacePage() {
                 seller: "SpiderFan",
                 watchers: 89,
                 timeLeft: "6d 14h",
-                isKey: true
+                isKey: true,
+                image: "https://images.unsplash.com/photo-1611604548018-d56bbd85d681?w=400&h=600&fit=crop&crop=faces"
               },
               {
                 id: 7,
@@ -122,7 +129,8 @@ export default function MarketplacePage() {
                 seller: "FantasticDeals",
                 watchers: 28,
                 timeLeft: "1d 22h",
-                isKey: true
+                isKey: true,
+                image: "https://images.unsplash.com/photo-1608889825103-eb5ed706fc64?w=400&h=600&fit=crop&crop=center"
               },
               {
                 id: 8,
@@ -133,13 +141,27 @@ export default function MarketplacePage() {
                 seller: "IronManFan",
                 watchers: 41,
                 timeLeft: "3d 9h",
-                isKey: true
+                isKey: true,
+                image: "https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?w=400&h=600&fit=crop&crop=top"
               }
             ].map((comic) => (
-              <div key={comic.id} className="border rounded-lg bg-card hover:shadow-lg transition-shadow overflow-hidden">
+              <Link key={comic.id} href={`/marketplace/listing/${comic.id}`}>
+                <div className="border rounded-lg bg-card hover:shadow-lg transition-shadow overflow-hidden cursor-pointer">
                 {/* Comic Cover */}
-                <div className="aspect-[2/3] bg-gradient-to-br from-primary/20 to-primary/5 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
+                <div className="aspect-[2/3] relative overflow-hidden">
+                  <img 
+                    src={comic.image} 
+                    alt={comic.title}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // Fallback to emoji if image fails to load
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const fallback = target.nextElementSibling as HTMLElement;
+                      if (fallback) fallback.style.display = 'flex';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 hidden items-center justify-center">
                     <div className="text-center space-y-2">
                       <div className="text-4xl">📚</div>
                       <div className="text-xs text-muted-foreground px-2 text-center">
@@ -192,7 +214,8 @@ export default function MarketplacePage() {
                     </Button>
                   </div>
                 </div>
-              </div>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -226,8 +249,12 @@ export default function MarketplacePage() {
             Find rare issues, track your collection, and connect with fellow enthusiasts.
           </p>
           <div className="flex gap-4 justify-center">
-            <Button size="lg">Browse All Listings</Button>
-            <Button size="lg" variant="outline">Start Selling</Button>
+            <Button size="lg" asChild>
+              <Link href="/marketplace/listings">Browse All Listings</Link>
+            </Button>
+            <Button size="lg" variant="outline" asChild>
+              <Link href="/marketplace/sell">Start Selling</Link>
+            </Button>
           </div>
         </div>
       </div>
