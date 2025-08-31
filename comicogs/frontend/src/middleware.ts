@@ -1,21 +1,57 @@
-// Temporarily disabled next-intl middleware to fix routing issues
-// import createMiddleware from "next-intl/middleware";
+import { NextRequest, NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
+import { isAlpha, isEmailInAlphaAllowlist } from './lib/release';
 
-// export default createMiddleware({
-//   // A list of all locales that are supported
-//   locales: ["en"],
-//   
-//   // Used when no locale matches
-//   defaultLocale: "en",
-//   
-//   // Don't add locale prefix for default locale
-//   localePrefix: "never"
-// });
+/**
+ * Alpha access control middleware
+ * Protects routes when NEXT_PUBLIC_RELEASE_CHANNEL=alpha
+ */
+export async function middleware(request: NextRequest) {
+  // Skip middleware for non-alpha releases
+  if (!isAlpha) {
+    return NextResponse.next();
+  }
 
-// Simple middleware that does nothing - just passes through all requests
-export function middleware() {
-  // Do nothing, let Next.js handle routing normally
-  return;
+  const { pathname } = request.nextUrl;
+
+  // Allow public routes in alpha
+  const publicRoutes = [
+    '/api/auth',
+    '/login',
+    '/signup', 
+    '/invite',
+    '/_next',
+    '/favicon.ico',
+    '/api/health'
+  ];
+
+  const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
+  if (isPublicRoute) {
+    return NextResponse.next();
+  }
+
+  // Get the user's session token
+  const token = await getToken({ 
+    req: request, 
+    secret: process.env.NEXTAUTH_SECRET 
+  });
+
+  // If no token, redirect to login
+  if (!token) {
+    const loginUrl = new URL('/login', request.url);
+    loginUrl.searchParams.set('callbackUrl', pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // Check if user's email is in allowlist
+  const userEmail = token.email as string;
+  if (!isEmailInAlphaAllowlist(userEmail)) {
+    // Redirect to access denied page
+    const deniedUrl = new URL('/access-denied', request.url);
+    return NextResponse.redirect(deniedUrl);
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {

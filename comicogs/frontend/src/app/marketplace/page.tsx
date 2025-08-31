@@ -253,7 +253,7 @@ export default function MarketplacePage() {
               <Link href="/marketplace/listings">Browse All Listings</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link href="/marketplace/sell">Start Selling</Link>
+              <Link href="/sell">Start Selling</Link>
             </Button>
           </div>
         </div>

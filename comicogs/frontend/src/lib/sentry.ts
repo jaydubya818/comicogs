@@ -1,238 +1,99 @@
-'use client';
+import * as Sentry from '@sentry/nextjs';
+import { isAlpha, getReleaseChannel } from './release';
 
-import * as Sentry from "@sentry/nextjs";
-
-// Initialize Sentry for the frontend
-export function initSentry() {
-  if (!process.env.NEXT_PUBLIC_SENTRY_DSN) {
-    console.warn("NEXT_PUBLIC_SENTRY_DSN not configured, skipping Sentry initialization");
-    return;
-  }
-
+// Initialize Sentry only if DSN is provided
+if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   Sentry.init({
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-    environment: process.env.NODE_ENV || "development",
     
-    // Performance monitoring
-    tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
+    // Set sample rate based on environment
+    tracesSampleRate: isAlpha ? 1.0 : 0.1,
     
-    // Session replay (be careful with privacy)
-    replaysSessionSampleRate: process.env.NODE_ENV === "production" ? 0.01 : 0.1,
-    replaysOnErrorSampleRate: 1.0,
+    // Capture unhandled promise rejections is enabled by default
     
-    integrations: [
-      Sentry.replayIntegration({
-        // Mask all text content for privacy
-        maskAllText: true,
-        maskAllInputs: true,
-        // Block network requests with sensitive data
-        blockAllMedia: true,
-      }),
-      
-      // Browser tracing for performance
-      Sentry.browserTracingIntegration(),
-      
-      // Capture console logs as breadcrumbs
-      Sentry.breadcrumbsIntegration({
-        console: false, // Don't capture all console logs
-        dom: true,
-        fetch: true,
-        history: true,
-        sentry: true,
-        xhr: true,
-      }),
-    ],
+    // Set environment and release info
+    environment: getReleaseChannel(),
+    release: process.env.NEXT_PUBLIC_APP_VERSION || 'unknown',
     
-    // Release tracking
-    release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
-    
-    // Custom tags
-    initialScope: {
-      tags: {
-        component: "frontend",
-        version: process.env.NEXT_PUBLIC_APP_VERSION || "unknown",
-      },
-    },
-    
-    // Before send hook to filter sensitive data
+    // Enhanced error tracking for alpha
     beforeSend(event, hint) {
-      // Filter out sensitive URLs
-      if (event.request?.url) {
-        // Don't send requests to sensitive endpoints
-        const sensitivePatterns = ['/api/auth/', '/api/stripe/', '/api/admin/'];
-        if (sensitivePatterns.some(pattern => event.request!.url!.includes(pattern))) {
-          return null;
-        }
-      }
-      
-      // Filter out sensitive form data
-      if (event.exception?.values) {
-        event.exception.values = event.exception.values.map(exception => {
-          if (exception.stacktrace?.frames) {
-            exception.stacktrace.frames = exception.stacktrace.frames.map(frame => {
-              // Remove sensitive variables
-              if (frame.vars) {
-                const sensitiveKeys = ['password', 'token', 'secret', 'key', 'auth'];
-                sensitiveKeys.forEach(key => {
-                  if (frame.vars![key]) {
-                    frame.vars![key] = '[Filtered]';
-                  }
-                });
-              }
-              return frame;
-            });
-          }
-          return exception;
-        });
+      // Add extra context for alpha users
+      if (isAlpha) {
+        event.tags = {
+          ...event.tags,
+          release_channel: 'alpha',
+          user_type: 'alpha_tester'
+        };
+        
+        // Capture more detailed context
+        event.extra = {
+          ...event.extra,
+          timestamp: new Date().toISOString(),
+          user_agent: typeof window !== 'undefined' ? window.navigator.userAgent : 'unknown',
+          url: typeof window !== 'undefined' ? window.location.href : 'unknown'
+        };
       }
       
       return event;
     },
-    
-    // Don't capture breadcrumbs for certain actions
-    beforeBreadcrumb(breadcrumb) {
-      // Filter out sensitive breadcrumbs
-      if (breadcrumb.category === 'fetch' || breadcrumb.category === 'xhr') {
-        if (breadcrumb.data?.url) {
-          const sensitivePatterns = ['/api/auth/', '/api/stripe/', '/api/admin/'];
-          if (sensitivePatterns.some(pattern => breadcrumb.data!.url!.includes(pattern))) {
-            return null;
-          }
-        }
-      }
-      
-      // Don't capture password input changes
-      if (breadcrumb.category === 'ui.input' && breadcrumb.message?.includes('password')) {
+
+    // Filter out known non-critical errors
+    beforeSendTransaction(event) {
+      // Skip health check transactions
+      if (event.transaction?.includes('/api/health')) {
         return null;
       }
-      
-      return breadcrumb;
-    },
-  });
-
-  console.log("Sentry initialized successfully");
-}
-
-// Custom error capture with user context
-export function captureErrorWithUser(error: Error, user?: { id: string; email?: string; name?: string }) {
-  Sentry.withScope((scope) => {
-    if (user) {
-      scope.setUser({
-        id: user.id,
-        email: user.email,
-        username: user.name,
-      });
+      return event;
     }
-    
-    // Set error level
-    if (error.name === 'ChunkLoadError' || error.name === 'TypeError') {
-      scope.setLevel('warning');
-    } else {
-      scope.setLevel('error');
-    }
-    
-    Sentry.captureException(error);
   });
 }
 
-// Capture user feedback
-export function captureUserFeedback(feedback: {
-  name?: string;
-  email?: string;
+// Helper functions for manual error reporting
+export function captureAlphaFeedback(feedback: {
   message: string;
-  eventId?: string;
+  type: string;
+  page?: string;
+  userEmail?: string;
 }) {
-  Sentry.captureFeedback({
-    name: feedback.name || 'Anonymous',
-    email: feedback.email || 'anonymous@comicogs.com',
-    message: feedback.message,
-    associatedEventId: feedback.eventId || Sentry.lastEventId(),
-  });
-}
-
-// Track page views
-export function trackPageView(pageName: string, properties?: Record<string, any>) {
-  Sentry.addBreadcrumb({
-    message: `Page view: ${pageName}`,
-    category: 'navigation',
-    level: 'info',
-    data: properties,
-  });
-}
-
-// Track user actions
-export function trackUserAction(action: string, properties?: Record<string, any>) {
-  Sentry.addBreadcrumb({
-    message: `User action: ${action}`,
-    category: 'user',
-    level: 'info',
-    data: properties,
-  });
-}
-
-// Performance tracking for frontend operations
-export function trackPerformance(operation: string, duration: number, properties?: Record<string, any>) {
-  Sentry.withScope((scope) => {
-    scope.setTag('operation', operation);
-    scope.setExtra('duration', duration);
-    
-    if (properties) {
-      Object.keys(properties).forEach(key => {
-        scope.setExtra(key, properties[key]);
-      });
-    }
-    
-    // Add performance breadcrumb
+  if (isAlpha) {
     Sentry.addBreadcrumb({
-      message: `Performance: ${operation}`,
-      category: 'performance',
-      level: duration > 1000 ? 'warning' : 'info',
-      data: {
-        duration,
-        ...properties,
-      },
+      message: 'Alpha user feedback submitted',
+      category: 'feedback',
+      level: 'info',
+      data: feedback
     });
-  });
+  }
 }
 
-// Set user context
-export function setUserContext(user: { id: string; email?: string; name?: string; role?: string }) {
-  Sentry.setUser({
-    id: user.id,
-    email: user.email,
-    username: user.name,
-    role: user.role,
-  });
+export function captureAlphaError(error: Error, context?: Record<string, any>) {
+  if (isAlpha) {
+    Sentry.withScope((scope) => {
+      scope.setTag('alpha_error', true);
+      scope.setLevel('error');
+      
+      if (context) {
+        Object.entries(context).forEach(([key, value]) => {
+          scope.setContext(key, value);
+        });
+      }
+      
+      Sentry.captureException(error);
+    });
+  }
 }
 
-// Clear user context (on logout)
-export function clearUserContext() {
-  Sentry.setUser(null);
+export function captureAlphaMetric(metric: {
+  name: string;
+  value: number;
+  unit?: string;
+  tags?: Record<string, string>;
+}) {
+  if (isAlpha) {
+    Sentry.addBreadcrumb({
+      message: `Alpha metric: ${metric.name}`,
+      category: 'metric',
+      level: 'info',
+      data: metric
+    });
+  }
 }
-
-// Set additional context
-export function setContext(key: string, context: Record<string, any>) {
-  Sentry.setContext(key, context);
-}
-
-// Create performance transaction
-export function startTransaction(name: string, operation: string) {
-  return Sentry.startSpan({
-    name,
-    op: operation,
-  }, (span) => {
-    return span;
-  });
-}
-
-// Error boundary integration
-export function createErrorBoundary() {
-  return Sentry.withErrorBoundary;
-}
-
-// Show user report dialog
-export function showReportDialog() {
-  Sentry.showReportDialog();
-}
-
-export { Sentry };
