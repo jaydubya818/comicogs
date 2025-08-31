@@ -1,1 +1,1 @@
-{"version":1,"functions":{"/_not-found":{},"/account":{},"/moderation":{},"/login":{},"/collection/comics":{},"/marketplace":{},"/checkout":{},"/marketplace/listings":{},"/":{},"/comic-dna":{},"/marketplace/search":{},"/collection":{},"/vault":{},"/search":{}}}
+{"version":1,"functions":{"/_not-found":{},"/account":{},"/moderation":{},"/collection/comics":{},"/checkout":{},"/login":{},"/comic-dna":{},"/collection":{},"/marketplace/listings":{},"/marketplace":{},"/":{},"/vault":{},"/search":{},"/wishlist":{},"/marketplace/search":{}}}
