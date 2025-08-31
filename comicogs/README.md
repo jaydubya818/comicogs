@@ -552,3 +552,4 @@ Made with ❤️ by the Comicogs team
 
 **Live Demo:** All functionality tested and verified with comprehensive test coverage.
 # Trigger alpha deployment with full app
+# Deploy full comicogs-nextjs app without competing frontend
